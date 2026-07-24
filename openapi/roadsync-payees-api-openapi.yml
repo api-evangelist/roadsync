@@ -1,0 +1,514 @@
+openapi: 3.0.1
+info:
+  contact:
+    email: christo.delange@roadsync.com
+  description: This API allows the Roadsync clients to manage aspects of the RoadSync service via an API.
+  license:
+    name: Copyright (c) 2020, RoadSync Inc.
+  title: Client API v1.8 authenticated payees API
+  version: 1.8.45
+  x-api-id: 3ea39084-d8df-11ea-ad77-0017b600647f
+  x-audience: external-partner
+servers:
+- url: https://client-api.staging.roadsync.com/{basePath}
+  variables:
+    Product:
+      default: ClientApi
+    basePath:
+      default: v1
+security:
+- api_key: []
+- session_token: []
+tags:
+- name: payees
+  description: The payees end point
+paths:
+  /payees:
+    get:
+      summary: Get a List of All Payees
+      operationId: get-payees
+      responses:
+        '200':
+          $ref: '#/components/responses/getPayees'
+      x-stoplight:
+        id: co4pq80p7nc6t
+      description: Return a list of all Payees associated with a Broker.
+      parameters:
+      - $ref: '#/components/parameters/broker_header'
+      - name: dot
+        in: query
+        description: Filter payees by DOT number
+        required: false
+        schema:
+          type: string
+      security:
+      - x-api-key: []
+      tags:
+      - payees
+    post:
+      summary: Create a Payee
+      operationId: post-payees
+      responses:
+        '201':
+          description: Example response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    $ref: '#/components/schemas/id'
+        '400':
+          description: Bad Request
+        '409':
+          description: Conflict
+      parameters:
+      - $ref: '#/components/parameters/broker_header'
+      x-stoplight:
+        id: 2i1si9bt2oii2
+      security:
+      - x-api-key: []
+      tags:
+      - payees
+      requestBody:
+        content:
+          application/json:
+            schema:
+              oneOf:
+              - type: object
+                title: Create New Payee
+                properties:
+                  type:
+                    type: string
+                    description: Create a New Payee
+                    enum:
+                    - NEW
+                  data:
+                    type: object
+                    properties:
+                      payee_name:
+                        $ref: '#/components/schemas/payeeName'
+                      mc_number:
+                        $ref: '#/components/schemas/mcNumber'
+                      dot_number:
+                        $ref: '#/components/schemas/dotNumber'
+                      email_address:
+                        $ref: '#/components/schemas/emailAddress'
+                      phone_number:
+                        $ref: '#/components/schemas/phoneNumber'
+                      first_name:
+                        $ref: '#/components/schemas/firstName'
+                      last_name:
+                        $ref: '#/components/schemas/lastName'
+                      address_line_one:
+                        $ref: '#/components/schemas/addressLineOne'
+                      address_line_two:
+                        $ref: '#/components/schemas/addressLineTwo'
+                      address_city:
+                        $ref: '#/components/schemas/city'
+                      address_state:
+                        $ref: '#/components/schemas/state'
+                      address_zip:
+                        $ref: '#/components/schemas/postalCode'
+                      is_factoring_company:
+                        $ref: '#/components/schemas/isFactoringCompany'
+                      carrier_payee_ids:
+                        $ref: '#/components/schemas/carrierPayeeIds'
+              - type: object
+                title: Import Existing Payee
+                properties:
+                  type:
+                    type: string
+                    description: Import an Existing Payee
+                    enum:
+                    - IMPORT
+                  data:
+                    type: object
+                    properties:
+                      payee_candidate_id:
+                        $ref: '#/components/schemas/payeeCandidateImportId'
+      description: Create a Payee.
+  /payees/{payee_id}:
+    parameters:
+    - schema:
+        $ref: '#/components/schemas/id'
+      name: payee_id
+      in: path
+      required: true
+    get:
+      summary: Get a Single Payee
+      tags:
+      - payees
+      responses:
+        '200':
+          $ref: '#/components/responses/getPayee'
+      parameters:
+      - $ref: '#/components/parameters/broker_header'
+      operationId: get-payees-id
+      x-stoplight:
+        id: de630d2wzywu3
+      description: Retrieve the information of one specific Payee.
+      security:
+      - x-api-key: []
+    patch:
+      summary: Update a Single Payee
+      operationId: patch-payees-id
+      responses:
+        '201':
+          description: Example response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    $ref: '#/components/schemas/id'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          $ref: '#/components/responses/errorForbidden'
+        '404':
+          description: Not Found
+      parameters:
+      - $ref: '#/components/parameters/broker_header'
+      x-stoplight:
+        id: ghu2w7sx235yx
+      description: Edit the information of the specified Payee. Only Payees that are not verified can be updated.
+      requestBody:
+        $ref: '#/components/requestBodies/updatePayee'
+      tags:
+      - payees
+      security:
+      - x-api-key: []
+components:
+  schemas:
+    id:
+      type: integer
+      x-stoplight:
+        id: f7ra661j53v04
+      example: 87346
+      title: id
+      description: The id number of the object being returned.
+    carrierPayeeIds:
+      title: carrier_payee_ids
+      x-stoplight:
+        id: pevp3t3zuaad8
+      type: array
+      description: If “is_factoring_company“ is true, add the “payee_id” for each associated carrier.
+      example:
+      - 10204
+      - 10205
+      items:
+        $ref: '#/components/schemas/id'
+        x-stoplight:
+          id: y9pyua91doq3i
+    mcNumber:
+      type: string
+      x-stoplight:
+        id: 70s19yd5cd75e
+      description: Motor Carrier Number is a a nine-digit identifier assigned by the FMCSA to moving companies operating in interstate commerce. If inserted, it will be validated.
+      example: MC612791
+      title: mc_number
+    isFactoringCompany:
+      title: is_factoring_company
+      x-stoplight:
+        id: mmie0j9euqu37
+      type: boolean
+      description: Send "true" if this Payee is a Factoring Company, "false" otherwise.
+      example: true
+    firstName:
+      type: string
+      x-stoplight:
+        id: 7p7kmat8ktz1s
+      example: Camila
+      title: first_name
+      description: The first name of a contact or user.
+    addressLineOne:
+      title: address_line_one
+      x-stoplight:
+        id: p3a1crckckndd
+      type: string
+      description: The valid address of a person or business in the United States.
+      example: 715 Peachtree St
+    payeeCandidateId:
+      type: integer
+      x-stoplight:
+        id: d7jri8k8o5qxe
+      description: This field is displayed if the Payee is available in RoadSync Pay’s Directory.
+      example: 896876
+      title: payee_candidate_id
+    state:
+      title: state
+      x-stoplight:
+        id: xwqz3invlqyrz
+      type: string
+      description: A valid 2 character state code in the United States.
+      example: GA
+    paymentTarget:
+      title: payment_target
+      description: A valid Payee payment target.
+      x-stoplight:
+        id: pqgsyu00mynep
+      enum:
+      - ACH
+      - PAPER_CHECK
+      - RTP
+      example: ACH
+    postalCode:
+      title: postal_code
+      x-stoplight:
+        id: v5t2utdpxdar3
+      type: string
+      description: A valid postal code in the United States.
+      example: '30306'
+    payeeCandidateImportId:
+      type: integer
+      description: A valid ID of the payee candidate you are importing
+      example: 896876
+      title: payee_candidate_id
+    payee:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/id'
+        payee_name:
+          $ref: '#/components/schemas/payeeName'
+        mc_number:
+          $ref: '#/components/schemas/mcNumber'
+        dot_number:
+          $ref: '#/components/schemas/dotNumber'
+        email_address:
+          $ref: '#/components/schemas/emailAddress'
+        phone_number:
+          $ref: '#/components/schemas/phoneNumber'
+        first_name:
+          $ref: '#/components/schemas/firstName'
+        last_name:
+          $ref: '#/components/schemas/lastName'
+        address_line_one:
+          $ref: '#/components/schemas/addressLineOne'
+        address_line_two:
+          $ref: '#/components/schemas/addressLineTwo'
+        address_city:
+          $ref: '#/components/schemas/city'
+        address_state:
+          $ref: '#/components/schemas/state'
+        address_zip:
+          $ref: '#/components/schemas/postalCode'
+        is_factoring_company:
+          $ref: '#/components/schemas/isFactoringCompany'
+        ach_funding_source_id:
+          $ref: '#/components/schemas/fundingSourceId'
+        paper_check_funding_source_id:
+          $ref: '#/components/schemas/fundingSourceId'
+        available_payment_types:
+          $ref: '#/components/schemas/availablePaymentTypes'
+        is_verified:
+          $ref: '#/components/schemas/isVerified'
+        payee_candidate_id:
+          $ref: '#/components/schemas/payeeCandidateId'
+        carrier_payee_ids:
+          $ref: '#/components/schemas/carrierPayeeIds'
+        factoring_company:
+          type: object
+          properties:
+            id:
+              $ref: '#/components/schemas/id'
+            payee_name:
+              $ref: '#/components/schemas/payeeName'
+      x-stoplight:
+        id: vhtkgvp4mic8z
+    availablePaymentTypes:
+      title: available_payment_types
+      x-stoplight:
+        id: 9us2vhly5l9u3
+      type: array
+      description: A list of the availablepayment methods a Payee is able to receive. Possible values are PAPER_CHECK, ACH, RTP
+      example:
+      - PAPER_CHECK
+      - ACH
+      - RTP
+      items:
+        $ref: '#/components/schemas/paymentTarget'
+    addressLineTwo:
+      title: address_line_two
+      x-stoplight:
+        id: jpnvzmg54ky3l
+      type: string
+      nullable: true
+      description: If necessary, add a second line of the address in the United States.
+      example: APT 23
+    lastName:
+      type: string
+      x-stoplight:
+        id: sbyxhe07a7czs
+      title: last_name
+      description: The last name of a user or contact.
+      example: Rogers
+    emailAddress:
+      type: string
+      x-stoplight:
+        id: yd026juzie7jh
+      description: A valid email belonging to the person or company.
+      title: email_address
+      example: crogers@camilatrucking.com
+    fundingSourceId:
+      title: funding_source_id
+      x-stoplight:
+        id: 62r95b324501y
+      $ref: '#/components/schemas/id'
+      description: Id representing the funding source (papercheck, ach or wallet).
+    brokerId:
+      title: broker_id
+      type: integer
+      example: 66305
+      x-stoplight:
+        id: 364l19xr2t37h
+      description: The identifier of a Broker to which the Payee will be assigned or has already been assigned.
+    payeeName:
+      type: string
+      x-stoplight:
+        id: t7yn3ksmmn262
+      description: The name of the Carrier or Factoring Company.
+      example: Camila Trucking LLC
+      title: payee_name
+    city:
+      title: city
+      x-stoplight:
+        id: 8ypbld5r20d6o
+      type: string
+      description: A valid city in the United States.
+      example: Atlanta
+    phoneNumber:
+      title: phone_number
+      x-stoplight:
+        id: coa4x7lscfh80
+      type: string
+      description: A valid phone number belonging to a person or company.
+      example: '3243444347'
+    dotNumber:
+      type: string
+      x-stoplight:
+        id: c2zo0dhnzfjnp
+      description: U.S. Department of Transportation Number is an up to ten-digit assigned by the FMCSA to moving companies operating in interstate commerce. If inserted, it will be validated.
+      example: '2428196'
+      title: dot_number
+    isVerified:
+      title: is_verified
+      type: boolean
+      example: false
+      x-stoplight:
+        id: yfowmo738h8iv
+      description: A verified Payee is visible to all brokers in the RoadSync Pay environment. Some partners are allowed to verify a Payee by setting the is_verified flag to true during creation or update.
+  responses:
+    getPayee:
+      description: Example response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/payee'
+    getPayees:
+      description: Example response
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              allOf:
+              - $ref: '#/components/schemas/payee'
+    errorForbidden:
+      description: Example response
+      content:
+        application/json:
+          schema:
+            type: object
+            x-examples:
+              Example 1:
+                Code: ForbiddenError
+                Message: Action forbidden
+            properties:
+              Code:
+                enum:
+                - ForbiddenError
+              Message:
+                enum:
+                - Action forbidden
+          examples:
+            Example:
+              value:
+                Code: ForbiddenError
+                Message: Action forbidden
+      headers: {}
+  parameters:
+    broker_header:
+      name: broker-id
+      in: header
+      schema:
+        $ref: '#/components/schemas/brokerId'
+      description: The id of the broker
+      required: true
+  requestBodies:
+    updatePayee:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              payee_name:
+                $ref: '#/components/schemas/payeeName'
+                nullable: true
+              mc_number:
+                $ref: '#/components/schemas/mcNumber'
+                nullable: true
+              dot_number:
+                $ref: '#/components/schemas/dotNumber'
+                nullable: true
+              email_address:
+                $ref: '#/components/schemas/emailAddress'
+                nullable: true
+                x-stoplight:
+                  id: 13elwr3j478mu
+              phone_number:
+                $ref: '#/components/schemas/phoneNumber'
+                nullable: true
+              address_line_one:
+                $ref: '#/components/schemas/addressLineOne'
+                nullable: true
+              address_line_two:
+                $ref: '#/components/schemas/addressLineTwo'
+                nullable: true
+              address_city:
+                $ref: '#/components/schemas/city'
+                nullable: true
+              address_state:
+                $ref: '#/components/schemas/state'
+                nullable: true
+              address_zip:
+                $ref: '#/components/schemas/postalCode'
+                nullable: true
+              first_name:
+                $ref: '#/components/schemas/firstName'
+                nullable: true
+              last_name:
+                $ref: '#/components/schemas/lastName'
+                nullable: true
+              factoring_company_id:
+                $ref: '#/components/schemas/id'
+                nullable: true
+              carrier_payee_ids:
+                $ref: '#/components/schemas/carrierPayeeIds'
+                nullable: true
+                items: {}
+  securitySchemes:
+    api_key:
+      in: header
+      name: x-api-key
+      type: apiKey
+      x-apikeyInfoFunc: client_api_server.controllers.authorization_controller.check_api_key
+    session_token:
+      bearerFormat: JWT
+      scheme: bearer
+      type: http
+      x-apikeyInfoFunc: client_api_server.controllers.authorization_controller.check_session_token

@@ -1,0 +1,697 @@
+openapi: 3.0.1
+info:
+  contact:
+    email: christo.delange@roadsync.com
+  description: This API allows the Roadsync clients to manage aspects of the RoadSync service via an API.
+  license:
+    name: Copyright (c) 2020, RoadSync Inc.
+  title: Client API v1.8 authenticated location API
+  version: 1.8.45
+  x-api-id: 3ea39084-d8df-11ea-ad77-0017b600647f
+  x-audience: external-partner
+servers:
+- url: https://client-api.staging.roadsync.com/{basePath}
+  variables:
+    Product:
+      default: ClientApi
+    basePath:
+      default: v1
+security:
+- api_key: []
+- session_token: []
+tags:
+- description: Company location operations
+  name: location
+paths:
+  /location/list:
+    get:
+      description: 'Retrieve a list of company locations. If no CompanyId is provided the user''s companyId is used (if set).
+
+        If the user''s company Id is also not set and error will be returned.
+
+        '
+      operationId: location_list_get
+      parameters:
+      - explode: true
+        in: query
+        name: companyId
+        required: false
+        schema:
+          $ref: '#/components/schemas/HashedId'
+        style: form
+      responses:
+        '200':
+          $ref: '#/components/responses/LocationListResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFound404'
+        '429':
+          $ref: '#/components/responses/TooManyRequests429'
+        '500':
+          $ref: '#/components/responses/ServiceError500'
+        default:
+          $ref: '#/components/responses/UnexpectedError'
+      security:
+      - api_key: []
+      - session_token: []
+      summary: Retrieve a list of company locations
+      tags:
+      - location
+    options:
+      operationId: location_list_options
+      responses:
+        '200':
+          $ref: '#/components/responses/Options200'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFound404'
+        '429':
+          $ref: '#/components/responses/TooManyRequests429'
+        '500':
+          $ref: '#/components/responses/ServiceError500'
+        default:
+          $ref: '#/components/responses/UnexpectedError'
+      security: []
+      tags:
+      - location
+  /location:
+    get:
+      summary: Get a Location list
+      description: 'Get a Location list.
+
+        '
+      tags:
+      - location
+      operationId: get-location-list
+      security: []
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/LocationList'
+                  errors:
+                    $ref: '#/components/schemas/Errors'
+              examples:
+                success:
+                  $ref: '#/components/examples/LocationListResponseExample'
+                error:
+                  $ref: '#/components/examples/ErrorResponseExample'
+  /location/{location_id}:
+    parameters:
+    - name: location_id
+      in: path
+      schema:
+        type: string
+      required: true
+      description: The id of the location.
+    get:
+      summary: Get a Location
+      description: 'Get a Location.
+
+        '
+      tags:
+      - location
+      operationId: get-location
+      security: []
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Location_2'
+                  errors:
+                    $ref: '#/components/schemas/Errors'
+              examples:
+                success:
+                  $ref: '#/components/examples/LocationResponseExample'
+                error:
+                  $ref: '#/components/examples/ErrorResponseExample'
+  /location/{location_id}/product:
+    parameters:
+    - name: location_id
+      in: path
+      schema:
+        type: string
+      required: true
+      description: The id of the location.
+    get:
+      summary: Get a Product list
+      description: 'Get a Product list.
+
+        '
+      tags:
+      - location
+      operationId: get-location-product-list
+      security: []
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/ProductList'
+                  errors:
+                    $ref: '#/components/schemas/Errors'
+              examples:
+                success:
+                  $ref: '#/components/examples/ProductListResponseExample'
+                error:
+                  $ref: '#/components/examples/ErrorResponseExample'
+components:
+  schemas:
+    CodeMessage:
+      additionalProperties: false
+      description: A generic error object generally used for 500 responses
+      properties:
+        code:
+          $ref: '#/components/schemas/CodeEnum'
+        message:
+          $ref: '#/components/schemas/Message'
+      required:
+      - code
+      - message
+    LocationList:
+      type: array
+      items:
+        $ref: '#/components/schemas/Location_2'
+    Error:
+      type: object
+      properties:
+        code:
+          type: string
+    DateTime:
+      description: A timestamp of last modification of the entry.
+      example: '2020-07-21 17:32:28Z'
+      format: date-time
+      type: string
+    TimeZone:
+      enum:
+      - US/Hawaii
+      - US/Alaska
+      - US/Pacific
+      - US/Mountain
+      - US/Central
+      - US/Eastern
+      - ''
+      type: string
+    CodeEnum:
+      default: Success
+      enum:
+      - Success
+      - Error
+      - Exception
+      type: string
+    CustomField_2:
+      type: array
+      properties:
+        name:
+          type: string
+          description: custom field name
+        title:
+          type: string
+          description: custom field title
+        type:
+          type: string
+          description: custom field type
+        isRequired:
+          type: boolean
+          description: is this required
+        options:
+          type: array
+          description: custom field options
+        isShownInList:
+          type: boolean
+          description: is this custom field shown in the list
+        isEditable:
+          type: boolean
+          description: can custom field be edited
+    CustomFieldType:
+      enum:
+      - ''
+      - unknown
+      - input
+      - phone
+      - email
+      - select
+      - numeric
+      type: string
+    ProductList:
+      type: array
+      items:
+        $ref: '#/components/schemas/Product'
+    CustomField:
+      additionalProperties: false
+      properties:
+        deletedAt:
+          $ref: '#/components/schemas/DateTime'
+        id:
+          $ref: '#/components/schemas/HashedId'
+        isRequired:
+          type: boolean
+        isShownInList:
+          type: boolean
+        name:
+          maxLength: 256
+          pattern: /^.*$/
+          type: string
+        options:
+          additionalProperties: false
+          type: object
+        title:
+          maxLength: 2048
+          pattern: /^.*$/
+          type: string
+        type:
+          $ref: '#/components/schemas/CustomFieldType'
+      type: object
+    LocationListResponse:
+      allOf:
+      - $ref: '#/components/schemas/CodeMessage'
+      - properties:
+          location_list:
+            description: A list of locations
+            items:
+              $ref: '#/components/schemas/Location'
+            maxItems: 128
+            type: array
+        type: object
+    Location:
+      additionalProperties: false
+      properties:
+        city:
+          maxLength: 256
+          pattern: /^.*$/
+          type: string
+        companyId:
+          $ref: '#/components/schemas/HashedId'
+        createdAt:
+          $ref: '#/components/schemas/DateTime'
+        customFields:
+          items:
+            $ref: '#/components/schemas/CustomField'
+          maxItems: 64
+          type: array
+        departments:
+          items:
+            $ref: '#/components/schemas/Department'
+          maxItems: 64
+          type: array
+        id:
+          $ref: '#/components/schemas/HashedId'
+        locationReference:
+          maxLength: 2048
+          pattern: /^.*$/
+          type: string
+        name:
+          maxLength: 256
+          pattern: /^.*$/
+          type: string
+        shifts:
+          items:
+            $ref: '#/components/schemas/Shift'
+          maxItems: 128
+          type: array
+        state:
+          $ref: '#/components/schemas/StateCode'
+        street:
+          maxLength: 2048
+          pattern: /^.*$/
+          type: string
+        street2:
+          maxLength: 2048
+          pattern: /^.*$/
+          type: string
+        timezone:
+          $ref: '#/components/schemas/TimeZone'
+        updatedAt:
+          $ref: '#/components/schemas/DateTime'
+        zip:
+          maxLength: 10
+          pattern: ^[0-9]{5}(|-[0-9]{4})$
+          type: string
+      type: object
+    Errors:
+      type: array
+      description: A list of errors that occurred during processing
+      items:
+        $ref: '#/components/schemas/Error'
+    Shift:
+      additionalProperties: false
+      properties:
+        id:
+          $ref: '#/components/schemas/HashedId'
+        locationId:
+          $ref: '#/components/schemas/HashedId'
+        name:
+          maxLength: 256
+          pattern: /^.*$/
+          type: string
+      type: object
+    Message:
+      maxLength: 2048
+      pattern: /^[a-zA-Z0-9 ]*$/
+      type: string
+    StateCode:
+      enum:
+      - AL
+      - AK
+      - AZ
+      - AR
+      - CA
+      - CO
+      - CT
+      - DE
+      - DC
+      - FL
+      - GA
+      - HI
+      - ID
+      - IL
+      - IN
+      - IA
+      - KS
+      - KY
+      - LA
+      - ME
+      - MD
+      - MA
+      - MI
+      - MN
+      - MS
+      - MO
+      - MT
+      - NE
+      - NV
+      - NH
+      - NJ
+      - NM
+      - NY
+      - NC
+      - ND
+      - OH
+      - OK
+      - OR
+      - PA
+      - RI
+      - SC
+      - SD
+      - TN
+      - TX
+      - UT
+      - VT
+      - VA
+      - WA
+      - WV
+      - WI
+      - WY
+      - MEX
+      - CAN
+      type: string
+    Problem:
+      additionalProperties: false
+      properties:
+        detail:
+          description: 'A human readable explanation specific to this occurrence of the
+
+            problem.
+
+            '
+          example: Connection to database timed out
+          maxLength: 2048
+          pattern: /^.*$/
+          type: string
+        instance:
+          description: 'An absolute URI that identifies the specific occurrence of the problem.
+
+            It may or may not yield further information if dereferenced.
+
+            '
+          format: uri
+          maxLength: 2048
+          pattern: /^.*$/
+          type: string
+        status:
+          description: 'The HTTP status code generated by the origin server for this occurrence
+
+            of the problem.
+
+            '
+          example: 503
+          exclusiveMaximum: true
+          format: int32
+          maximum: 600
+          minimum: 100
+          type: integer
+        title:
+          description: 'A short, summary of the problem type. Written in english and readable
+
+            for engineers (usually not suited for non technical stakeholders and
+
+            not localized); example: Service Unavailable
+
+            '
+          maxLength: 256
+          pattern: /^.*$/
+          type: string
+        type:
+          default: about:blank
+          description: 'An absolute URI that identifies the problem type.  When dereferenced,
+
+            it SHOULD provide human-readable documentation for the problem type
+
+            (e.g., using HTML).
+
+            '
+          example: https://problems.roadsync.com/problem/unspecified-error
+          format: uri
+          maxLength: 2048
+          pattern: /^.*$/
+          type: string
+      type: object
+    Product:
+      type: object
+      additionalProperties: false
+      properties:
+        id:
+          type: string
+          description: The product id
+        name:
+          type: string
+          description: The product name
+    HashedId:
+      maxLength: 128
+      pattern: /^\w+$/
+      type: string
+    Location_2:
+      type: object
+      additionalProperties: false
+      properties:
+        id:
+          type: string
+          description: The location id
+        name:
+          type: string
+          description: The location name
+        customFields:
+          type: array
+          description: List of arrays that describe each custom field
+          items:
+            $ref: '#/components/schemas/CustomField_2'
+    Department:
+      additionalProperties: false
+      properties:
+        id:
+          $ref: '#/components/schemas/HashedId'
+        locationId:
+          $ref: '#/components/schemas/HashedId'
+        name:
+          maxLength: 2048
+          pattern: /^.*$/
+          type: string
+      type: object
+  responses:
+    ForbiddenError:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CodeMessage'
+      description: Request is completely forbidden. API not provided or method and or endpoint not supported
+      headers:
+        WWW_Authenticate:
+          explode: false
+          schema:
+            maxLength: 2048
+            pattern: /^.*$/
+            type: string
+          style: simple
+    NotFound404:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Problem'
+      description: 404 Not found
+    TooManyRequests429:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Problem'
+      description: 429 too many requests response
+    ServiceError500:
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/Problem'
+      description: Service Error
+    UnauthorizedError:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CodeMessage'
+      description: API key is missing or invalid
+      headers:
+        WWW_Authenticate:
+          explode: false
+          schema:
+            maxLength: 2048
+            pattern: /^.*$/
+            type: string
+          style: simple
+    LocationListResponse:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/LocationListResponse'
+      description: A location list response
+    UnexpectedError:
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/Problem'
+      description: unexpected error response
+    Options200:
+      content:
+        application/json:
+          schema:
+            additionalProperties: false
+            type: object
+      description: 200 response
+      headers:
+        Access-Control-Allow-Credentials:
+          explode: false
+          schema:
+            type: boolean
+          style: simple
+        Access-Control-Allow-Headers:
+          explode: false
+          schema:
+            maxLength: 256
+            pattern: ^[a-zA-Z0-9 ,]*$
+            type: string
+          style: simple
+        Access-Control-Allow-Methods:
+          explode: false
+          schema:
+            maxLength: 256
+            pattern: ^[a-zA-Z0-9 ,]*$
+            type: string
+          style: simple
+        Access-Control-Allow-Origin:
+          explode: false
+          schema:
+            maxLength: 256
+            pattern: /^.*$/
+            type: string
+          style: simple
+        Cache-Control:
+          explode: false
+          schema:
+            maxLength: 256
+            pattern: ^[a-zA-Z0-9 ,\-]*$
+            type: string
+          style: simple
+        Expires:
+          explode: false
+          schema:
+            maxLength: 256
+            pattern: ^[a-zA-Z0-9 \-]*$
+            type: string
+          style: simple
+        Pragma:
+          explode: false
+          schema:
+            maxLength: 256
+            pattern: ^[a-zA-Z0-9 ,]*$
+            type: string
+          style: simple
+  examples:
+    LocationResponseExample:
+      value:
+        data:
+          id: jX52DZVG8A0MB1b1bgrkoqwWlJpY6m
+          name: Location 1
+          custom_fields:
+          - name: customField2
+            title: customField2
+            type: input
+            isRequired: false
+            options: {}
+            isShownInList: false
+            isEditable: true
+          - name: customField1
+            title: customFields1
+            type: input
+            isRequired: false
+            options: {}
+            isShownInList: false
+            isEditable: true
+    ErrorResponseExample:
+      value:
+        errors:
+        - code: processing_error
+    LocationListResponseExample:
+      value:
+        data:
+        - id: jX52DZVG8A0MB1b1bgrkoqwWlJpY6m
+          name: Location 1
+        - id: HgTjnbkjbuyo786590KJBKjtfdGgjy
+          name: Location 2
+        - id: awefawef3wfaw3fh445hhsdrrsUHuy
+          name: Location 3
+    ProductListResponseExample:
+      value:
+        data:
+        - id: jX52DZVG8A0MB1b1bgrkoqwWlJpY6m
+          name: Product 1
+        - id: HgTjnbkjbuyo786590KJBKjtfdGgjy
+          name: Product 2
+        - id: awefawef3wfaw3fh445hhsdrrsUHuy
+          name: Product 3
+  securitySchemes:
+    api_key:
+      in: header
+      name: x-api-key
+      type: apiKey
+      x-apikeyInfoFunc: client_api_server.controllers.authorization_controller.check_api_key
+    session_token:
+      bearerFormat: JWT
+      scheme: bearer
+      type: http
+      x-apikeyInfoFunc: client_api_server.controllers.authorization_controller.check_session_token

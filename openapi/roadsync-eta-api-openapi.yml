@@ -1,0 +1,91 @@
+openapi: 3.0.1
+info:
+  contact:
+    email: christo.delange@roadsync.com
+  description: This API allows the Roadsync clients to manage aspects of the RoadSync service via an API.
+  license:
+    name: Copyright (c) 2020, RoadSync Inc.
+  title: Client API v1.8 authenticated eta API
+  version: 1.8.45
+  x-api-id: 3ea39084-d8df-11ea-ad77-0017b600647f
+  x-audience: external-partner
+servers:
+- url: https://client-api.staging.roadsync.com/{basePath}
+  variables:
+    Product:
+      default: ClientApi
+    basePath:
+      default: v1
+security:
+- api_key: []
+- session_token: []
+tags:
+- name: eta
+  description: ETA (Estimated Time of Arrival) endpoints
+paths:
+  /eta:
+    get:
+      summary: Get ETA Information
+      tags:
+      - eta
+      responses:
+        '200':
+          description: ETA response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  eta:
+                    $ref: '#/components/schemas/eta'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+      operationId: get-eta
+      x-stoplight:
+        id: eta-endpoint-001
+      parameters:
+      - name: transfer_method
+        in: query
+        required: true
+        schema:
+          type: string
+          enum:
+          - ACH
+          - NEXTDAYACH
+          - SAMEDAYACH
+          - PAPERCHECK
+        description: The transfer method for calculating ETA. Must be one of the supported payment methods.
+      - name: scheduled_date
+        in: query
+        required: true
+        schema:
+          type: string
+          format: date
+        description: The scheduled date for the transfer
+      security:
+      - x-api-key: []
+      description: Get estimated time of arrival (ETA) for a transfer based on transfer method and scheduled date.
+components:
+  schemas:
+    eta:
+      type: string
+      x-stoplight:
+        id: jsosz1li3h5v2
+      description: The estimated time of arrival of the payment, based on the payment method selected and scheduled date in ISO 8601 format.
+      title: eta
+      example: '2023-10-27T13:00:00+00:00'
+  securitySchemes:
+    api_key:
+      in: header
+      name: x-api-key
+      type: apiKey
+      x-apikeyInfoFunc: client_api_server.controllers.authorization_controller.check_api_key
+    session_token:
+      bearerFormat: JWT
+      scheme: bearer
+      type: http
+      x-apikeyInfoFunc: client_api_server.controllers.authorization_controller.check_session_token

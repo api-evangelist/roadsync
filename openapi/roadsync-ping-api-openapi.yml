@@ -1,0 +1,109 @@
+openapi: 3.0.1
+info:
+  contact:
+    email: christo.delange@roadsync.com
+  description: This API allows the Roadsync clients to manage aspects of the RoadSync service via an API.
+  license:
+    name: Copyright (c) 2020, RoadSync Inc.
+  title: Client API v1.8 authenticated ping API
+  version: 1.8.45
+  x-api-id: 3ea39084-d8df-11ea-ad77-0017b600647f
+  x-audience: external-partner
+servers:
+- url: https://client-api.staging.roadsync.com/{basePath}
+  variables:
+    Product:
+      default: ClientApi
+    basePath:
+      default: v1
+security:
+- api_key: []
+- session_token: []
+tags:
+- name: ping
+paths:
+  /ping:
+    get:
+      tags:
+      - ping
+      operationId: ping_get
+      description: Ping the payment-api service
+      summary: Ping the payment-api service. Will also validate the api key present on the request
+      responses:
+        '200':
+          description: Service available
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentResponse'
+        '400':
+          description: API service available, but there was an issue with the api key configuration on the request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    $ref: '#/components/schemas/Errors'
+      security: []
+components:
+  schemas:
+    Errors:
+      type: array
+      description: A list of errors that occurred during payment processing
+      items:
+        $ref: '#/components/schemas/Error'
+    PaymentResponse:
+      type: object
+      additionalProperties: false
+      properties:
+        data:
+          type: object
+          description: The Payment object returned by the create call
+          properties:
+            id:
+              type: string
+              description: The id of the payment
+            checkNumber:
+              type: string
+              description: The number of the check that was created, only returned for 'efscheck and tchek' paymentType
+            status:
+              type: string
+              description: The status of the payment
+            reason:
+              type: string
+              description: A description on why a payment is in `failed` status
+            fields:
+              type: array
+              description: Fields to be collected from the user for certain payment types.
+              items:
+                type: object
+                properties:
+                  name:
+                    type: string
+                    description: Name of the field to collect
+                  required:
+                    type: boolean
+                    description: True if field is required
+        errors:
+          $ref: '#/components/schemas/Errors'
+    Error:
+      type: object
+      properties:
+        code:
+          type: string
+          description: The error code
+        title:
+          type: string
+          description: Summary of error
+  securitySchemes:
+    api_key:
+      in: header
+      name: x-api-key
+      type: apiKey
+      x-apikeyInfoFunc: client_api_server.controllers.authorization_controller.check_api_key
+    session_token:
+      bearerFormat: JWT
+      scheme: bearer
+      type: http
+      x-apikeyInfoFunc: client_api_server.controllers.authorization_controller.check_session_token

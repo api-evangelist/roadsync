@@ -1,0 +1,228 @@
+openapi: 3.0.1
+info:
+  contact:
+    email: christo.delange@roadsync.com
+  description: This API allows the Roadsync clients to manage aspects of the RoadSync service via an API.
+  license:
+    name: Copyright (c) 2020, RoadSync Inc.
+  title: Client API v1.8 authenticated directory API
+  version: 1.8.45
+  x-api-id: 3ea39084-d8df-11ea-ad77-0017b600647f
+  x-audience: external-partner
+servers:
+- url: https://client-api.staging.roadsync.com/{basePath}
+  variables:
+    Product:
+      default: ClientApi
+    basePath:
+      default: v1
+security:
+- api_key: []
+- session_token: []
+tags:
+- name: directory
+paths:
+  /payee-candidates:
+    get:
+      parameters:
+      - name: query
+        in: query
+        required: false
+        schema:
+          type: string
+        description: The query for searching payee candidates
+      summary: Search Payee Candidates
+      tags:
+      - directory
+      responses:
+        '200':
+          description: Example response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  allOf:
+                  - type: object
+                    properties:
+                      id:
+                        $ref: '#/components/schemas/id'
+                      payee_name:
+                        $ref: '#/components/schemas/payeeName'
+                      mc_number:
+                        $ref: '#/components/schemas/mcNumber'
+                      dot_number:
+                        $ref: '#/components/schemas/dotNumber'
+                      email_address:
+                        $ref: '#/components/schemas/emailAddress'
+                      phone_number:
+                        $ref: '#/components/schemas/phoneNumber'
+                      first_name:
+                        $ref: '#/components/schemas/firstName'
+                      last_name:
+                        $ref: '#/components/schemas/lastName'
+                      address_line_one:
+                        $ref: '#/components/schemas/addressLineOne'
+                      address_line_two:
+                        $ref: '#/components/schemas/addressLineTwo'
+                      address_city:
+                        $ref: '#/components/schemas/city'
+                      address_state:
+                        $ref: '#/components/schemas/state'
+                      address_zip:
+                        $ref: '#/components/schemas/postalCode'
+                      ach_funding_source_id:
+                        $ref: '#/components/schemas/fundingSourceId'
+                      paper_check_funding_source_id:
+                        $ref: '#/components/schemas/fundingSourceId'
+                      available_payment_types:
+                        $ref: '#/components/schemas/availablePaymentTypes'
+                      is_verified:
+                        $ref: '#/components/schemas/isVerified'
+                x-stoplight:
+                  id: vhtkgvp4mic8z
+      operationId: get-payee-candidates
+      x-stoplight:
+        id: 2m3lk71ioo5c8
+      security:
+      - x-api-key: []
+components:
+  schemas:
+    id:
+      type: integer
+      x-stoplight:
+        id: f7ra661j53v04
+      example: 87346
+      title: id
+      description: The id number of the object being returned.
+    payeeName:
+      type: string
+      x-stoplight:
+        id: t7yn3ksmmn262
+      description: The name of the Carrier or Factoring Company.
+      example: Camila Trucking LLC
+      title: payee_name
+    postalCode:
+      title: postal_code
+      x-stoplight:
+        id: v5t2utdpxdar3
+      type: string
+      description: A valid postal code in the United States.
+      example: '30306'
+    city:
+      title: city
+      x-stoplight:
+        id: 8ypbld5r20d6o
+      type: string
+      description: A valid city in the United States.
+      example: Atlanta
+    phoneNumber:
+      title: phone_number
+      x-stoplight:
+        id: coa4x7lscfh80
+      type: string
+      description: A valid phone number belonging to a person or company.
+      example: '3243444347'
+    firstName:
+      type: string
+      x-stoplight:
+        id: 7p7kmat8ktz1s
+      example: Camila
+      title: first_name
+      description: The first name of a contact or user.
+    dotNumber:
+      type: string
+      x-stoplight:
+        id: c2zo0dhnzfjnp
+      description: U.S. Department of Transportation Number is an up to ten-digit assigned by the FMCSA to moving companies operating in interstate commerce. If inserted, it will be validated.
+      example: '2428196'
+      title: dot_number
+    mcNumber:
+      type: string
+      x-stoplight:
+        id: 70s19yd5cd75e
+      description: Motor Carrier Number is a a nine-digit identifier assigned by the FMCSA to moving companies operating in interstate commerce. If inserted, it will be validated.
+      example: MC612791
+      title: mc_number
+    availablePaymentTypes:
+      title: available_payment_types
+      x-stoplight:
+        id: 9us2vhly5l9u3
+      type: array
+      description: A list of the availablepayment methods a Payee is able to receive. Possible values are PAPER_CHECK, ACH, RTP
+      example:
+      - PAPER_CHECK
+      - ACH
+      - RTP
+      items:
+        $ref: '#/components/schemas/paymentTarget'
+    addressLineTwo:
+      title: address_line_two
+      x-stoplight:
+        id: jpnvzmg54ky3l
+      type: string
+      nullable: true
+      description: If necessary, add a second line of the address in the United States.
+      example: APT 23
+    state:
+      title: state
+      x-stoplight:
+        id: xwqz3invlqyrz
+      type: string
+      description: A valid 2 character state code in the United States.
+      example: GA
+    lastName:
+      type: string
+      x-stoplight:
+        id: sbyxhe07a7czs
+      title: last_name
+      description: The last name of a user or contact.
+      example: Rogers
+    paymentTarget:
+      title: payment_target
+      description: A valid Payee payment target.
+      x-stoplight:
+        id: pqgsyu00mynep
+      enum:
+      - ACH
+      - PAPER_CHECK
+      - RTP
+      example: ACH
+    addressLineOne:
+      title: address_line_one
+      x-stoplight:
+        id: p3a1crckckndd
+      type: string
+      description: The valid address of a person or business in the United States.
+      example: 715 Peachtree St
+    emailAddress:
+      type: string
+      x-stoplight:
+        id: yd026juzie7jh
+      description: A valid email belonging to the person or company.
+      title: email_address
+      example: crogers@camilatrucking.com
+    isVerified:
+      title: is_verified
+      type: boolean
+      example: false
+      x-stoplight:
+        id: yfowmo738h8iv
+      description: A verified Payee is visible to all brokers in the RoadSync Pay environment. Some partners are allowed to verify a Payee by setting the is_verified flag to true during creation or update.
+    fundingSourceId:
+      title: funding_source_id
+      x-stoplight:
+        id: 62r95b324501y
+      $ref: '#/components/schemas/id'
+      description: Id representing the funding source (papercheck, ach or wallet).
+  securitySchemes:
+    api_key:
+      in: header
+      name: x-api-key
+      type: apiKey
+      x-apikeyInfoFunc: client_api_server.controllers.authorization_controller.check_api_key
+    session_token:
+      bearerFormat: JWT
+      scheme: bearer
+      type: http
+      x-apikeyInfoFunc: client_api_server.controllers.authorization_controller.check_session_token

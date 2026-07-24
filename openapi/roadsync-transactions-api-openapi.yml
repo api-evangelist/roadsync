@@ -1,0 +1,503 @@
+openapi: 3.0.1
+info:
+  contact:
+    email: christo.delange@roadsync.com
+  description: This API allows the Roadsync clients to manage aspects of the RoadSync service via an API.
+  license:
+    name: Copyright (c) 2020, RoadSync Inc.
+  title: Client API v1.8 authenticated transactions API
+  version: 1.8.45
+  x-api-id: 3ea39084-d8df-11ea-ad77-0017b600647f
+  x-audience: external-partner
+servers:
+- url: https://client-api.staging.roadsync.com/{basePath}
+  variables:
+    Product:
+      default: ClientApi
+    basePath:
+      default: v1
+security:
+- api_key: []
+- session_token: []
+tags:
+- name: transactions
+paths:
+  /transactions:
+    get:
+      tags:
+      - transactions
+      summary: Get a List of Transactions
+      operationId: get-transactions
+      responses:
+        '200':
+          $ref: '#/components/responses/get_transactions'
+      x-stoplight:
+        id: 4oalrey4fvb0b
+      security:
+      - x-api-key: []
+      parameters:
+      - $ref: '#/components/parameters/broker_header'
+      - name: reference_id
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Filter transactions by reference ID.
+    post:
+      tags:
+      - transactions
+      summary: Create a Single Transaction
+      operationId: post-transactions
+      responses:
+        '201':
+          description: Example response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    $ref: '#/components/schemas/id'
+      parameters:
+      - $ref: '#/components/parameters/broker_header'
+      x-stoplight:
+        id: iuwplwyu3amgn
+      requestBody:
+        $ref: '#/components/requestBodies/createTransaction'
+      security:
+      - x-api-key: []
+  /transactions/{id}:
+    parameters:
+    - schema:
+        type: string
+      name: id
+      in: path
+      required: true
+    get:
+      summary: Get a Single Transaction
+      tags:
+      - transactions
+      responses:
+        '200':
+          $ref: '#/components/responses/get_transaction'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      parameters:
+      - $ref: '#/components/parameters/broker_header'
+      operationId: get-transactions-id
+      x-stoplight:
+        id: cl47pgw8zwtw9
+      security:
+      - x-api-key: []
+components:
+  responses:
+    get_transaction:
+      description: Example response
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              id:
+                $ref: '#/components/schemas/id'
+              amount:
+                $ref: '#/components/schemas/amount'
+              idempotency_key:
+                $ref: '#/components/schemas/idempotencyKey'
+              status:
+                $ref: '#/components/schemas/status'
+              created_datetime:
+                $ref: '#/components/schemas/createdDatetime'
+              payment_method:
+                $ref: '#/components/schemas/paymentMethod'
+              eta:
+                $ref: '#/components/schemas/eta'
+              payables:
+                type: array
+                items:
+                  allOf:
+                  - type: object
+                    x-stoplight:
+                      id: n9h42dbwgw2uc
+                    properties:
+                      amount:
+                        $ref: '#/components/schemas/amount'
+                      carrier_payee:
+                        $ref: '#/components/schemas/payeeShort'
+                      created_datetime:
+                        $ref: '#/components/schemas/createdDatetime'
+                      id:
+                        $ref: '#/components/schemas/payableId'
+                      idempotency_key:
+                        $ref: '#/components/schemas/idempotencyKey'
+                      invoice_number:
+                        $ref: '#/components/schemas/invoiceNumber'
+                      po_number:
+                        $ref: '#/components/schemas/poNumber'
+                      scheduled_for_date:
+                        $ref: '#/components/schemas/scheduledForDate'
+                      updated_datetime:
+                        $ref: '#/components/schemas/updatedDatetime'
+              broker:
+                $ref: '#/components/schemas/brokerShort'
+              payee:
+                title: payee_short
+                x-stoplight:
+                  id: lkabmmw82vbyo
+                type: object
+                description: Details of the Payee receiving the funds. It could be a Carrier or Factoring Company.
+                properties:
+                  id:
+                    $ref: '#/components/schemas/id'
+                    x-stoplight:
+                      id: iwebybg0xhizd
+                  payee_name:
+                    $ref: '#/components/schemas/payeeName'
+                    x-stoplight:
+                      id: cxr9ou6peuwve
+                  is_verified:
+                    $ref: '#/components/schemas/isVerified'
+                    x-stoplight:
+                      id: 3wmef993rqlri
+                  is_factoring_company:
+                    $ref: '#/components/schemas/isFactoringCompany'
+              check_preview:
+                title: check_preview
+                type: object
+                properties:
+                  url:
+                    title: url
+                    description: URL Image of Paper Check Preview
+                    example: https://www.example-url-image.com/paper-check/1234567
+    get_transactions:
+      description: Example response
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/transaction'
+  schemas:
+    id:
+      type: integer
+      x-stoplight:
+        id: f7ra661j53v04
+      example: 87346
+      title: id
+      description: The id number of the object being returned.
+    brokerName:
+      title: broker_name
+      type: string
+      x-stoplight:
+        id: xpgfc7nsg07fw
+      description: The name of the broker.
+      example: Atlanta Brokerage
+    payeeId:
+      type: integer
+      x-stoplight:
+        id: unf2lv7eugr65
+      description: The unique identifier of the Payee who will receive the funds. It could be a Carrier or a Factoring Company.
+      example: 896876
+      title: payee_id
+    idempotencyKey:
+      type: integer
+      x-stoplight:
+        id: i58xi5srh5lb7
+      example: bac613de-5j27-1347-ka1n-q3p6173jacj4
+      title: idempotency_key
+      description: Provide a unique value to prevent duplicates during retries.
+    isFactoringCompany:
+      title: is_factoring_company
+      x-stoplight:
+        id: mmie0j9euqu37
+      type: boolean
+      description: Send "true" if this Payee is a Factoring Company, "false" otherwise.
+      example: true
+    amountAsString:
+      title: amount
+      type: string
+      description: Money in USD to transfer or has been transferred.
+      example: '18.32'
+    amount:
+      title: amount
+      x-stoplight:
+        id: tayy9oxji4gww
+      type: number
+      description: Money in USD to transfer or has been transferred.
+      example: 123.45
+    poNumber:
+      title: po_number
+      x-stoplight:
+        id: 5zz0jgn7jlcgf
+      type: string
+      description: A unique identifier that links the purchase order the payable.
+      example: AP12345
+    carrierPayeeId:
+      title: carrier_payee_id
+      type: string
+      description: If the Transaction is created for a Factoring Company, then a Carrier can be associated to the Transaction.
+      example: 10204
+      items:
+        $ref: '#/components/schemas/id'
+        x-stoplight:
+          id: y9pyua91doq3i
+    updatedDatetime:
+      title: updated_datetime
+      x-stoplight:
+        id: 8gm15jfl51vcm
+      type: string
+      description: Indicates the last time the entity was updated in ISO 8601 format.
+      example: '2023-10-26T00:00:00+00:00'
+      format: date-time
+    invoiceNumber:
+      type: string
+      x-stoplight:
+        id: bjh3zwblac9m2
+      example: 355da12b-774b-41fc-9124-92d5f5a795ed
+      title: invoice_number
+      description: The invoice number being paid by the payable/receivable. This is visible by the Payee in remittance emails as reference_id.
+    transaction:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/id'
+        amount:
+          $ref: '#/components/schemas/amount'
+        idempotency_key:
+          $ref: '#/components/schemas/idempotencyKey'
+        status:
+          $ref: '#/components/schemas/status'
+        created_datetime:
+          $ref: '#/components/schemas/createdDatetime'
+        payment_method:
+          $ref: '#/components/schemas/paymentMethod'
+        reference_id:
+          type: string
+          nullable: true
+          description: Reference ID for the transaction.
+        eta:
+          $ref: '#/components/schemas/eta'
+        payables:
+          type: array
+          items:
+            allOf:
+            - type: object
+              x-stoplight:
+                id: n9h42dbwgw2uc
+              properties:
+                amount:
+                  $ref: '#/components/schemas/amount'
+                carrier_payee:
+                  $ref: '#/components/schemas/payeeShort'
+                created_datetime:
+                  $ref: '#/components/schemas/createdDatetime'
+                id:
+                  $ref: '#/components/schemas/payableId'
+                idempotency_key:
+                  $ref: '#/components/schemas/idempotencyKey'
+                invoice_number:
+                  $ref: '#/components/schemas/invoiceNumber'
+                po_number:
+                  $ref: '#/components/schemas/poNumber'
+                scheduled_for_date:
+                  $ref: '#/components/schemas/scheduledForDate'
+                updated_datetime:
+                  $ref: '#/components/schemas/updatedDatetime'
+        broker:
+          $ref: '#/components/schemas/brokerShort'
+        payee:
+          title: payee_short
+          x-stoplight:
+            id: lkabmmw82vbyo
+          type: object
+          description: Details of the Payee receiving the funds. It could be a Carrier or Factoring Company.
+          properties:
+            id:
+              $ref: '#/components/schemas/id'
+              x-stoplight:
+                id: iwebybg0xhizd
+            payee_name:
+              $ref: '#/components/schemas/payeeName'
+              x-stoplight:
+                id: cxr9ou6peuwve
+            is_verified:
+              $ref: '#/components/schemas/isVerified'
+              x-stoplight:
+                id: 3wmef993rqlri
+            is_factoring_company:
+              $ref: '#/components/schemas/isFactoringCompany'
+      x-stoplight:
+        id: 5uu7fb79w3n94
+    paymentMethod:
+      title: payment_method
+      description: The method used to settle a payable.
+      x-stoplight:
+        id: 0jtzkjzaao1jc
+      enum:
+      - ACH
+      - ACH_NEXT_DAY
+      - ACH_SAME_DAY
+      - PAPER_CHECK
+      - WALLET_ACH
+      - WALLET_ACH_NEXT_DAY
+      - WALLET_ACH_SAME_DAY
+      - WALLET_RTP
+      example: ACH_NEXT_DAY
+    scheduledForDate:
+      title: scheduled_for_date
+      x-stoplight:
+        id: 14j86018rsbw6
+      type: string
+      description: A valid date in the future when the payment should be initiated or "now" indicating immediate payment.
+      example: '2023-10-29T00:00:00+00:00'
+      format: date
+    brokerShort:
+      title: broker_short
+      x-stoplight:
+        id: t1gb0y6sf4rns
+      type: object
+      description: The short description of the broker.
+      properties:
+        id:
+          $ref: '#/components/schemas/brokerId'
+          x-stoplight:
+            id: 6d7uubhxwqwlh
+        name:
+          $ref: '#/components/schemas/brokerName'
+          x-stoplight:
+            id: f9kyxgia11kwk
+    referenceId:
+      title: reference_id
+      x-stoplight:
+        id: pvo4njzpfmo6d
+      type: string
+      description: An identifier used by the Broker to correlate the Transaction with another system or document.
+      example: 123XYZ
+    createdDatetime:
+      title: created_datetime
+      x-stoplight:
+        id: v60tecbjlr4rs
+      type: string
+      format: date-time
+      description: Indicates the datetime when the object was created in ISO 8601 format.
+      example: '2023-10-26T00:00:00+00:00'
+    payableId:
+      type: integer
+      x-stoplight:
+        id: xsyrirwk8n0m7
+      example: 87346
+      title: payable_id
+      description: The Payable's ID
+    payeeShort:
+      title: payee_short
+      x-stoplight:
+        id: lkabmmw82vbyo
+      type: object
+      description: Details of the Payee receiving the funds. It could be a Carrier or Factoring Company.
+      properties:
+        id:
+          $ref: '#/components/schemas/id'
+          x-stoplight:
+            id: iwebybg0xhizd
+        payee_name:
+          $ref: '#/components/schemas/payeeName'
+          x-stoplight:
+            id: cxr9ou6peuwve
+        is_verified:
+          $ref: '#/components/schemas/isVerified'
+          x-stoplight:
+            id: 3wmef993rqlri
+    brokerId:
+      title: broker_id
+      type: integer
+      example: 66305
+      x-stoplight:
+        id: 364l19xr2t37h
+      description: The identifier of a Broker to which the Payee will be assigned or has already been assigned.
+    payeeName:
+      type: string
+      x-stoplight:
+        id: t7yn3ksmmn262
+      description: The name of the Carrier or Factoring Company.
+      example: Camila Trucking LLC
+      title: payee_name
+    status:
+      title: status
+      x-stoplight:
+        id: e75bu0q7243zf
+      enum:
+      - NEW
+      - PENDING
+      - PROCESSING
+      - COMPLETE
+      - CANCELLED
+      - FAILED
+      - SCHEDULED
+      - DELETED
+      - UNKNOWN
+      description: The current status of the payable. UNKNOWN is returned when the status value is not recognized.
+      example: SCHEDULED
+    eta:
+      type: string
+      x-stoplight:
+        id: jsosz1li3h5v2
+      description: The estimated time of arrival of the payment, based on the payment method selected and scheduled date in ISO 8601 format.
+      title: eta
+      example: '2023-10-27T13:00:00+00:00'
+    isVerified:
+      title: is_verified
+      type: boolean
+      example: false
+      x-stoplight:
+        id: yfowmo738h8iv
+      description: A verified Payee is visible to all brokers in the RoadSync Pay environment. Some partners are allowed to verify a Payee by setting the is_verified flag to true during creation or update.
+  requestBodies:
+    createTransaction:
+      content:
+        application/json:
+          schema:
+            type: object
+            x-examples:
+              Example 1:
+                payee_id: 923
+                carrier_payee_id: 123
+                payment_method: ''
+                amount: '350'
+                reference_id: tech_schedule_ach
+            properties:
+              payee_id:
+                $ref: '#/components/schemas/payeeId'
+              carrier_payee_id:
+                $ref: '#/components/schemas/carrierPayeeId'
+              payment_method:
+                $ref: '#/components/schemas/paymentMethod'
+              amount:
+                $ref: '#/components/schemas/amountAsString'
+              reference_id:
+                $ref: '#/components/schemas/referenceId'
+                x-stoplight:
+                  id: aayvco1cjg8h3
+      description: ''
+  parameters:
+    broker_header:
+      name: broker-id
+      in: header
+      schema:
+        $ref: '#/components/schemas/brokerId'
+      description: The id of the broker
+      required: true
+  securitySchemes:
+    api_key:
+      in: header
+      name: x-api-key
+      type: apiKey
+      x-apikeyInfoFunc: client_api_server.controllers.authorization_controller.check_api_key
+    session_token:
+      bearerFormat: JWT
+      scheme: bearer
+      type: http
+      x-apikeyInfoFunc: client_api_server.controllers.authorization_controller.check_session_token

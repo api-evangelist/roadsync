@@ -1,0 +1,454 @@
+openapi: 3.0.1
+info:
+  contact:
+    email: christo.delange@roadsync.com
+  description: This API allows the Roadsync clients to manage aspects of the RoadSync service via an API.
+  license:
+    name: Copyright (c) 2020, RoadSync Inc.
+  title: Client API v1.8 authenticated funding sources API
+  version: 1.8.45
+  x-api-id: 3ea39084-d8df-11ea-ad77-0017b600647f
+  x-audience: external-partner
+servers:
+- url: https://client-api.staging.roadsync.com/{basePath}
+  variables:
+    Product:
+      default: ClientApi
+    basePath:
+      default: v1
+security:
+- api_key: []
+- session_token: []
+tags:
+- name: funding sources
+paths:
+  /payees/{payee_id}/funding-sources:
+    parameters:
+    - schema:
+        $ref: '#/components/schemas/id'
+      name: payee_id
+      in: path
+      required: true
+    get:
+      summary: Get a Payee's Funding Sources
+      tags:
+      - funding sources
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  PAPER_CHECK:
+                    type: object
+                    nullable: true
+                    properties:
+                      id:
+                        $ref: '#/components/schemas/fundingSourceId'
+                      name:
+                        $ref: '#/components/schemas/bankName'
+                      address_line_one:
+                        $ref: '#/components/schemas/addressLineOne'
+                      address_line_two:
+                        $ref: '#/components/schemas/addressLineTwo'
+                      address_city:
+                        $ref: '#/components/schemas/city'
+                      address_state:
+                        $ref: '#/components/schemas/state'
+                      address_zip:
+                        $ref: '#/components/schemas/postalCode'
+                  ACH:
+                    type: object
+                    nullable: true
+                    properties:
+                      id:
+                        $ref: '#/components/schemas/fundingSourceId'
+                      name:
+                        $ref: '#/components/schemas/bankName'
+                      account_number:
+                        $ref: '#/components/schemas/accountNumber'
+                      routing_number:
+                        $ref: '#/components/schemas/routingNumber'
+                      bank_account_type:
+                        $ref: '#/components/schemas/bankAccountType'
+                      has_rtp:
+                        $ref: '#/components/schemas/hasRtp'
+      parameters:
+      - $ref: '#/components/parameters/broker_header'
+      operationId: get-funding-sources-id
+      x-stoplight:
+        id: de630d2wzywu3
+      description: Retrieve a Payee's Funding Source Information.
+      security:
+      - x-api-key: []
+    post:
+      summary: Create a Funding Source for a Payee
+      operationId: post-payee-funding-sources
+      x-stoplight:
+        id: 78tmu663tqfcb
+      responses:
+        '201':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    $ref: '#/components/schemas/fundingSourceId'
+      parameters:
+      - $ref: '#/components/parameters/broker_header'
+      description: Create a new funding source for an existing Payee.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/bankFundingSource'
+        description: Funding source type can be either ach or papercheck
+      tags:
+      - funding sources
+      security:
+      - x-api-key: []
+    patch:
+      summary: Update a Funding Source for a Payee
+      operationId: update-payee-funding-sources
+      x-stoplight:
+        id: 78tmu663tqfcb
+      responses:
+        '201':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    $ref: '#/components/schemas/fundingSourceId'
+      parameters:
+      - $ref: '#/components/parameters/broker_header'
+      description: Update funding source for an existing Payee.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              oneOf:
+              - type: object
+                title: PAPER_CHECK
+                properties:
+                  type:
+                    type: string
+                    description: The type of the funding source
+                    enum:
+                    - PAPER_CHECK
+                  data:
+                    type: object
+                    properties:
+                      name:
+                        title: bank_name
+                        type: string
+                        description: A nickname for the bank account.
+                        example: Atlanta Brokerage
+                        nullable: true
+                      address_line_one:
+                        title: address_line_one
+                        type: string
+                        description: The valid address of a person or business in the United States.
+                        example: 715 Peachtree St
+                        nullable: true
+                      address_line_two:
+                        $ref: '#/components/schemas/addressLineTwo'
+                      address_city:
+                        title: city
+                        type: string
+                        description: A valid city in the United States.
+                        example: Atlanta
+                        nullable: true
+                      address_state:
+                        title: state
+                        type: string
+                        description: A valid 2 character state code in the United States.
+                        example: GA
+                        nullable: true
+                      address_zip:
+                        title: postal_code
+                        type: string
+                        description: A valid postal code in the United States.
+                        example: '30306'
+                        nullable: true
+              - type: object
+                title: ACH
+                properties:
+                  type:
+                    type: string
+                    description: The type of the funding source
+                    enum:
+                    - ACH
+                  data:
+                    type: object
+                    properties:
+                      name:
+                        title: bank_name
+                        type: string
+                        description: A nickname for the bank account.
+                        example: Atlanta Brokerage
+                        nullable: true
+                      bank_account_type:
+                        type: string
+                        title: bank_account_type
+                        x-stoplight:
+                          id: 391p1gu479h0l
+                        enum:
+                        - checking
+                        - savings
+                        nullable: true
+                      account_number:
+                        title: account_number
+                        type: string
+                        description: A valid bank account number for a bank in the United States. Typically 10-12 digits in length. When being read, this will be the last 4 digits of the account number.
+                        example: '1234567890'
+                        nullable: true
+                      routing_number:
+                        title: routing_number
+                        type: string
+                        description: A valid routing number for a bank in the United States. Must be exactly 9 digits.
+                        example: '610000523'
+                        nullable: true
+        description: Funding source type can be either ach or papercheck
+      tags:
+      - funding sources
+      security:
+      - x-api-key: []
+  /brokers/{broker_id}/funding-sources:
+    parameters:
+    - schema:
+        $ref: '#/components/schemas/id'
+      name: broker_id
+      in: path
+      required: true
+    get:
+      summary: Get a Broker's Funding Sources
+      tags:
+      - funding sources
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  PAPER_CHECK:
+                    type: object
+                    properties:
+                      id:
+                        $ref: '#/components/schemas/fundingSourceId'
+                      name:
+                        $ref: '#/components/schemas/bankName'
+                      address_line_one:
+                        $ref: '#/components/schemas/addressLineOne'
+                      address_line_two:
+                        $ref: '#/components/schemas/addressLineTwo'
+                      address_city:
+                        $ref: '#/components/schemas/city'
+                      address_state:
+                        $ref: '#/components/schemas/state'
+                      address_zip:
+                        $ref: '#/components/schemas/postalCode'
+                  ACH:
+                    type: object
+                    properties:
+                      id:
+                        $ref: '#/components/schemas/fundingSourceId'
+                      name:
+                        $ref: '#/components/schemas/bankName'
+                      bank_account_type:
+                        $ref: '#/components/schemas/bankAccountType'
+                      account_number:
+                        $ref: '#/components/schemas/accountNumber'
+                      routing_number:
+                        $ref: '#/components/schemas/routingNumber'
+                  WALLET:
+                    type: object
+                    properties:
+                      id:
+                        $ref: '#/components/schemas/fundingSourceId'
+                      name:
+                        $ref: '#/components/schemas/bankName'
+                      balance:
+                        $ref: '#/components/schemas/walletBalance'
+      operationId: get-broker-funding-sources-id
+      x-stoplight:
+        id: l4z7ugj0eh570
+      description: Retrieve a Broker's Funding Source Information.
+      security:
+      - x-api-key: []
+components:
+  schemas:
+    id:
+      type: integer
+      x-stoplight:
+        id: f7ra661j53v04
+      example: 87346
+      title: id
+      description: The id number of the object being returned.
+    brokerId:
+      title: broker_id
+      type: integer
+      example: 66305
+      x-stoplight:
+        id: 364l19xr2t37h
+      description: The identifier of a Broker to which the Payee will be assigned or has already been assigned.
+    city:
+      title: city
+      x-stoplight:
+        id: 8ypbld5r20d6o
+      type: string
+      description: A valid city in the United States.
+      example: Atlanta
+    postalCode:
+      title: postal_code
+      x-stoplight:
+        id: v5t2utdpxdar3
+      type: string
+      description: A valid postal code in the United States.
+      example: '30306'
+    walletBalance:
+      title: walletBalance
+      type: number
+      description: The current balance of the wallet funding source.
+      example: 15953.21
+    bankFundingSource:
+      title: bank_funding_source
+      x-stoplight:
+        id: hg1mxph0w1ijo
+      oneOf:
+      - type: object
+        title: PAPER_CHECK
+        properties:
+          type:
+            type: string
+            description: The type of the funding source
+            enum:
+            - PAPER_CHECK
+          data:
+            type: object
+            properties:
+              name:
+                $ref: '#/components/schemas/bankName'
+              address_line_one:
+                $ref: '#/components/schemas/addressLineOne'
+              address_line_two:
+                $ref: '#/components/schemas/addressLineTwo'
+              address_city:
+                $ref: '#/components/schemas/city'
+              address_state:
+                $ref: '#/components/schemas/state'
+              address_zip:
+                $ref: '#/components/schemas/postalCode'
+      - type: object
+        title: ACH
+        properties:
+          type:
+            type: string
+            description: The type of the funding source
+            enum:
+            - ACH
+          data:
+            type: object
+            properties:
+              name:
+                $ref: '#/components/schemas/bankName'
+              bank_account_type:
+                title: bank_account_type
+                x-stoplight:
+                  id: 391p1gu479h0l
+                enum:
+                - checking
+                - savings
+              account_number:
+                $ref: '#/components/schemas/accountNumber'
+              routing_number:
+                $ref: '#/components/schemas/routingNumber'
+    addressLineOne:
+      title: address_line_one
+      x-stoplight:
+        id: p3a1crckckndd
+      type: string
+      description: The valid address of a person or business in the United States.
+      example: 715 Peachtree St
+    addressLineTwo:
+      title: address_line_two
+      x-stoplight:
+        id: jpnvzmg54ky3l
+      type: string
+      nullable: true
+      description: If necessary, add a second line of the address in the United States.
+      example: APT 23
+    state:
+      title: state
+      x-stoplight:
+        id: xwqz3invlqyrz
+      type: string
+      description: A valid 2 character state code in the United States.
+      example: GA
+    bankName:
+      title: bank_name
+      type: string
+      x-stoplight:
+        id: rmlmmd3m5zlqg
+      description: A nickname for the bank account.
+      example: Atlanta Brokerage
+    hasRtp:
+      title: hasRtp
+      type: boolean
+      description: Whether or not the payee's funding source is RTP eligible.
+      example: true
+    routingNumber:
+      title: routing_number
+      x-stoplight:
+        id: 63el3sto66kg8
+      type: string
+      description: A valid routing number for a bank in the United States. Must be exactly 9 digits.
+      example: '610000523'
+    bankAccountType:
+      title: bank_account_type
+      x-stoplight:
+        id: 391p1gu479h0l
+      enum:
+      - checking
+      - savings
+      - wallet
+    accountNumber:
+      title: account_number
+      x-stoplight:
+        id: cn1t6t6d1j1j8
+      type: string
+      description: A valid bank account number for a bank in the United States. Typically 10-12 digits in length. When being read, this will be the last 4 digits of the account number.
+      example: '1234567890'
+    fundingSourceId:
+      title: funding_source_id
+      x-stoplight:
+        id: 62r95b324501y
+      $ref: '#/components/schemas/id'
+      description: Id representing the funding source (papercheck, ach or wallet).
+  parameters:
+    broker_header:
+      name: broker-id
+      in: header
+      schema:
+        $ref: '#/components/schemas/brokerId'
+      description: The id of the broker
+      required: true
+  securitySchemes:
+    api_key:
+      in: header
+      name: x-api-key
+      type: apiKey
+      x-apikeyInfoFunc: client_api_server.controllers.authorization_controller.check_api_key
+    session_token:
+      bearerFormat: JWT
+      scheme: bearer
+      type: http
+      x-apikeyInfoFunc: client_api_server.controllers.authorization_controller.check_session_token

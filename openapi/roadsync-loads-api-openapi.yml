@@ -1,0 +1,382 @@
+openapi: 3.0.1
+info:
+  contact:
+    email: christo.delange@roadsync.com
+  description: This API allows the Roadsync clients to manage aspects of the RoadSync service via an API.
+  license:
+    name: Copyright (c) 2020, RoadSync Inc.
+  title: Client API v1.8 authenticated loads API
+  version: 1.8.45
+  x-api-id: 3ea39084-d8df-11ea-ad77-0017b600647f
+  x-audience: external-partner
+servers:
+- url: https://client-api.staging.roadsync.com/{basePath}
+  variables:
+    Product:
+      default: ClientApi
+    basePath:
+      default: v1
+security:
+- api_key: []
+- session_token: []
+tags:
+- name: loads
+paths:
+  /loads:
+    get:
+      summary: Get a List of All Loads
+      operationId: get-loads
+      responses:
+        '200':
+          $ref: '#/components/responses/getLoads'
+      x-stoplight:
+        id: co4pq80p7nc6t
+      description: Return a list of Loads associated with a Broker. Optionally filter by load_number or external_id.
+      parameters:
+      - $ref: '#/components/parameters/broker_header'
+      - name: load_number
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Filter loads by load number.
+      - name: external_id
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Filter loads by external ID.
+      security:
+      - x-api-key: []
+      tags:
+      - loads
+    post:
+      summary: Create a Load
+      operationId: post-loads
+      responses:
+        '201':
+          description: Load created successfully or existing load returned. If a load with the same load_number and broker_id already exists, the existing load's identifier is returned instead of creating a duplicate.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    $ref: '#/components/schemas/id'
+        '400':
+          description: Bad Request
+        '409':
+          description: Conflict
+      parameters:
+      - $ref: '#/components/parameters/broker_header'
+      security:
+      - x-api-key: []
+      tags:
+      - loads
+      requestBody:
+        $ref: '#/components/requestBodies/createLoad'
+      description: Create a Load. If a load with the specified load_number already exists for the broker, the existing load's identifier will be returned with a 201 status instead of creating a duplicate load.
+  /loads/{load_id}:
+    parameters:
+    - schema:
+        type: string
+      name: load_id
+      in: path
+      required: true
+    get:
+      summary: Get a single Load
+      operationId: get-load
+      responses:
+        '200':
+          $ref: '#/components/responses/getLoad'
+      description: Return a single Load associated with a Broker.
+      parameters:
+      - $ref: '#/components/parameters/broker_header'
+      security:
+      - x-api-key: []
+      tags:
+      - loads
+components:
+  schemas:
+    id:
+      type: integer
+      x-stoplight:
+        id: f7ra661j53v04
+      example: 87346
+      title: id
+      description: The id number of the object being returned.
+    payeeId:
+      type: integer
+      x-stoplight:
+        id: unf2lv7eugr65
+      description: The unique identifier of the Payee who will receive the funds. It could be a Carrier or a Factoring Company.
+      example: 896876
+      title: payee_id
+    mcNumber:
+      type: string
+      x-stoplight:
+        id: 70s19yd5cd75e
+      description: Motor Carrier Number is a a nine-digit identifier assigned by the FMCSA to moving companies operating in interstate commerce. If inserted, it will be validated.
+      example: MC612791
+      title: mc_number
+    isFactoringCompany:
+      title: is_factoring_company
+      x-stoplight:
+        id: mmie0j9euqu37
+      type: boolean
+      description: Send "true" if this Payee is a Factoring Company, "false" otherwise.
+      example: true
+    amount:
+      title: amount
+      x-stoplight:
+        id: tayy9oxji4gww
+      type: number
+      description: Money in USD to transfer or has been transferred.
+      example: 123.45
+    externalId:
+      title: external_id
+      x-stoplight:
+        id: vnd04wmmq2x21
+      type: string
+      example: 14973-83
+      description: A unique identifier you have for the item.
+    updatedDatetime:
+      title: updated_datetime
+      x-stoplight:
+        id: 8gm15jfl51vcm
+      type: string
+      description: Indicates the last time the entity was updated in ISO 8601 format.
+      example: '2023-10-26T00:00:00+00:00'
+      format: date-time
+    paymentTarget:
+      title: payment_target
+      description: A valid Payee payment target.
+      x-stoplight:
+        id: pqgsyu00mynep
+      enum:
+      - ACH
+      - PAPER_CHECK
+      - RTP
+      example: ACH
+    paymentMethod:
+      title: payment_method
+      description: The method used to settle a payable.
+      x-stoplight:
+        id: 0jtzkjzaao1jc
+      enum:
+      - ACH
+      - ACH_NEXT_DAY
+      - ACH_SAME_DAY
+      - PAPER_CHECK
+      - WALLET_ACH
+      - WALLET_ACH_NEXT_DAY
+      - WALLET_ACH_SAME_DAY
+      - WALLET_RTP
+      example: ACH_NEXT_DAY
+    availablePaymentTypes:
+      title: available_payment_types
+      x-stoplight:
+        id: 9us2vhly5l9u3
+      type: array
+      description: A list of the availablepayment methods a Payee is able to receive. Possible values are PAPER_CHECK, ACH, RTP
+      example:
+      - PAPER_CHECK
+      - ACH
+      - RTP
+      items:
+        $ref: '#/components/schemas/paymentTarget'
+    createdDatetime:
+      title: created_datetime
+      x-stoplight:
+        id: v60tecbjlr4rs
+      type: string
+      format: date-time
+      description: Indicates the datetime when the object was created in ISO 8601 format.
+      example: '2023-10-26T00:00:00+00:00'
+    payableId:
+      type: integer
+      x-stoplight:
+        id: xsyrirwk8n0m7
+      example: 87346
+      title: payable_id
+      description: The Payable's ID
+    payeeShort:
+      title: payee_short
+      x-stoplight:
+        id: lkabmmw82vbyo
+      type: object
+      description: Details of the Payee receiving the funds. It could be a Carrier or Factoring Company.
+      properties:
+        id:
+          $ref: '#/components/schemas/id'
+          x-stoplight:
+            id: iwebybg0xhizd
+        payee_name:
+          $ref: '#/components/schemas/payeeName'
+          x-stoplight:
+            id: cxr9ou6peuwve
+        is_verified:
+          $ref: '#/components/schemas/isVerified'
+          x-stoplight:
+            id: 3wmef993rqlri
+    loadId:
+      type: integer
+      example: 87346
+      title: load_id
+      description: The Load's ID
+    brokerId:
+      title: broker_id
+      type: integer
+      example: 66305
+      x-stoplight:
+        id: 364l19xr2t37h
+      description: The identifier of a Broker to which the Payee will be assigned or has already been assigned.
+    payeeName:
+      type: string
+      x-stoplight:
+        id: t7yn3ksmmn262
+      description: The name of the Carrier or Factoring Company.
+      example: Camila Trucking LLC
+      title: payee_name
+    dotNumber:
+      type: string
+      x-stoplight:
+        id: c2zo0dhnzfjnp
+      description: U.S. Department of Transportation Number is an up to ten-digit assigned by the FMCSA to moving companies operating in interstate commerce. If inserted, it will be validated.
+      example: '2428196'
+      title: dot_number
+    load:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/loadId'
+        amount:
+          $ref: '#/components/schemas/amount'
+        status:
+          $ref: '#/components/schemas/status'
+        created_datetime:
+          $ref: '#/components/schemas/createdDatetime'
+        updated_datetime:
+          $ref: '#/components/schemas/updatedDatetime'
+        payee:
+          title: load_payee
+          type: object
+          description: Details of the Payee receiving the funds. It could be a Carrier or Factoring Company.
+          properties:
+            id:
+              $ref: '#/components/schemas/id'
+            payee_name:
+              $ref: '#/components/schemas/payeeName'
+            mc_number:
+              $ref: '#/components/schemas/mcNumber'
+            dot_number:
+              $ref: '#/components/schemas/dotNumber'
+            is_verified:
+              $ref: '#/components/schemas/isVerified'
+            is_factoring_company:
+              $ref: '#/components/schemas/isFactoringCompany'
+            available_payment_types:
+              $ref: '#/components/schemas/availablePaymentTypes'
+        carrier_payee:
+          $ref: '#/components/schemas/payeeShort'
+        payable:
+          title: load_payable
+          type: object
+          description: The payable associated with the Load.
+          properties:
+            id:
+              $ref: '#/components/schemas/payableId'
+            amount:
+              $ref: '#/components/schemas/amount'
+            status:
+              $ref: '#/components/schemas/status'
+            payment_method:
+              $ref: '#/components/schemas/paymentMethod'
+            transaction:
+              title: load_payable_transaction
+              type: object
+              description: The transaction associated with the Load.
+              properties:
+                id:
+                  $ref: '#/components/schemas/id'
+                status:
+                  $ref: '#/components/schemas/status'
+                payment_method:
+                  $ref: '#/components/schemas/paymentMethod'
+    status:
+      title: status
+      x-stoplight:
+        id: e75bu0q7243zf
+      enum:
+      - NEW
+      - PENDING
+      - PROCESSING
+      - COMPLETE
+      - CANCELLED
+      - FAILED
+      - SCHEDULED
+      - DELETED
+      - UNKNOWN
+      description: The current status of the payable. UNKNOWN is returned when the status value is not recognized.
+      example: SCHEDULED
+    loadNumber:
+      type: string
+      example: abc12234
+      description: The Load Number
+    isVerified:
+      title: is_verified
+      type: boolean
+      example: false
+      x-stoplight:
+        id: yfowmo738h8iv
+      description: A verified Payee is visible to all brokers in the RoadSync Pay environment. Some partners are allowed to verify a Payee by setting the is_verified flag to true during creation or update.
+  requestBodies:
+    createLoad:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              load_number:
+                $ref: '#/components/schemas/loadNumber'
+              amount:
+                $ref: '#/components/schemas/amount'
+              external_id:
+                $ref: '#/components/schemas/externalId'
+              payee_id:
+                $ref: '#/components/schemas/payeeId'
+  responses:
+    getLoad:
+      description: Example response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/load'
+    getLoads:
+      description: Example response
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              allOf:
+              - $ref: '#/components/schemas/load'
+  parameters:
+    broker_header:
+      name: broker-id
+      in: header
+      schema:
+        $ref: '#/components/schemas/brokerId'
+      description: The id of the broker
+      required: true
+  securitySchemes:
+    api_key:
+      in: header
+      name: x-api-key
+      type: apiKey
+      x-apikeyInfoFunc: client_api_server.controllers.authorization_controller.check_api_key
+    session_token:
+      bearerFormat: JWT
+      scheme: bearer
+      type: http
+      x-apikeyInfoFunc: client_api_server.controllers.authorization_controller.check_session_token
