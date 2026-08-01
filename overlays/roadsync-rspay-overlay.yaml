@@ -1,0 +1,11 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for RoadSync rspay
+  version: 1.0.0
+extends: openapi/roadsync-rspay-openapi.json
+actions:
+- target: $.info
+  update:
+    x-apievangelist-enriched: '2026-07-21'
+    x-api-evangelist-provider: roadsync
+    x-authentication: apiKey header x-api-key

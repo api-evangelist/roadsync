@@ -1,0 +1,36 @@
+generated: '2026-07-21'
+method: searched
+source: openapi/ servers[] + https://developer.roadsync.com/
+summary: >-
+  RoadSync separates test and production by host. Each OpenAPI spec declares a
+  dedicated test server alongside the production server; a live API key is
+  required to exercise either. No public self-serve test-card / magic-value table
+  is published on the developer surface (keys are issued through onboarding).
+environments:
+  - name: production
+    host: api.roadsync.app
+    base_urls:
+      - https://api.roadsync.app/v1/invoice
+      - https://api.roadsync.app/company/v1
+      - https://api.roadsync.app/workorders/v1
+      - https://api.roadsync.app/v0/payment
+      - https://api.roadsync.app/rspay/v1
+  - name: test
+    host: test.api.roadsync.app
+    base_urls:
+      - https://test.api.roadsync.app/v1/invoice
+      - https://test.api.roadsync.app/company/v1
+      - https://test.api.roadsync.app/workorders/v1
+      - https://test.api.roadsync.app/v0/payment
+      - https://test.api.roadsync.app/rspay/v1
+  - name: dev
+    host: dev.api.roadsync.app
+    base_urls:
+      - https://dev.api.roadsync.app/rspay/v1
+      - https://dev.api.roadsync.app/v0/payment
+auth: {header: x-api-key, notes: separate keys per environment issued during onboarding}
+test_values:
+  published: false
+  notes: >-
+    No public test card numbers, test bank accounts, or magic identifiers were
+    found on the developer portal at probe time. NEVER fabricate test values.

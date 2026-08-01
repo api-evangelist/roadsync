@@ -1,0 +1,3558 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "RoadSyncPay Public API",
+    "version": "1.0",
+    "description": "RoadSync Pay API",
+    "contact": {
+      "email": "advance@roadsync.com",
+      "url": "https://roadsync.com"
+    },
+    "termsOfService": "https://roadsync.com/roadsync-pay-service-terms-of-use/",
+    "license": {
+      "name": "Proprietary",
+      "url": "https://roadsync.com/"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://api.roadsync.app/rspay/v1",
+      "description": "prod"
+    },
+    {
+      "url": "https://test.api.roadsync.app/rspay/v1",
+      "description": "test"
+    },
+    {
+      "url": "https://dev.api.roadsync.app/rspay/v1",
+      "description": "dev"
+    }
+  ],
+  "tags": [
+    {
+      "name": "payees",
+      "description": "The payees end point"
+    },
+    {
+      "name": "eta",
+      "description": "ETA (Estimated Time of Arrival) endpoints"
+    }
+  ],
+  "paths": {
+    "/payees": {
+      "get": {
+        "summary": "Get a List of All Payees",
+        "operationId": "get-payees",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/getPayees"
+          }
+        },
+        "x-stoplight": {
+          "id": "co4pq80p7nc6t"
+        },
+        "description": "Return a list of all Payees associated with a Broker.",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/broker_header"
+          },
+          {
+            "name": "dot",
+            "in": "query",
+            "description": "Filter payees by DOT number",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "security": [
+          {
+            "x-api-key": []
+          }
+        ],
+        "tags": [
+          "payees"
+        ]
+      },
+      "post": {
+        "summary": "Create a Payee",
+        "operationId": "post-payees",
+        "responses": {
+          "201": {
+            "description": "Example response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "$ref": "#/components/schemas/id"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "409": {
+            "description": "Conflict"
+          }
+        },
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/broker_header"
+          }
+        ],
+        "x-stoplight": {
+          "id": "2i1si9bt2oii2"
+        },
+        "security": [
+          {
+            "x-api-key": []
+          }
+        ],
+        "tags": [
+          "payees"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "oneOf": [
+                  {
+                    "type": "object",
+                    "title": "Create New Payee",
+                    "properties": {
+                      "type": {
+                        "type": "string",
+                        "description": "Create a New Payee",
+                        "enum": [
+                          "NEW"
+                        ]
+                      },
+                      "data": {
+                        "type": "object",
+                        "properties": {
+                          "payee_name": {
+                            "$ref": "#/components/schemas/payeeName"
+                          },
+                          "mc_number": {
+                            "$ref": "#/components/schemas/mcNumber"
+                          },
+                          "dot_number": {
+                            "$ref": "#/components/schemas/dotNumber"
+                          },
+                          "email_address": {
+                            "$ref": "#/components/schemas/emailAddress"
+                          },
+                          "phone_number": {
+                            "$ref": "#/components/schemas/phoneNumber"
+                          },
+                          "first_name": {
+                            "$ref": "#/components/schemas/firstName"
+                          },
+                          "last_name": {
+                            "$ref": "#/components/schemas/lastName"
+                          },
+                          "address_line_one": {
+                            "$ref": "#/components/schemas/addressLineOne"
+                          },
+                          "address_line_two": {
+                            "$ref": "#/components/schemas/addressLineTwo"
+                          },
+                          "address_city": {
+                            "$ref": "#/components/schemas/city"
+                          },
+                          "address_state": {
+                            "$ref": "#/components/schemas/state"
+                          },
+                          "address_zip": {
+                            "$ref": "#/components/schemas/postalCode"
+                          },
+                          "is_factoring_company": {
+                            "$ref": "#/components/schemas/isFactoringCompany"
+                          },
+                          "carrier_payee_ids": {
+                            "$ref": "#/components/schemas/carrierPayeeIds"
+                          }
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "type": "object",
+                    "title": "Import Existing Payee",
+                    "properties": {
+                      "type": {
+                        "type": "string",
+                        "description": "Import an Existing Payee",
+                        "enum": [
+                          "IMPORT"
+                        ]
+                      },
+                      "data": {
+                        "type": "object",
+                        "properties": {
+                          "payee_candidate_id": {
+                            "$ref": "#/components/schemas/payeeCandidateImportId"
+                          }
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "description": "Create a Payee."
+      }
+    },
+    "/payees/{payee_id}": {
+      "parameters": [
+        {
+          "schema": {
+            "$ref": "#/components/schemas/id"
+          },
+          "name": "payee_id",
+          "in": "path",
+          "required": true
+        }
+      ],
+      "get": {
+        "summary": "Get a Single Payee",
+        "tags": [
+          "payees"
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/getPayee"
+          }
+        },
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/broker_header"
+          }
+        ],
+        "operationId": "get-payees-id",
+        "x-stoplight": {
+          "id": "de630d2wzywu3"
+        },
+        "description": "Retrieve the information of one specific Payee.",
+        "security": [
+          {
+            "x-api-key": []
+          }
+        ]
+      },
+      "patch": {
+        "summary": "Update a Single Payee",
+        "operationId": "patch-payees-id",
+        "responses": {
+          "201": {
+            "description": "Example response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "$ref": "#/components/schemas/id"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/errorForbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/broker_header"
+          }
+        ],
+        "x-stoplight": {
+          "id": "ghu2w7sx235yx"
+        },
+        "description": "Edit the information of the specified Payee. Only Payees that are not verified can be updated.",
+        "requestBody": {
+          "$ref": "#/components/requestBodies/updatePayee"
+        },
+        "tags": [
+          "payees"
+        ],
+        "security": [
+          {
+            "x-api-key": []
+          }
+        ]
+      }
+    },
+    "/payees/{payee_id}/funding-sources": {
+      "parameters": [
+        {
+          "schema": {
+            "$ref": "#/components/schemas/id"
+          },
+          "name": "payee_id",
+          "in": "path",
+          "required": true
+        }
+      ],
+      "get": {
+        "summary": "Get a Payee's Funding Sources",
+        "tags": [
+          "funding sources"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "PAPER_CHECK": {
+                      "type": "object",
+                      "nullable": true,
+                      "properties": {
+                        "id": {
+                          "$ref": "#/components/schemas/fundingSourceId"
+                        },
+                        "name": {
+                          "$ref": "#/components/schemas/bankName"
+                        },
+                        "address_line_one": {
+                          "$ref": "#/components/schemas/addressLineOne"
+                        },
+                        "address_line_two": {
+                          "$ref": "#/components/schemas/addressLineTwo"
+                        },
+                        "address_city": {
+                          "$ref": "#/components/schemas/city"
+                        },
+                        "address_state": {
+                          "$ref": "#/components/schemas/state"
+                        },
+                        "address_zip": {
+                          "$ref": "#/components/schemas/postalCode"
+                        }
+                      }
+                    },
+                    "ACH": {
+                      "type": "object",
+                      "nullable": true,
+                      "properties": {
+                        "id": {
+                          "$ref": "#/components/schemas/fundingSourceId"
+                        },
+                        "name": {
+                          "$ref": "#/components/schemas/bankName"
+                        },
+                        "account_number": {
+                          "$ref": "#/components/schemas/accountNumber"
+                        },
+                        "routing_number": {
+                          "$ref": "#/components/schemas/routingNumber"
+                        },
+                        "bank_account_type": {
+                          "$ref": "#/components/schemas/bankAccountType"
+                        },
+                        "has_rtp": {
+                          "$ref": "#/components/schemas/hasRtp"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/broker_header"
+          }
+        ],
+        "operationId": "get-funding-sources-id",
+        "x-stoplight": {
+          "id": "de630d2wzywu3"
+        },
+        "description": "Retrieve a Payee's Funding Source Information.",
+        "security": [
+          {
+            "x-api-key": []
+          }
+        ]
+      },
+      "post": {
+        "summary": "Create a Funding Source for a Payee",
+        "operationId": "post-payee-funding-sources",
+        "x-stoplight": {
+          "id": "78tmu663tqfcb"
+        },
+        "responses": {
+          "201": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "$ref": "#/components/schemas/fundingSourceId"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/broker_header"
+          }
+        ],
+        "description": "Create a new funding source for an existing Payee.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/bankFundingSource"
+              }
+            }
+          },
+          "description": "Funding source type can be either ach or papercheck"
+        },
+        "tags": [
+          "funding sources"
+        ],
+        "security": [
+          {
+            "x-api-key": []
+          }
+        ]
+      },
+      "patch": {
+        "summary": "Update a Funding Source for a Payee",
+        "operationId": "update-payee-funding-sources",
+        "x-stoplight": {
+          "id": "78tmu663tqfcb"
+        },
+        "responses": {
+          "201": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "$ref": "#/components/schemas/fundingSourceId"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/broker_header"
+          }
+        ],
+        "description": "Update funding source for an existing Payee.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "oneOf": [
+                  {
+                    "type": "object",
+                    "title": "PAPER_CHECK",
+                    "properties": {
+                      "type": {
+                        "type": "string",
+                        "description": "The type of the funding source",
+                        "enum": [
+                          "PAPER_CHECK"
+                        ]
+                      },
+                      "data": {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "title": "bank_name",
+                            "type": "string",
+                            "description": "A nickname for the bank account.",
+                            "example": "Atlanta Brokerage",
+                            "nullable": true
+                          },
+                          "address_line_one": {
+                            "title": "address_line_one",
+                            "type": "string",
+                            "description": "The valid address of a person or business in the United States.",
+                            "example": "715 Peachtree St",
+                            "nullable": true
+                          },
+                          "address_line_two": {
+                            "$ref": "#/components/schemas/addressLineTwo"
+                          },
+                          "address_city": {
+                            "title": "city",
+                            "type": "string",
+                            "description": "A valid city in the United States.",
+                            "example": "Atlanta",
+                            "nullable": true
+                          },
+                          "address_state": {
+                            "title": "state",
+                            "type": "string",
+                            "description": "A valid 2 character state code in the United States.",
+                            "example": "GA",
+                            "nullable": true
+                          },
+                          "address_zip": {
+                            "title": "postal_code",
+                            "type": "string",
+                            "description": "A valid postal code in the United States.",
+                            "example": "30306",
+                            "nullable": true
+                          }
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "type": "object",
+                    "title": "ACH",
+                    "properties": {
+                      "type": {
+                        "type": "string",
+                        "description": "The type of the funding source",
+                        "enum": [
+                          "ACH"
+                        ]
+                      },
+                      "data": {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "title": "bank_name",
+                            "type": "string",
+                            "description": "A nickname for the bank account.",
+                            "example": "Atlanta Brokerage",
+                            "nullable": true
+                          },
+                          "bank_account_type": {
+                            "type": "string",
+                            "title": "bank_account_type",
+                            "x-stoplight": {
+                              "id": "391p1gu479h0l"
+                            },
+                            "enum": [
+                              "checking",
+                              "savings"
+                            ],
+                            "nullable": true
+                          },
+                          "account_number": {
+                            "title": "account_number",
+                            "type": "string",
+                            "description": "A valid bank account number for a bank in the United States. Typically 10-12 digits in length. When being read, this will be the last 4 digits of the account number.",
+                            "example": "1234567890",
+                            "nullable": true
+                          },
+                          "routing_number": {
+                            "title": "routing_number",
+                            "type": "string",
+                            "description": "A valid routing number for a bank in the United States. Must be exactly 9 digits.",
+                            "example": "610000523",
+                            "nullable": true
+                          }
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          "description": "Funding source type can be either ach or papercheck"
+        },
+        "tags": [
+          "funding sources"
+        ],
+        "security": [
+          {
+            "x-api-key": []
+          }
+        ]
+      }
+    },
+    "/payables": {
+      "get": {
+        "tags": [
+          "payables"
+        ],
+        "summary": "Get a List of Payables",
+        "description": "Returns a list of all payees for the specified Broker.",
+        "operationId": "get-all-payables",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/broker_header"
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/getPayable"
+          }
+        },
+        "security": [
+          {
+            "x-api-key": []
+          }
+        ],
+        "x-stoplight": {
+          "id": "bh5r5turgnvi3"
+        }
+      },
+      "post": {
+        "tags": [
+          "payables"
+        ],
+        "summary": "Create a Payable",
+        "description": "Create a Payable. A Payable is an amount owed to a creditor with a scheduled date for a payment to be initiated.",
+        "operationId": "post-payables",
+        "responses": {
+          "200": {
+            "description": "Example response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "$ref": "#/components/schemas/id"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/broker_header"
+          }
+        ],
+        "x-stoplight": {
+          "id": "ld1stx23hxuqj"
+        },
+        "security": [
+          {
+            "x-api-key": []
+          }
+        ],
+        "requestBody": {
+          "$ref": "#/components/requestBodies/createPayable"
+        }
+      }
+    },
+    "/payables/{id}": {
+      "parameters": [
+        {
+          "schema": {
+            "$ref": "#/components/schemas/id"
+          },
+          "name": "id",
+          "in": "path",
+          "required": true
+        }
+      ],
+      "get": {
+        "summary": "Get a Single Payable",
+        "tags": [
+          "payables"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/broker_header"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The payable was found and returned successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/payable"
+                },
+                "examples": {
+                  "payable_with_carrier": {
+                    "summary": "Payable to a Factoring Company on behalf of a Carrier",
+                    "value": {
+                      "id": 986878,
+                      "amount": 3500,
+                      "status": "SCHEDULED",
+                      "payment_method": "PAPER_CHECK",
+                      "scheduled_for_date": "2026-04-09T00:00:00+00:00",
+                      "eta": "2026-04-10T16:30:00+00:00",
+                      "created_datetime": "2026-03-10T16:46:44.258001+00:00",
+                      "updated_datetime": "2026-03-10T16:46:44.323196+00:00",
+                      "invoice_number": "205960 / 205960",
+                      "po_number": "3491080",
+                      "idempotency_key": "d61163f8678d77f48c9947999456b1f2",
+                      "comment": "Load from Miami, FL to Atlanta, GA",
+                      "payee": {
+                        "id": 7401,
+                        "payee_name": "RTS Financial Service, Inc.",
+                        "funding_source_id": 22252,
+                        "is_verified": false,
+                        "is_factoring_company": true
+                      },
+                      "carrier_payee": {
+                        "id": 7402,
+                        "payee_name": "ABC Trucking LLC",
+                        "is_verified": false
+                      }
+                    }
+                  },
+                  "payable_direct": {
+                    "summary": "Payable directly to a Carrier (no Factoring Company)",
+                    "value": {
+                      "id": 986877,
+                      "amount": 100,
+                      "status": "SCHEDULED",
+                      "payment_method": "ACH_NEXT_DAY",
+                      "scheduled_for_date": "2026-03-27T00:00:00+00:00",
+                      "eta": "2026-03-30T16:30:00+00:00",
+                      "created_datetime": "2026-03-10T14:41:43.172365+00:00",
+                      "updated_datetime": "2026-03-10T14:41:43.46415+00:00",
+                      "invoice_number": "5933",
+                      "po_number": "AP-20261001",
+                      "idempotency_key": "a81263f8778e88f59d0a58000567c2g3",
+                      "comment": "Weekly carrier payment",
+                      "payee": {
+                        "id": 7399,
+                        "payee_name": "Test Payee",
+                        "funding_source_id": 22250,
+                        "is_verified": false,
+                        "is_factoring_company": false
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "The API key is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "The API key does not have access to the specified broker.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                },
+                "example": {
+                  "errors": [
+                    {
+                      "code": "forbidden",
+                      "title": "action forbidden"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No payable was found with the specified ID for this broker.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorResponse"
+                },
+                "example": {
+                  "errors": [
+                    {
+                      "code": "not found",
+                      "title": "the requested resource was not found"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "operationId": "get-payables",
+        "x-stoplight": {
+          "id": "xreernobtaxec"
+        },
+        "description": "Retrieve a single Payable by its ID. A Payable represents a scheduled payment to a Payee for a specific amount.\n\nA Payee is always one of two types, determined by the `is_factoring_company` flag:\n- **Carrier** (`is_factoring_company: false`): A transportation company that moves freight.\n  Carriers may have DOT and MC numbers for regulatory compliance.\n\n- **Factoring Company** (`is_factoring_company: true`): A financial entity that purchases\n  invoices from Carriers. When paying a Factoring Company, the `carrier_payee` field\n  identifies which Carrier the payment is on behalf of.\n\n\nThe `carrier_payee` field is `null` when paying a Carrier directly.\n\nThe `status` field will be one of: NEW, PENDING, PROCESSING, COMPLETE, CANCELLED, FAILED, SCHEDULED, DELETED, or UNKNOWN.",
+        "security": [
+          {
+            "x-api-key": []
+          }
+        ]
+      },
+      "patch": {
+        "summary": "Update a Single Payable",
+        "operationId": "patch-payables-id",
+        "responses": {
+          "201": {
+            "description": "Example response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "$ref": "#/components/schemas/id"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/broker_header"
+          }
+        ],
+        "x-stoplight": {
+          "id": "4t0s1heotouch"
+        },
+        "description": "Edit a Payable if it\u2019s not already processing or completed.",
+        "requestBody": {
+          "$ref": "#/components/requestBodies/updatePayable"
+        },
+        "tags": [
+          "payables"
+        ],
+        "security": [
+          {
+            "x-api-key": []
+          }
+        ]
+      },
+      "delete": {
+        "summary": "Delete a Single Payable",
+        "operationId": "delete-payables-id",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/broker_header"
+          }
+        ],
+        "x-stoplight": {
+          "id": "6lucb56q56xis"
+        },
+        "description": "Delete a Payable if it\u2019s not already processing or completed.",
+        "tags": [
+          "payables"
+        ],
+        "security": [
+          {
+            "x-api-key": []
+          }
+        ]
+      }
+    },
+    "/transactions": {
+      "get": {
+        "tags": [
+          "transactions"
+        ],
+        "summary": "Get a List of Transactions",
+        "operationId": "get-transactions",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/get_transactions"
+          }
+        },
+        "x-stoplight": {
+          "id": "4oalrey4fvb0b"
+        },
+        "security": [
+          {
+            "x-api-key": []
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/broker_header"
+          },
+          {
+            "name": "reference_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Filter transactions by reference ID."
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "transactions"
+        ],
+        "summary": "Create a Single Transaction",
+        "operationId": "post-transactions",
+        "responses": {
+          "201": {
+            "description": "Example response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "$ref": "#/components/schemas/id"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/broker_header"
+          }
+        ],
+        "x-stoplight": {
+          "id": "iuwplwyu3amgn"
+        },
+        "requestBody": {
+          "$ref": "#/components/requestBodies/createTransaction"
+        },
+        "security": [
+          {
+            "x-api-key": []
+          }
+        ]
+      }
+    },
+    "/transactions/{id}": {
+      "parameters": [
+        {
+          "schema": {
+            "type": "string"
+          },
+          "name": "id",
+          "in": "path",
+          "required": true
+        }
+      ],
+      "get": {
+        "summary": "Get a Single Transaction",
+        "tags": [
+          "transactions"
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/get_transaction"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/broker_header"
+          }
+        ],
+        "operationId": "get-transactions-id",
+        "x-stoplight": {
+          "id": "cl47pgw8zwtw9"
+        },
+        "security": [
+          {
+            "x-api-key": []
+          }
+        ]
+      }
+    },
+    "/brokers": {
+      "get": {
+        "summary": "Get All Brokers",
+        "tags": [
+          "brokers"
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/getBrokers"
+          }
+        },
+        "operationId": "get-brokers",
+        "x-stoplight": {
+          "id": "bfwgk2oy30fv2"
+        },
+        "security": [
+          {
+            "x-api-key": []
+          }
+        ],
+        "description": "Return a list of all the brokers linked to your API Key."
+      }
+    },
+    "/brokers/{broker_id}": {
+      "parameters": [
+        {
+          "schema": {
+            "$ref": "#/components/schemas/id"
+          },
+          "name": "broker_id",
+          "in": "path",
+          "required": true
+        }
+      ],
+      "get": {
+        "summary": "Get a Single Broker",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/getBroker"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "operationId": "get-brokers-id",
+        "x-stoplight": {
+          "id": "l4z7ugj0eh570"
+        },
+        "tags": [
+          "brokers"
+        ],
+        "description": "Get a single broker.",
+        "security": [
+          {
+            "x-api-key": []
+          }
+        ]
+      }
+    },
+    "/brokers/{broker_id}/funding-sources": {
+      "parameters": [
+        {
+          "schema": {
+            "$ref": "#/components/schemas/id"
+          },
+          "name": "broker_id",
+          "in": "path",
+          "required": true
+        }
+      ],
+      "get": {
+        "summary": "Get a Broker's Funding Sources",
+        "tags": [
+          "funding sources"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "PAPER_CHECK": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "$ref": "#/components/schemas/fundingSourceId"
+                        },
+                        "name": {
+                          "$ref": "#/components/schemas/bankName"
+                        },
+                        "address_line_one": {
+                          "$ref": "#/components/schemas/addressLineOne"
+                        },
+                        "address_line_two": {
+                          "$ref": "#/components/schemas/addressLineTwo"
+                        },
+                        "address_city": {
+                          "$ref": "#/components/schemas/city"
+                        },
+                        "address_state": {
+                          "$ref": "#/components/schemas/state"
+                        },
+                        "address_zip": {
+                          "$ref": "#/components/schemas/postalCode"
+                        }
+                      }
+                    },
+                    "ACH": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "$ref": "#/components/schemas/fundingSourceId"
+                        },
+                        "name": {
+                          "$ref": "#/components/schemas/bankName"
+                        },
+                        "bank_account_type": {
+                          "$ref": "#/components/schemas/bankAccountType"
+                        },
+                        "account_number": {
+                          "$ref": "#/components/schemas/accountNumber"
+                        },
+                        "routing_number": {
+                          "$ref": "#/components/schemas/routingNumber"
+                        }
+                      }
+                    },
+                    "WALLET": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "$ref": "#/components/schemas/fundingSourceId"
+                        },
+                        "name": {
+                          "$ref": "#/components/schemas/bankName"
+                        },
+                        "balance": {
+                          "$ref": "#/components/schemas/walletBalance"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "operationId": "get-broker-funding-sources-id",
+        "x-stoplight": {
+          "id": "l4z7ugj0eh570"
+        },
+        "description": "Retrieve a Broker's Funding Source Information.",
+        "security": [
+          {
+            "x-api-key": []
+          }
+        ]
+      }
+    },
+    "/eta": {
+      "get": {
+        "summary": "Get ETA Information",
+        "tags": [
+          "eta"
+        ],
+        "responses": {
+          "200": {
+            "description": "ETA response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "eta": {
+                      "$ref": "#/components/schemas/eta"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "operationId": "get-eta",
+        "x-stoplight": {
+          "id": "eta-endpoint-001"
+        },
+        "parameters": [
+          {
+            "name": "transfer_method",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "ACH",
+                "NEXTDAYACH",
+                "SAMEDAYACH",
+                "PAPERCHECK"
+              ]
+            },
+            "description": "The transfer method for calculating ETA. Must be one of the supported payment methods."
+          },
+          {
+            "name": "scheduled_date",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "date"
+            },
+            "description": "The scheduled date for the transfer"
+          }
+        ],
+        "security": [
+          {
+            "x-api-key": []
+          }
+        ],
+        "description": "Get estimated time of arrival (ETA) for a transfer based on transfer method and scheduled date."
+      }
+    },
+    "/payee-candidates": {
+      "get": {
+        "parameters": [
+          {
+            "name": "query",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The query for searching payee candidates"
+          }
+        ],
+        "summary": "Search Payee Candidates",
+        "tags": [
+          "directory"
+        ],
+        "responses": {
+          "200": {
+            "description": "Example response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "allOf": [
+                      {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "$ref": "#/components/schemas/id"
+                          },
+                          "payee_name": {
+                            "$ref": "#/components/schemas/payeeName"
+                          },
+                          "mc_number": {
+                            "$ref": "#/components/schemas/mcNumber"
+                          },
+                          "dot_number": {
+                            "$ref": "#/components/schemas/dotNumber"
+                          },
+                          "email_address": {
+                            "$ref": "#/components/schemas/emailAddress"
+                          },
+                          "phone_number": {
+                            "$ref": "#/components/schemas/phoneNumber"
+                          },
+                          "first_name": {
+                            "$ref": "#/components/schemas/firstName"
+                          },
+                          "last_name": {
+                            "$ref": "#/components/schemas/lastName"
+                          },
+                          "address_line_one": {
+                            "$ref": "#/components/schemas/addressLineOne"
+                          },
+                          "address_line_two": {
+                            "$ref": "#/components/schemas/addressLineTwo"
+                          },
+                          "address_city": {
+                            "$ref": "#/components/schemas/city"
+                          },
+                          "address_state": {
+                            "$ref": "#/components/schemas/state"
+                          },
+                          "address_zip": {
+                            "$ref": "#/components/schemas/postalCode"
+                          },
+                          "ach_funding_source_id": {
+                            "$ref": "#/components/schemas/fundingSourceId"
+                          },
+                          "paper_check_funding_source_id": {
+                            "$ref": "#/components/schemas/fundingSourceId"
+                          },
+                          "available_payment_types": {
+                            "$ref": "#/components/schemas/availablePaymentTypes"
+                          },
+                          "is_verified": {
+                            "$ref": "#/components/schemas/isVerified"
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  "x-stoplight": {
+                    "id": "vhtkgvp4mic8z"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "operationId": "get-payee-candidates",
+        "x-stoplight": {
+          "id": "2m3lk71ioo5c8"
+        },
+        "security": [
+          {
+            "x-api-key": []
+          }
+        ]
+      }
+    },
+    "/payee-candidates/{payee_candidate_id}": {
+      "parameters": [
+        {
+          "schema": {
+            "type": "string"
+          },
+          "name": "payee_candidate_id",
+          "in": "path",
+          "required": true
+        }
+      ]
+    },
+    "/loads": {
+      "get": {
+        "summary": "Get a List of All Loads",
+        "operationId": "get-loads",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/getLoads"
+          }
+        },
+        "x-stoplight": {
+          "id": "co4pq80p7nc6t"
+        },
+        "description": "Return a list of Loads associated with a Broker. Optionally filter by load_number or external_id.",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/broker_header"
+          },
+          {
+            "name": "load_number",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Filter loads by load number."
+          },
+          {
+            "name": "external_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Filter loads by external ID."
+          }
+        ],
+        "security": [
+          {
+            "x-api-key": []
+          }
+        ],
+        "tags": [
+          "loads"
+        ]
+      },
+      "post": {
+        "summary": "Create a Load",
+        "operationId": "post-loads",
+        "responses": {
+          "201": {
+            "description": "Load created successfully or existing load returned. If a load with the same load_number and broker_id already exists, the existing load's identifier is returned instead of creating a duplicate.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "$ref": "#/components/schemas/id"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "409": {
+            "description": "Conflict"
+          }
+        },
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/broker_header"
+          }
+        ],
+        "security": [
+          {
+            "x-api-key": []
+          }
+        ],
+        "tags": [
+          "loads"
+        ],
+        "requestBody": {
+          "$ref": "#/components/requestBodies/createLoad"
+        },
+        "description": "Create a Load. If a load with the specified load_number already exists for the broker, the existing load's identifier will be returned with a 201 status instead of creating a duplicate load."
+      }
+    },
+    "/loads/{load_id}": {
+      "parameters": [
+        {
+          "schema": {
+            "type": "string"
+          },
+          "name": "load_id",
+          "in": "path",
+          "required": true
+        }
+      ],
+      "get": {
+        "summary": "Get a single Load",
+        "operationId": "get-load",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/getLoad"
+          }
+        },
+        "description": "Return a single Load associated with a Broker.",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/broker_header"
+          }
+        ],
+        "security": [
+          {
+            "x-api-key": []
+          }
+        ],
+        "tags": [
+          "loads"
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "address": {
+        "title": "address",
+        "x-stoplight": {
+          "id": "bfl48mbxtmegw"
+        },
+        "type": "object",
+        "x-internal": true,
+        "properties": {
+          "name": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "pm7feeb6m6n4x"
+            }
+          },
+          "address_line_1": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "xh37utd6w4rkd"
+            }
+          },
+          "address_line_2": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "z4ft5ctrxr8li"
+            }
+          },
+          "city": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "c49t2pj7m8e72"
+            }
+          },
+          "state": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "748rb8s1uwbh3"
+            }
+          },
+          "zip": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "76jwrfq03e0jf"
+            }
+          }
+        },
+        "required": [
+          "name",
+          "address_line_1",
+          "city",
+          "state",
+          "zip"
+        ]
+      },
+      "payeeCandidate": {
+        "type": "object",
+        "x-examples": {
+          "Example 1": {
+            "oid": 4,
+            "payee_name": "JR TRUCKING LLC",
+            "mc_number": "MC612791",
+            "dot_number": "1666897",
+            "email_address": "thomas.lester+payee.dashboard.4@roadsync.com",
+            "phone_number": "2565069322",
+            "first_name": "ROGER",
+            "last_name": "GLISPIE",
+            "address_line_one": "595 HALSTON RD",
+            "city": "ARAB",
+            "state": "AL",
+            "postal_code": "35016",
+            "funding_source_id": 1867,
+            "is_verified": true,
+            "is_saved": false,
+            "available_payment_types": [
+              "PAPER_CHECK",
+              "ACH",
+              "RTP"
+            ]
+          }
+        },
+        "properties": {
+          "id": {
+            "type": "integer",
+            "x-stoplight": {
+              "id": "481i0sm1vdrk7"
+            }
+          },
+          "payee_name": {
+            "type": "string"
+          },
+          "mc_number": {
+            "type": "string"
+          },
+          "dot_number": {
+            "type": "string"
+          },
+          "email_address": {
+            "type": "string"
+          },
+          "phone_number": {
+            "type": "string"
+          },
+          "first_name": {
+            "type": "string"
+          },
+          "last_name": {
+            "type": "string"
+          },
+          "addressLineOne": {
+            "type": "string"
+          },
+          "addressLineTwo": {
+            "type": "string",
+            "nullable": true
+          },
+          "city": {
+            "type": "string"
+          },
+          "state": {
+            "type": "string"
+          },
+          "postal_code": {
+            "type": "string"
+          },
+          "ach_funding_source_id": {
+            "type": "integer",
+            "nullable": true,
+            "x-stoplight": {
+              "id": "i3nsu7w583gbl"
+            }
+          },
+          "paper_check_funding_source_id": {
+            "type": "integer",
+            "nullable": true,
+            "x-stoplight": {
+              "id": "dz1qbi8wv5ed6"
+            }
+          },
+          "is_verified": {
+            "type": "boolean"
+          },
+          "available_payment_types": {
+            "enum": [
+              "PAPER_CHECK",
+              "ACH",
+              "RTP"
+            ]
+          }
+        },
+        "x-stoplight": {
+          "id": "fxf8repvt4jco"
+        }
+      },
+      "getPayee": {
+        "type": "object",
+        "x-examples": {
+          "Example 1": {
+            "id": "",
+            "payee_name": "",
+            "ach_funding_source_id": "",
+            "paper_check_funding_source_id": "",
+            "is_verified": false,
+            "is_factoring_company": ""
+          }
+        },
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "payee_name": {
+            "type": "string"
+          },
+          "ach_funding_source_id": {
+            "type": "string",
+            "nullable": true
+          },
+          "paper_check_funding_source_id": {
+            "type": "string",
+            "nullable": true
+          },
+          "is_verified": {
+            "type": "boolean"
+          },
+          "is_factoring_company": {
+            "type": "boolean"
+          }
+        },
+        "x-stoplight": {
+          "id": "e4zqui8cp7w4e"
+        }
+      },
+      "getPayableInsideTransaction": {
+        "type": "object",
+        "x-examples": {
+          "Example 1": {
+            "id": 212123,
+            "amount": "1350",
+            "invoice_number": "test_to_get_create_transaction_response",
+            "created_datetime": "2023-10-05T16:46:24.671045+00:00",
+            "status": "",
+            "eta": "",
+            "schedule_group_hash": "",
+            "carrier_payee": {
+              "id": "",
+              "payee_name": ""
+            }
+          }
+        },
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "amount": {
+            "type": "string"
+          },
+          "invoice_number": {
+            "type": "string",
+            "nullable": true
+          },
+          "poNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "idempotency_key": {
+            "type": "string"
+          },
+          "comment": {
+            "type": "string",
+            "nullable": true
+          },
+          "created_datetime": {
+            "type": "string"
+          },
+          "updated_datetime": {
+            "type": "string",
+            "nullable": true
+          },
+          "status": {
+            "type": "string"
+          },
+          "eta": {
+            "type": "string"
+          },
+          "schedule_group_hash": {
+            "type": "string"
+          },
+          "carrier_payee_id": {
+            "type": "integer",
+            "nullable": true,
+            "x-stoplight": {
+              "id": "2o6na76ay6fxk"
+            }
+          }
+        },
+        "x-stoplight": {
+          "id": "y66xe8h07k2kb"
+        }
+      },
+      "accountNumber": {
+        "title": "account_number",
+        "x-stoplight": {
+          "id": "cn1t6t6d1j1j8"
+        },
+        "type": "string",
+        "description": "A valid bank account number for a bank in the United States. Typically 10-12 digits in length. When being read, this will be the last 4 digits of the account number.",
+        "example": "1234567890"
+      },
+      "addressLineOne": {
+        "title": "address_line_one",
+        "x-stoplight": {
+          "id": "p3a1crckckndd"
+        },
+        "type": "string",
+        "description": "The valid address of a person or business in the United States.",
+        "example": "715 Peachtree St"
+      },
+      "addressLineTwo": {
+        "title": "address_line_two",
+        "x-stoplight": {
+          "id": "jpnvzmg54ky3l"
+        },
+        "type": "string",
+        "nullable": true,
+        "description": "If necessary, add a second line of the address in the United States.",
+        "example": "APT 23"
+      },
+      "amount": {
+        "title": "amount",
+        "x-stoplight": {
+          "id": "tayy9oxji4gww"
+        },
+        "type": "number",
+        "description": "Money in USD to transfer or has been transferred.",
+        "example": 123.45
+      },
+      "amountAsString": {
+        "title": "amount",
+        "type": "string",
+        "description": "Money in USD to transfer or has been transferred.",
+        "example": "18.32"
+      },
+      "availablePaymentTypes": {
+        "title": "available_payment_types",
+        "x-stoplight": {
+          "id": "9us2vhly5l9u3"
+        },
+        "type": "array",
+        "description": "A list of the availablepayment methods a Payee is able to receive. Possible values are PAPER_CHECK, ACH, RTP",
+        "example": [
+          "PAPER_CHECK",
+          "ACH",
+          "RTP"
+        ],
+        "items": {
+          "$ref": "#/components/schemas/paymentTarget"
+        }
+      },
+      "bankAccountType": {
+        "title": "bank_account_type",
+        "x-stoplight": {
+          "id": "391p1gu479h0l"
+        },
+        "enum": [
+          "checking",
+          "savings",
+          "wallet"
+        ]
+      },
+      "bankName": {
+        "title": "bank_name",
+        "type": "string",
+        "x-stoplight": {
+          "id": "rmlmmd3m5zlqg"
+        },
+        "description": "A nickname for the bank account.",
+        "example": "Atlanta Brokerage"
+      },
+      "brokerId": {
+        "title": "broker_id",
+        "type": "integer",
+        "example": 66305,
+        "x-stoplight": {
+          "id": "364l19xr2t37h"
+        },
+        "description": "The identifier of a Broker to which the Payee will be assigned or has already been assigned."
+      },
+      "brokerIdResponse": {
+        "title": "broker_id_response",
+        "type": "integer",
+        "x-stoplight": {
+          "id": "a6k2b2ugy6fg0"
+        },
+        "example": 66305,
+        "description": "The identifier of a Broker to which the Payee has been assigned."
+      },
+      "brokerName": {
+        "title": "broker_name",
+        "type": "string",
+        "x-stoplight": {
+          "id": "xpgfc7nsg07fw"
+        },
+        "description": "The name of the broker.",
+        "example": "Atlanta Brokerage"
+      },
+      "carrierPayeeIds": {
+        "title": "carrier_payee_ids",
+        "x-stoplight": {
+          "id": "pevp3t3zuaad8"
+        },
+        "type": "array",
+        "description": "If \u201cis_factoring_company\u201c is true, add the \u201cpayee_id\u201d for each associated carrier.",
+        "example": [
+          10204,
+          10205
+        ],
+        "items": {
+          "$ref": "#/components/schemas/id",
+          "x-stoplight": {
+            "id": "y9pyua91doq3i"
+          }
+        }
+      },
+      "carrierPayeeId": {
+        "title": "carrier_payee_id",
+        "type": "string",
+        "description": "If the Transaction is created for a Factoring Company, then a Carrier can be associated to the Transaction.",
+        "example": 10204,
+        "items": {
+          "$ref": "#/components/schemas/id",
+          "x-stoplight": {
+            "id": "y9pyua91doq3i"
+          }
+        }
+      },
+      "checkFundingSourceId": {
+        "title": "check_funding_source_id",
+        "x-stoplight": {
+          "id": "nbcgtbx0ocx8y"
+        },
+        "type": "integer",
+        "description": "Would appear empty unless you create one on the Funding Source endpoint.",
+        "example": 98753
+      },
+      "checkImageUri": {
+        "title": "check_image_uri",
+        "x-stoplight": {
+          "id": "ldrzng9xtycsi"
+        },
+        "type": "string",
+        "description": "URI pointing to a check image.",
+        "example": "https://static.roadsync.app/rspay/"
+      },
+      "checkNumber": {
+        "title": "check_number",
+        "x-stoplight": {
+          "id": "vi6y265ay5kjh"
+        },
+        "type": "integer",
+        "description": "The check number used when a papercheck is issued.",
+        "example": 10001
+      },
+      "city": {
+        "title": "city",
+        "x-stoplight": {
+          "id": "8ypbld5r20d6o"
+        },
+        "type": "string",
+        "description": "A valid city in the United States.",
+        "example": "Atlanta"
+      },
+      "comment": {
+        "title": "comment",
+        "x-stoplight": {
+          "id": "05qkg81jr3dwl"
+        },
+        "type": "string",
+        "description": "A space enabled for Brokers to add comments to the Payable if necessary.",
+        "example": "Load from Miami, Florida to Atlanta, Georgia."
+      },
+      "createdDatetime": {
+        "title": "created_datetime",
+        "x-stoplight": {
+          "id": "v60tecbjlr4rs"
+        },
+        "type": "string",
+        "format": "date-time",
+        "description": "Indicates the datetime when the object was created in ISO 8601 format.",
+        "example": "2023-10-26T00:00:00+00:00"
+      },
+      "dotNumber": {
+        "type": "string",
+        "x-stoplight": {
+          "id": "c2zo0dhnzfjnp"
+        },
+        "description": "U.S. Department of Transportation Number is an up to ten-digit assigned by the FMCSA to moving companies operating in interstate commerce. If inserted, it will be validated.",
+        "example": "2428196",
+        "title": "dot_number"
+      },
+      "emailAddressBroker": {
+        "type": "string",
+        "x-stoplight": {
+          "id": "4b1lw9uxlo2od"
+        },
+        "description": "A valid email belonging to the Broker, where remittance emails will be received.",
+        "title": "email_address_broker",
+        "example": "virginia@atlantabrokerage.com"
+      },
+      "emailAddress": {
+        "type": "string",
+        "x-stoplight": {
+          "id": "yd026juzie7jh"
+        },
+        "description": "A valid email belonging to the person or company.",
+        "title": "email_address",
+        "example": "crogers@camilatrucking.com"
+      },
+      "eta": {
+        "type": "string",
+        "x-stoplight": {
+          "id": "jsosz1li3h5v2"
+        },
+        "description": "The estimated time of arrival of the payment, based on the payment method selected and scheduled date in ISO 8601 format.",
+        "title": "eta",
+        "example": "2023-10-27T13:00:00+00:00"
+      },
+      "externalId": {
+        "title": "external_id",
+        "x-stoplight": {
+          "id": "vnd04wmmq2x21"
+        },
+        "type": "string",
+        "example": "14973-83",
+        "description": "A unique identifier you have for the item."
+      },
+      "firstName": {
+        "type": "string",
+        "x-stoplight": {
+          "id": "7p7kmat8ktz1s"
+        },
+        "example": "Camila",
+        "title": "first_name",
+        "description": "The first name of a contact or user."
+      },
+      "fundingSourceId": {
+        "title": "funding_source_id",
+        "x-stoplight": {
+          "id": "62r95b324501y"
+        },
+        "$ref": "#/components/schemas/id",
+        "description": "Id representing the funding source (papercheck, ach or wallet)."
+      },
+      "fundingSourceType": {
+        "title": "funding_source_type",
+        "x-stoplight": {
+          "id": "rx1jl6f4wh7xw"
+        },
+        "enum": [
+          "ach",
+          "paper_check",
+          "wallet"
+        ]
+      },
+      "payeeFundingSourceType": {
+        "title": "payee_funding_source_type",
+        "enum": [
+          "ach",
+          "paper_check"
+        ]
+      },
+      "id": {
+        "type": "integer",
+        "x-stoplight": {
+          "id": "f7ra661j53v04"
+        },
+        "example": 87346,
+        "title": "id",
+        "description": "The id number of the object being returned."
+      },
+      "idempotencyKey": {
+        "type": "integer",
+        "x-stoplight": {
+          "id": "i58xi5srh5lb7"
+        },
+        "example": "bac613de-5j27-1347-ka1n-q3p6173jacj4",
+        "title": "idempotency_key",
+        "description": "Provide a unique value to prevent duplicates during retries."
+      },
+      "invoiceNumber": {
+        "type": "string",
+        "x-stoplight": {
+          "id": "bjh3zwblac9m2"
+        },
+        "example": "355da12b-774b-41fc-9124-92d5f5a795ed",
+        "title": "invoice_number",
+        "description": "The invoice number being paid by the payable/receivable. This is visible by the Payee in remittance emails as reference_id."
+      },
+      "isFactoringCompany": {
+        "title": "is_factoring_company",
+        "x-stoplight": {
+          "id": "mmie0j9euqu37"
+        },
+        "type": "boolean",
+        "description": "Send \"true\" if this Payee is a Factoring Company, \"false\" otherwise.",
+        "example": true
+      },
+      "isVerified": {
+        "title": "is_verified",
+        "type": "boolean",
+        "example": false,
+        "x-stoplight": {
+          "id": "yfowmo738h8iv"
+        },
+        "description": "A verified Payee is visible to all brokers in the RoadSync Pay environment. Some partners are allowed to verify a Payee by setting the is_verified flag to true during creation or update."
+      },
+      "lastName": {
+        "type": "string",
+        "x-stoplight": {
+          "id": "sbyxhe07a7czs"
+        },
+        "title": "last_name",
+        "description": "The last name of a user or contact.",
+        "example": "Rogers"
+      },
+      "mcNumber": {
+        "type": "string",
+        "x-stoplight": {
+          "id": "70s19yd5cd75e"
+        },
+        "description": "Motor Carrier Number is a a nine-digit identifier assigned by the FMCSA to moving companies operating in interstate commerce. If inserted, it will be validated.",
+        "example": "MC612791",
+        "title": "mc_number"
+      },
+      "payableId": {
+        "type": "integer",
+        "x-stoplight": {
+          "id": "xsyrirwk8n0m7"
+        },
+        "example": 87346,
+        "title": "payable_id",
+        "description": "The Payable's ID"
+      },
+      "payeeCandidateId": {
+        "type": "integer",
+        "x-stoplight": {
+          "id": "d7jri8k8o5qxe"
+        },
+        "description": "This field is displayed if the Payee is available in RoadSync Pay\u2019s Directory.",
+        "example": 896876,
+        "title": "payee_candidate_id"
+      },
+      "payeeCandidateImportId": {
+        "type": "integer",
+        "description": "A valid ID of the payee candidate you are importing",
+        "example": 896876,
+        "title": "payee_candidate_id"
+      },
+      "payeeId": {
+        "type": "integer",
+        "x-stoplight": {
+          "id": "unf2lv7eugr65"
+        },
+        "description": "The unique identifier of the Payee who will receive the funds. It could be a Carrier or a Factoring Company.",
+        "example": 896876,
+        "title": "payee_id"
+      },
+      "payeeName": {
+        "type": "string",
+        "x-stoplight": {
+          "id": "t7yn3ksmmn262"
+        },
+        "description": "The name of the Carrier or Factoring Company.",
+        "example": "Camila Trucking LLC",
+        "title": "payee_name"
+      },
+      "paymentMethod": {
+        "title": "payment_method",
+        "description": "The method used to settle a payable.",
+        "x-stoplight": {
+          "id": "0jtzkjzaao1jc"
+        },
+        "enum": [
+          "ACH",
+          "ACH_NEXT_DAY",
+          "ACH_SAME_DAY",
+          "PAPER_CHECK",
+          "WALLET_ACH",
+          "WALLET_ACH_NEXT_DAY",
+          "WALLET_ACH_SAME_DAY",
+          "WALLET_RTP"
+        ],
+        "example": "ACH_NEXT_DAY"
+      },
+      "paymentTarget": {
+        "title": "payment_target",
+        "description": "A valid Payee payment target.",
+        "x-stoplight": {
+          "id": "pqgsyu00mynep"
+        },
+        "enum": [
+          "ACH",
+          "PAPER_CHECK",
+          "RTP"
+        ],
+        "example": "ACH"
+      },
+      "phoneNumber": {
+        "title": "phone_number",
+        "x-stoplight": {
+          "id": "coa4x7lscfh80"
+        },
+        "type": "string",
+        "description": "A valid phone number belonging to a person or company.",
+        "example": "3243444347"
+      },
+      "poNumber": {
+        "title": "po_number",
+        "x-stoplight": {
+          "id": "5zz0jgn7jlcgf"
+        },
+        "type": "string",
+        "description": "A unique identifier that links the purchase order the payable.",
+        "example": "AP12345"
+      },
+      "postalCode": {
+        "title": "postal_code",
+        "x-stoplight": {
+          "id": "v5t2utdpxdar3"
+        },
+        "type": "string",
+        "description": "A valid postal code in the United States.",
+        "example": "30306"
+      },
+      "referenceId": {
+        "title": "reference_id",
+        "x-stoplight": {
+          "id": "pvo4njzpfmo6d"
+        },
+        "type": "string",
+        "description": "An identifier used by the Broker to correlate the Transaction with another system or document.",
+        "example": "123XYZ"
+      },
+      "routingNumber": {
+        "title": "routing_number",
+        "x-stoplight": {
+          "id": "63el3sto66kg8"
+        },
+        "type": "string",
+        "description": "A valid routing number for a bank in the United States. Must be exactly 9 digits.",
+        "example": "610000523"
+      },
+      "scheduledForDate": {
+        "title": "scheduled_for_date",
+        "x-stoplight": {
+          "id": "14j86018rsbw6"
+        },
+        "type": "string",
+        "description": "A valid date in the future when the payment should be initiated or \"now\" indicating immediate payment.",
+        "example": "2023-10-29T00:00:00+00:00",
+        "format": "date"
+      },
+      "state": {
+        "title": "state",
+        "x-stoplight": {
+          "id": "xwqz3invlqyrz"
+        },
+        "type": "string",
+        "description": "A valid 2 character state code in the United States.",
+        "example": "GA"
+      },
+      "status": {
+        "title": "status",
+        "x-stoplight": {
+          "id": "e75bu0q7243zf"
+        },
+        "enum": [
+          "NEW",
+          "PENDING",
+          "PROCESSING",
+          "COMPLETE",
+          "CANCELLED",
+          "FAILED",
+          "SCHEDULED",
+          "DELETED",
+          "UNKNOWN"
+        ],
+        "description": "The current status of the payable. UNKNOWN is returned when the status value is not recognized.",
+        "example": "SCHEDULED"
+      },
+      "updatedDatetime": {
+        "title": "updated_datetime",
+        "x-stoplight": {
+          "id": "8gm15jfl51vcm"
+        },
+        "type": "string",
+        "description": "Indicates the last time the entity was updated in ISO 8601 format.",
+        "example": "2023-10-26T00:00:00+00:00",
+        "format": "date-time"
+      },
+      "broker": {
+        "title": "broker",
+        "x-stoplight": {
+          "id": "yzi5j2dpnmvz5"
+        },
+        "type": "object",
+        "description": "The full broker object.",
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/brokerIdResponse"
+          },
+          "name": {
+            "$ref": "#/components/schemas/brokerName",
+            "x-stoplight": {
+              "id": "xt85gf89sf1lq"
+            }
+          },
+          "email_address": {
+            "$ref": "#/components/schemas/emailAddressBroker",
+            "x-stoplight": {
+              "id": "p64zvat285o5f"
+            }
+          },
+          "phone_number": {
+            "$ref": "#/components/schemas/phoneNumber",
+            "x-stoplight": {
+              "id": "9uub6sogbv2t8"
+            }
+          },
+          "address_line_one": {
+            "$ref": "#/components/schemas/addressLineOne",
+            "x-stoplight": {
+              "id": "ytowepra805bj"
+            }
+          },
+          "address_line_two": {
+            "$ref": "#/components/schemas/addressLineTwo",
+            "x-stoplight": {
+              "id": "a9d1w5ey3q3wm"
+            }
+          },
+          "address_city": {
+            "$ref": "#/components/schemas/city",
+            "x-stoplight": {
+              "id": "m40v647wog3ij"
+            }
+          },
+          "address_state": {
+            "$ref": "#/components/schemas/state",
+            "x-stoplight": {
+              "id": "4mw54g2kaopkv"
+            }
+          },
+          "address_zip": {
+            "$ref": "#/components/schemas/postalCode",
+            "x-stoplight": {
+              "id": "65em4nwp8t9lx"
+            }
+          },
+          "ach_funding_source_id": {
+            "$ref": "#/components/schemas/fundingSourceId",
+            "x-stoplight": {
+              "id": "lh0wjz5u0ywwn"
+            }
+          },
+          "paper_check_funding_source_id": {
+            "$ref": "#/components/schemas/fundingSourceId",
+            "x-stoplight": {
+              "id": "awyhftcgfj055"
+            }
+          },
+          "wallet_funding_source_id": {
+            "$ref": "#/components/schemas/fundingSourceId",
+            "x-stoplight": {
+              "id": "gh7wkzac7k9s8"
+            }
+          }
+        }
+      },
+      "bankFundingSource": {
+        "title": "bank_funding_source",
+        "x-stoplight": {
+          "id": "hg1mxph0w1ijo"
+        },
+        "oneOf": [
+          {
+            "type": "object",
+            "title": "PAPER_CHECK",
+            "properties": {
+              "type": {
+                "type": "string",
+                "description": "The type of the funding source",
+                "enum": [
+                  "PAPER_CHECK"
+                ]
+              },
+              "data": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "$ref": "#/components/schemas/bankName"
+                  },
+                  "address_line_one": {
+                    "$ref": "#/components/schemas/addressLineOne"
+                  },
+                  "address_line_two": {
+                    "$ref": "#/components/schemas/addressLineTwo"
+                  },
+                  "address_city": {
+                    "$ref": "#/components/schemas/city"
+                  },
+                  "address_state": {
+                    "$ref": "#/components/schemas/state"
+                  },
+                  "address_zip": {
+                    "$ref": "#/components/schemas/postalCode"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "type": "object",
+            "title": "ACH",
+            "properties": {
+              "type": {
+                "type": "string",
+                "description": "The type of the funding source",
+                "enum": [
+                  "ACH"
+                ]
+              },
+              "data": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "$ref": "#/components/schemas/bankName"
+                  },
+                  "bank_account_type": {
+                    "title": "bank_account_type",
+                    "x-stoplight": {
+                      "id": "391p1gu479h0l"
+                    },
+                    "enum": [
+                      "checking",
+                      "savings"
+                    ]
+                  },
+                  "account_number": {
+                    "$ref": "#/components/schemas/accountNumber"
+                  },
+                  "routing_number": {
+                    "$ref": "#/components/schemas/routingNumber"
+                  }
+                }
+              }
+            }
+          }
+        ]
+      },
+      "brokerShort": {
+        "title": "broker_short",
+        "x-stoplight": {
+          "id": "t1gb0y6sf4rns"
+        },
+        "type": "object",
+        "description": "The short description of the broker.",
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/brokerId",
+            "x-stoplight": {
+              "id": "6d7uubhxwqwlh"
+            }
+          },
+          "name": {
+            "$ref": "#/components/schemas/brokerName",
+            "x-stoplight": {
+              "id": "f9kyxgia11kwk"
+            }
+          }
+        }
+      },
+      "checkDetails": {
+        "title": "check_details",
+        "x-stoplight": {
+          "id": "bz88ugdalbqom"
+        },
+        "type": "object",
+        "description": "Additional check information when a transactioin is a papercheck.",
+        "properties": {
+          "check_number": {
+            "$ref": "#/components/schemas/checkNumber",
+            "x-stoplight": {
+              "id": "flfb06sawgurs"
+            }
+          },
+          "thumbnails": {
+            "x-stoplight": {
+              "id": "daoezgddr9y28"
+            },
+            "type": "object",
+            "properties": {
+              "small": {
+                "type": "string",
+                "x-stoplight": {
+                  "id": "68q69yrz9fwgb"
+                },
+                "format": "uri"
+              },
+              "medium": {
+                "type": "string",
+                "x-stoplight": {
+                  "id": "30e8n5vtt1z6e"
+                },
+                "format": "uri"
+              },
+              "large": {
+                "type": "string",
+                "x-stoplight": {
+                  "id": "ezkjkasvletbo"
+                },
+                "format": "uri"
+              }
+            }
+          }
+        }
+      },
+      "factoringCompany": {
+        "title": "factoring_company",
+        "x-stoplight": {
+          "id": "1pyfxyfqar9ms"
+        },
+        "type": "object",
+        "description": "This field is returned if the Payee has a Factoring Company.",
+        "$ref": "#/components/schemas/payeeShort"
+      },
+      "payable": {
+        "type": "object",
+        "x-stoplight": {
+          "id": "n9h42dbwgw2uc"
+        },
+        "properties": {
+          "amount": {
+            "$ref": "#/components/schemas/amount",
+            "x-stoplight": {
+              "id": "9130zkygn5nhn"
+            }
+          },
+          "carrier_payee": {
+            "description": "Present only when the Payee is a Factoring Company. Identifies the Carrier the payment is on behalf of.",
+            "nullable": true,
+            "$ref": "#/components/schemas/payeeShort"
+          },
+          "comment": {
+            "$ref": "#/components/schemas/comment"
+          },
+          "created_datetime": {
+            "$ref": "#/components/schemas/createdDatetime"
+          },
+          "eta": {
+            "$ref": "#/components/schemas/eta",
+            "x-stoplight": {
+              "id": "un79cx8q9ni4y"
+            }
+          },
+          "id": {
+            "$ref": "#/components/schemas/payableId"
+          },
+          "idempotency_key": {
+            "$ref": "#/components/schemas/idempotencyKey"
+          },
+          "invoice_number": {
+            "$ref": "#/components/schemas/invoiceNumber"
+          },
+          "payee": {
+            "title": "payee_short",
+            "x-stoplight": {
+              "id": "lkabmmw82vbyo"
+            },
+            "type": "object",
+            "description": "The Payee receiving the funds. A Payee is either a Carrier (is_factoring_company: false) or a Factoring Company (is_factoring_company: true). Both are stored as Payees distinguished by this flag.",
+            "properties": {
+              "id": {
+                "$ref": "#/components/schemas/id",
+                "x-stoplight": {
+                  "id": "iwebybg0xhizd"
+                }
+              },
+              "payee_name": {
+                "$ref": "#/components/schemas/payeeName",
+                "x-stoplight": {
+                  "id": "cxr9ou6peuwve"
+                }
+              },
+              "funding_source_id": {
+                "$ref": "#/components/schemas/fundingSourceId",
+                "x-stoplight": {
+                  "id": "62r95b324501y"
+                }
+              },
+              "is_verified": {
+                "$ref": "#/components/schemas/isVerified",
+                "x-stoplight": {
+                  "id": "3wmef993rqlri"
+                }
+              },
+              "is_factoring_company": {
+                "$ref": "#/components/schemas/isFactoringCompany"
+              }
+            }
+          },
+          "payment_method": {
+            "$ref": "#/components/schemas/paymentMethod",
+            "x-stoplight": {
+              "id": "7w8whypbq88b2"
+            }
+          },
+          "po_number": {
+            "$ref": "#/components/schemas/poNumber"
+          },
+          "scheduled_for_date": {
+            "$ref": "#/components/schemas/scheduledForDate"
+          },
+          "status": {
+            "$ref": "#/components/schemas/status"
+          },
+          "updated_datetime": {
+            "$ref": "#/components/schemas/updatedDatetime"
+          }
+        }
+      },
+      "paperCheckFundingSource": {
+        "title": "paper_check_funding_source",
+        "x-stoplight": {
+          "id": "aog7aphq8jqn7"
+        },
+        "type": "object",
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/id"
+          },
+          "accountNumber": {
+            "$ref": "#/components/schemas/accountNumber"
+          },
+          "routing_number": {
+            "$ref": "#/components/schemas/routingNumber"
+          },
+          "funding_source_type": {
+            "$ref": "#/components/schemas/fundingSourceType"
+          },
+          "bank_account_type": {
+            "$ref": "#/components/schemas/bankAccountType"
+          }
+        }
+      },
+      "payee": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/id"
+          },
+          "payee_name": {
+            "$ref": "#/components/schemas/payeeName"
+          },
+          "mc_number": {
+            "$ref": "#/components/schemas/mcNumber"
+          },
+          "dot_number": {
+            "$ref": "#/components/schemas/dotNumber"
+          },
+          "email_address": {
+            "$ref": "#/components/schemas/emailAddress"
+          },
+          "phone_number": {
+            "$ref": "#/components/schemas/phoneNumber"
+          },
+          "first_name": {
+            "$ref": "#/components/schemas/firstName"
+          },
+          "last_name": {
+            "$ref": "#/components/schemas/lastName"
+          },
+          "address_line_one": {
+            "$ref": "#/components/schemas/addressLineOne"
+          },
+          "address_line_two": {
+            "$ref": "#/components/schemas/addressLineTwo"
+          },
+          "address_city": {
+            "$ref": "#/components/schemas/city"
+          },
+          "address_state": {
+            "$ref": "#/components/schemas/state"
+          },
+          "address_zip": {
+            "$ref": "#/components/schemas/postalCode"
+          },
+          "is_factoring_company": {
+            "$ref": "#/components/schemas/isFactoringCompany"
+          },
+          "ach_funding_source_id": {
+            "$ref": "#/components/schemas/fundingSourceId"
+          },
+          "paper_check_funding_source_id": {
+            "$ref": "#/components/schemas/fundingSourceId"
+          },
+          "available_payment_types": {
+            "$ref": "#/components/schemas/availablePaymentTypes"
+          },
+          "is_verified": {
+            "$ref": "#/components/schemas/isVerified"
+          },
+          "payee_candidate_id": {
+            "$ref": "#/components/schemas/payeeCandidateId"
+          },
+          "carrier_payee_ids": {
+            "$ref": "#/components/schemas/carrierPayeeIds"
+          },
+          "factoring_company": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "$ref": "#/components/schemas/id"
+              },
+              "payee_name": {
+                "$ref": "#/components/schemas/payeeName"
+              }
+            }
+          }
+        },
+        "x-stoplight": {
+          "id": "vhtkgvp4mic8z"
+        }
+      },
+      "payeeShort": {
+        "title": "payee_short",
+        "x-stoplight": {
+          "id": "lkabmmw82vbyo"
+        },
+        "type": "object",
+        "description": "Details of the Payee receiving the funds. It could be a Carrier or Factoring Company.",
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/id",
+            "x-stoplight": {
+              "id": "iwebybg0xhizd"
+            }
+          },
+          "payee_name": {
+            "$ref": "#/components/schemas/payeeName",
+            "x-stoplight": {
+              "id": "cxr9ou6peuwve"
+            }
+          },
+          "is_verified": {
+            "$ref": "#/components/schemas/isVerified",
+            "x-stoplight": {
+              "id": "3wmef993rqlri"
+            }
+          }
+        }
+      },
+      "transaction": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/id"
+          },
+          "amount": {
+            "$ref": "#/components/schemas/amount"
+          },
+          "idempotency_key": {
+            "$ref": "#/components/schemas/idempotencyKey"
+          },
+          "status": {
+            "$ref": "#/components/schemas/status"
+          },
+          "created_datetime": {
+            "$ref": "#/components/schemas/createdDatetime"
+          },
+          "payment_method": {
+            "$ref": "#/components/schemas/paymentMethod"
+          },
+          "reference_id": {
+            "type": "string",
+            "nullable": true,
+            "description": "Reference ID for the transaction."
+          },
+          "eta": {
+            "$ref": "#/components/schemas/eta"
+          },
+          "payables": {
+            "type": "array",
+            "items": {
+              "allOf": [
+                {
+                  "type": "object",
+                  "x-stoplight": {
+                    "id": "n9h42dbwgw2uc"
+                  },
+                  "properties": {
+                    "amount": {
+                      "$ref": "#/components/schemas/amount"
+                    },
+                    "carrier_payee": {
+                      "$ref": "#/components/schemas/payeeShort"
+                    },
+                    "created_datetime": {
+                      "$ref": "#/components/schemas/createdDatetime"
+                    },
+                    "id": {
+                      "$ref": "#/components/schemas/payableId"
+                    },
+                    "idempotency_key": {
+                      "$ref": "#/components/schemas/idempotencyKey"
+                    },
+                    "invoice_number": {
+                      "$ref": "#/components/schemas/invoiceNumber"
+                    },
+                    "po_number": {
+                      "$ref": "#/components/schemas/poNumber"
+                    },
+                    "scheduled_for_date": {
+                      "$ref": "#/components/schemas/scheduledForDate"
+                    },
+                    "updated_datetime": {
+                      "$ref": "#/components/schemas/updatedDatetime"
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "broker": {
+            "$ref": "#/components/schemas/brokerShort"
+          },
+          "payee": {
+            "title": "payee_short",
+            "x-stoplight": {
+              "id": "lkabmmw82vbyo"
+            },
+            "type": "object",
+            "description": "Details of the Payee receiving the funds. It could be a Carrier or Factoring Company.",
+            "properties": {
+              "id": {
+                "$ref": "#/components/schemas/id",
+                "x-stoplight": {
+                  "id": "iwebybg0xhizd"
+                }
+              },
+              "payee_name": {
+                "$ref": "#/components/schemas/payeeName",
+                "x-stoplight": {
+                  "id": "cxr9ou6peuwve"
+                }
+              },
+              "is_verified": {
+                "$ref": "#/components/schemas/isVerified",
+                "x-stoplight": {
+                  "id": "3wmef993rqlri"
+                }
+              },
+              "is_factoring_company": {
+                "$ref": "#/components/schemas/isFactoringCompany"
+              }
+            }
+          }
+        },
+        "x-stoplight": {
+          "id": "5uu7fb79w3n94"
+        }
+      },
+      "errorResponse": {
+        "type": "object",
+        "properties": {
+          "errors": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "string",
+                  "description": "A machine-readable error code.",
+                  "example": "not found"
+                },
+                "title": {
+                  "type": "string",
+                  "description": "A human-readable error message.",
+                  "example": "the requested resource was not found"
+                }
+              }
+            }
+          }
+        }
+      },
+      "walletBalance": {
+        "title": "walletBalance",
+        "type": "number",
+        "description": "The current balance of the wallet funding source.",
+        "example": 15953.21
+      },
+      "hasRtp": {
+        "title": "hasRtp",
+        "type": "boolean",
+        "description": "Whether or not the payee's funding source is RTP eligible.",
+        "example": true
+      },
+      "loadId": {
+        "type": "integer",
+        "example": 87346,
+        "title": "load_id",
+        "description": "The Load's ID"
+      },
+      "loadNumber": {
+        "type": "string",
+        "example": "abc12234",
+        "description": "The Load Number"
+      },
+      "load": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/loadId"
+          },
+          "amount": {
+            "$ref": "#/components/schemas/amount"
+          },
+          "status": {
+            "$ref": "#/components/schemas/status"
+          },
+          "created_datetime": {
+            "$ref": "#/components/schemas/createdDatetime"
+          },
+          "updated_datetime": {
+            "$ref": "#/components/schemas/updatedDatetime"
+          },
+          "payee": {
+            "title": "load_payee",
+            "type": "object",
+            "description": "Details of the Payee receiving the funds. It could be a Carrier or Factoring Company.",
+            "properties": {
+              "id": {
+                "$ref": "#/components/schemas/id"
+              },
+              "payee_name": {
+                "$ref": "#/components/schemas/payeeName"
+              },
+              "mc_number": {
+                "$ref": "#/components/schemas/mcNumber"
+              },
+              "dot_number": {
+                "$ref": "#/components/schemas/dotNumber"
+              },
+              "is_verified": {
+                "$ref": "#/components/schemas/isVerified"
+              },
+              "is_factoring_company": {
+                "$ref": "#/components/schemas/isFactoringCompany"
+              },
+              "available_payment_types": {
+                "$ref": "#/components/schemas/availablePaymentTypes"
+              }
+            }
+          },
+          "carrier_payee": {
+            "$ref": "#/components/schemas/payeeShort"
+          },
+          "payable": {
+            "title": "load_payable",
+            "type": "object",
+            "description": "The payable associated with the Load.",
+            "properties": {
+              "id": {
+                "$ref": "#/components/schemas/payableId"
+              },
+              "amount": {
+                "$ref": "#/components/schemas/amount"
+              },
+              "status": {
+                "$ref": "#/components/schemas/status"
+              },
+              "payment_method": {
+                "$ref": "#/components/schemas/paymentMethod"
+              },
+              "transaction": {
+                "title": "load_payable_transaction",
+                "type": "object",
+                "description": "The transaction associated with the Load.",
+                "properties": {
+                  "id": {
+                    "$ref": "#/components/schemas/id"
+                  },
+                  "status": {
+                    "$ref": "#/components/schemas/status"
+                  },
+                  "payment_method": {
+                    "$ref": "#/components/schemas/paymentMethod"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "x-api-key": {
+        "name": "x-api-key",
+        "type": "apiKey",
+        "in": "header"
+      }
+    },
+    "requestBodies": {
+      "createPayee": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "array",
+              "items": {
+                "allOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "external_id": {
+                        "$ref": "#/components/schemas/externalId"
+                      }
+                    }
+                  },
+                  {
+                    "$ref": "#/components/schemas/payee"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "description": ""
+      },
+      "updatePayee": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "payee_name": {
+                  "$ref": "#/components/schemas/payeeName",
+                  "nullable": true
+                },
+                "mc_number": {
+                  "$ref": "#/components/schemas/mcNumber",
+                  "nullable": true
+                },
+                "dot_number": {
+                  "$ref": "#/components/schemas/dotNumber",
+                  "nullable": true
+                },
+                "email_address": {
+                  "$ref": "#/components/schemas/emailAddress",
+                  "nullable": true,
+                  "x-stoplight": {
+                    "id": "13elwr3j478mu"
+                  }
+                },
+                "phone_number": {
+                  "$ref": "#/components/schemas/phoneNumber",
+                  "nullable": true
+                },
+                "address_line_one": {
+                  "$ref": "#/components/schemas/addressLineOne",
+                  "nullable": true
+                },
+                "address_line_two": {
+                  "$ref": "#/components/schemas/addressLineTwo",
+                  "nullable": true
+                },
+                "address_city": {
+                  "$ref": "#/components/schemas/city",
+                  "nullable": true
+                },
+                "address_state": {
+                  "$ref": "#/components/schemas/state",
+                  "nullable": true
+                },
+                "address_zip": {
+                  "$ref": "#/components/schemas/postalCode",
+                  "nullable": true
+                },
+                "first_name": {
+                  "$ref": "#/components/schemas/firstName",
+                  "nullable": true
+                },
+                "last_name": {
+                  "$ref": "#/components/schemas/lastName",
+                  "nullable": true
+                },
+                "factoring_company_id": {
+                  "$ref": "#/components/schemas/id",
+                  "nullable": true
+                },
+                "carrier_payee_ids": {
+                  "$ref": "#/components/schemas/carrierPayeeIds",
+                  "nullable": true,
+                  "items": {}
+                }
+              }
+            }
+          }
+        }
+      },
+      "createTransaction": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "x-examples": {
+                "Example 1": {
+                  "payee_id": 923,
+                  "carrier_payee_id": 123,
+                  "payment_method": "",
+                  "amount": "350",
+                  "reference_id": "tech_schedule_ach"
+                }
+              },
+              "properties": {
+                "payee_id": {
+                  "$ref": "#/components/schemas/payeeId"
+                },
+                "carrier_payee_id": {
+                  "$ref": "#/components/schemas/carrierPayeeId"
+                },
+                "payment_method": {
+                  "$ref": "#/components/schemas/paymentMethod"
+                },
+                "amount": {
+                  "$ref": "#/components/schemas/amountAsString"
+                },
+                "reference_id": {
+                  "$ref": "#/components/schemas/referenceId",
+                  "x-stoplight": {
+                    "id": "aayvco1cjg8h3"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "description": ""
+      },
+      "createPayable": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "payee_id": {
+                  "$ref": "#/components/schemas/payeeId"
+                },
+                "carrier_payee_id": {
+                  "$ref": "#/components/schemas/id"
+                },
+                "payment_method": {
+                  "title": "payment_method",
+                  "description": "The method used to settle a payable.",
+                  "x-stoplight": {
+                    "id": "0jtzkjzaao1jc"
+                  },
+                  "enum": [
+                    "ACH_NEXT_DAY",
+                    "WALLET_ACH_NEXT_DAY",
+                    "PAPER_CHECK"
+                  ],
+                  "example": "ACH_NEXT_DAY"
+                },
+                "amount": {
+                  "$ref": "#/components/schemas/amountAsString"
+                },
+                "scheduled_for_date": {
+                  "$ref": "#/components/schemas/scheduledForDate"
+                },
+                "invoice_number": {
+                  "$ref": "#/components/schemas/invoiceNumber"
+                },
+                "po_number": {
+                  "$ref": "#/components/schemas/poNumber"
+                },
+                "idempotency_key": {
+                  "$ref": "#/components/schemas/idempotencyKey"
+                }
+              }
+            }
+          }
+        }
+      },
+      "updatePayable": {
+        "description": "Fields that can be updated",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "amount": {
+                  "$ref": "#/components/schemas/amountAsString",
+                  "nullable": true
+                },
+                "invoice_number": {
+                  "$ref": "#/components/schemas/invoiceNumber",
+                  "nullable": true
+                },
+                "po_number": {
+                  "$ref": "#/components/schemas/poNumber",
+                  "nullable": true
+                },
+                "payee_id": {
+                  "$ref": "#/components/schemas/payeeId",
+                  "nullable": true
+                },
+                "carrier_payee_id": {
+                  "$ref": "#/components/schemas/id",
+                  "nullable": true
+                },
+                "scheduled_for_date": {
+                  "$ref": "#/components/schemas/scheduledForDate",
+                  "nullable": true
+                },
+                "payment_method": {
+                  "title": "payment_method",
+                  "description": "The method used to settle a payable.",
+                  "x-stoplight": {
+                    "id": "0jtzkjzaao1jc"
+                  },
+                  "enum": [
+                    "ACH_NEXT_DAY",
+                    "WALLET_ACH_NEXT_DAY",
+                    "PAPER_CHECK"
+                  ],
+                  "example": "ACH_NEXT_DAY",
+                  "nullable": true,
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "createLoad": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "load_number": {
+                  "$ref": "#/components/schemas/loadNumber"
+                },
+                "amount": {
+                  "$ref": "#/components/schemas/amount"
+                },
+                "external_id": {
+                  "$ref": "#/components/schemas/externalId"
+                },
+                "payee_id": {
+                  "$ref": "#/components/schemas/payeeId"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "responses": {
+      "getPayee": {
+        "description": "Example response",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/payee"
+            }
+          }
+        }
+      },
+      "getPayees": {
+        "description": "Example response",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "array",
+              "items": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/payee"
+                  }
+                ]
+              }
+            }
+          }
+        }
+      },
+      "get_payee_candidates": {
+        "description": "Example response",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/payeeCandidate"
+              }
+            }
+          },
+          "application/xml": {
+            "schema": {
+              "type": "array",
+              "minItems": 0,
+              "items": {
+                "$ref": "#/components/schemas/payeeCandidate",
+                "x-stoplight": {
+                  "id": "dpe9sac7x2fgn"
+                }
+              }
+            }
+          }
+        }
+      },
+      "errorForbidden": {
+        "description": "Example response",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "x-examples": {
+                "Example 1": {
+                  "Code": "ForbiddenError",
+                  "Message": "Action forbidden"
+                }
+              },
+              "properties": {
+                "Code": {
+                  "enum": [
+                    "ForbiddenError"
+                  ]
+                },
+                "Message": {
+                  "enum": [
+                    "Action forbidden"
+                  ]
+                }
+              }
+            },
+            "examples": {
+              "Example": {
+                "value": {
+                  "Code": "ForbiddenError",
+                  "Message": "Action forbidden"
+                }
+              }
+            }
+          }
+        },
+        "headers": {}
+      },
+      "getPayable": {
+        "description": "Example response",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/payable"
+            }
+          }
+        }
+      },
+      "get_transaction": {
+        "description": "Example response",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "$ref": "#/components/schemas/id"
+                },
+                "amount": {
+                  "$ref": "#/components/schemas/amount"
+                },
+                "idempotency_key": {
+                  "$ref": "#/components/schemas/idempotencyKey"
+                },
+                "status": {
+                  "$ref": "#/components/schemas/status"
+                },
+                "created_datetime": {
+                  "$ref": "#/components/schemas/createdDatetime"
+                },
+                "payment_method": {
+                  "$ref": "#/components/schemas/paymentMethod"
+                },
+                "eta": {
+                  "$ref": "#/components/schemas/eta"
+                },
+                "payables": {
+                  "type": "array",
+                  "items": {
+                    "allOf": [
+                      {
+                        "type": "object",
+                        "x-stoplight": {
+                          "id": "n9h42dbwgw2uc"
+                        },
+                        "properties": {
+                          "amount": {
+                            "$ref": "#/components/schemas/amount"
+                          },
+                          "carrier_payee": {
+                            "$ref": "#/components/schemas/payeeShort"
+                          },
+                          "created_datetime": {
+                            "$ref": "#/components/schemas/createdDatetime"
+                          },
+                          "id": {
+                            "$ref": "#/components/schemas/payableId"
+                          },
+                          "idempotency_key": {
+                            "$ref": "#/components/schemas/idempotencyKey"
+                          },
+                          "invoice_number": {
+                            "$ref": "#/components/schemas/invoiceNumber"
+                          },
+                          "po_number": {
+                            "$ref": "#/components/schemas/poNumber"
+                          },
+                          "scheduled_for_date": {
+                            "$ref": "#/components/schemas/scheduledForDate"
+                          },
+                          "updated_datetime": {
+                            "$ref": "#/components/schemas/updatedDatetime"
+                          }
+                        }
+                      }
+                    ]
+                  }
+                },
+                "broker": {
+                  "$ref": "#/components/schemas/brokerShort"
+                },
+                "payee": {
+                  "title": "payee_short",
+                  "x-stoplight": {
+                    "id": "lkabmmw82vbyo"
+                  },
+                  "type": "object",
+                  "description": "Details of the Payee receiving the funds. It could be a Carrier or Factoring Company.",
+                  "properties": {
+                    "id": {
+                      "$ref": "#/components/schemas/id",
+                      "x-stoplight": {
+                        "id": "iwebybg0xhizd"
+                      }
+                    },
+                    "payee_name": {
+                      "$ref": "#/components/schemas/payeeName",
+                      "x-stoplight": {
+                        "id": "cxr9ou6peuwve"
+                      }
+                    },
+                    "is_verified": {
+                      "$ref": "#/components/schemas/isVerified",
+                      "x-stoplight": {
+                        "id": "3wmef993rqlri"
+                      }
+                    },
+                    "is_factoring_company": {
+                      "$ref": "#/components/schemas/isFactoringCompany"
+                    }
+                  }
+                },
+                "check_preview": {
+                  "title": "check_preview",
+                  "type": "object",
+                  "properties": {
+                    "url": {
+                      "title": "url",
+                      "description": "URL Image of Paper Check Preview",
+                      "example": "https://www.example-url-image.com/paper-check/1234567"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get_transactions": {
+        "description": "Example response",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/transaction"
+              }
+            }
+          }
+        }
+      },
+      "getBroker": {
+        "description": "Response from /brokers GET",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "array",
+              "items": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/broker"
+                  }
+                ]
+              }
+            }
+          }
+        }
+      },
+      "getBrokers": {
+        "description": "Example response",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "array",
+              "items": {
+                "id": {
+                  "$ref": "#/components/schemas/brokerIdResponse"
+                },
+                "$ref": "#/components/schemas/broker"
+              }
+            }
+          }
+        }
+      },
+      "get_payee_candidate": {
+        "description": "Example response",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/payeeCandidate"
+            }
+          }
+        }
+      },
+      "getLoads": {
+        "description": "Example response",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "array",
+              "items": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/load"
+                  }
+                ]
+              }
+            }
+          }
+        }
+      },
+      "getLoad": {
+        "description": "Example response",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/load"
+            }
+          }
+        }
+      }
+    },
+    "parameters": {
+      "broker_header": {
+        "name": "broker-id",
+        "in": "header",
+        "schema": {
+          "$ref": "#/components/schemas/brokerId"
+        },
+        "description": "The id of the broker",
+        "required": true
+      }
+    }
+  },
+  "x-stoplight": {
+    "id": "n4ffpzmgt2fsp"
+  },
+  "x-amazon-apigateway-api-key-source": "HEADER"
+}

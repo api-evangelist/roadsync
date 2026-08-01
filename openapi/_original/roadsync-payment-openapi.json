@@ -1,0 +1,693 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Payment API v0",
+    "version": "0.5.13",
+    "license": {
+      "name": "Copyright (c) 2022, RoadSync Inc."
+    },
+    "description": "The Payment API gives you the ability to take payments.\n"
+  },
+  "servers": [
+    {
+      "url": "https://test.api.roadsync.app/v0/payment",
+      "description": "Sandbox/Test Payment API"
+    },
+    {
+      "url": "https://api.roadsync.app/v0/payment",
+      "description": "Production Payment API"
+    },
+    {
+      "url": "{server}",
+      "description": "Development",
+      "variables": {
+        "server": {
+          "default": "https://dev.api.roadsync.app/v0/payment"
+        }
+      }
+    }
+  ],
+  "tags": [
+    {
+      "name": "payment",
+      "description": "Payment API Operations"
+    }
+  ],
+  "paths": {
+    "/": {
+      "post": {
+        "tags": [
+          "payment"
+        ],
+        "operationId": "payment_post",
+        "description": "Create a payment",
+        "summary": "Create a payment",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PaymentRequest"
+              },
+              "examples": {
+                "Express_Code": {
+                  "value": {
+                    "paymentType": "comdataexpresscode",
+                    "expressCode": "11111111111111",
+                    "locationId": "2PQN9G4VElWxqaMoQBz5dMwkmAyYno",
+                    "firstName": "Test",
+                    "lastName": "Payer",
+                    "phone": "4041231234",
+                    "amount": 20,
+                    "customFields": {
+                      "reference": "INV21872"
+                    }
+                  }
+                },
+                "EFS_Check": {
+                  "value": {
+                    "paymentType": "efscheck",
+                    "driversLicenseNumber": "222222222",
+                    "driversLicenseState": "GA",
+                    "locationId": "2PQN9G4VElWxqaMoQBz5dMwkmAyYno",
+                    "firstName": "Test",
+                    "lastName": "Payer",
+                    "phone": "4041231234",
+                    "amount": 20,
+                    "driverNumber": "5465821",
+                    "unitNumber": "8326",
+                    "tripNumber": "45",
+                    "customFields": {
+                      "reference": "INV21872"
+                    }
+                  }
+                },
+                "T-Chek_Check": {
+                  "value": {
+                    "paymentType": "tchek",
+                    "driversLicenseNumber": "222222222",
+                    "driversLicenseState": "GA",
+                    "locationId": "2PQN9G4VElWxqaMoQBz5dMwkmAyYno",
+                    "firstName": "Test",
+                    "lastName": "Payer",
+                    "phone": "4041231234",
+                    "amount": 20,
+                    "driverNumber": "5465821",
+                    "unitNumber": "8326",
+                    "tripNumber": "45",
+                    "customFields": {
+                      "reference": "INV21872"
+                    }
+                  }
+                },
+                "Card_On_File": {
+                  "value": {
+                    "paymentType": "cardonfile",
+                    "locationId": "2PQN9G4VElWxqaMoQBz5dMwkmAyYno",
+                    "invoiceId": "YxlAjmG5d4rZBqXZNvLpVNy6nq9E3W",
+                    "deleteCardOnFile": false
+                  }
+                },
+                "Comdata_Fuel_Card": {
+                  "value": {
+                    "paymentType": "comdatafuelcard",
+                    "locationId": "2PQN9G4VElWxqaMoQBz5dMwkmAyYno",
+                    "firstName": "Test",
+                    "lastName": "Payer",
+                    "phone": "0000000000",
+                    "amount": 100,
+                    "unitNumber": "4471",
+                    "token": "5100171820384479",
+                    "customFields": {
+                      "reference": "INV21872"
+                    }
+                  }
+                },
+                "WEX_Fuel_Card": {
+                  "value": {
+                    "paymentType": "wexfuelcard",
+                    "locationId": "2PQN9G4VElWxqaMoQBz5dMwkmAyYno",
+                    "driverNumber": "5465821",
+                    "unitNumber": "8326",
+                    "tripNumber": "45",
+                    "hubReading": 1,
+                    "trailerNumber": "2",
+                    "token": "5014861073179200192",
+                    "customFields": {
+                      "reference": "INV21872"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Payment Created Successfully",
+            "headers": {
+              "Location": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaymentResponse"
+                },
+                "examples": {
+                  "WEX_Fuel_Card": {
+                    "value": {
+                      "data": {
+                        "id": "a1b2c3d4e5f6g7h8i9",
+                        "status": "declined",
+                        "reason": "WexInvalidFuelCardNumber"
+                      },
+                      "errors": [
+                        {
+                          "code": "wex_fuel_card_declined",
+                          "title": "WEX fuel card declined"
+                        }
+                      ]
+                    }
+                  },
+                  "Comdata_Express_Code": {
+                    "value": {
+                      "data": {
+                        "id": "a1b2c3d4e5f6g7h8i9",
+                        "status": "processing",
+                        "fields": [
+                          {
+                            "name": "driverNumber",
+                            "required": true
+                          },
+                          {
+                            "name": "unitNumber",
+                            "required": false
+                          }
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Missing or invalid data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errors": {
+                      "$ref": "#/components/schemas/Errors"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "ApiKey": []
+          }
+        ]
+      }
+    },
+    "/{id}": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "schema": {
+            "type": "string"
+          },
+          "required": true,
+          "description": "The id of the payment to update."
+        }
+      ],
+      "patch": {
+        "tags": [
+          "payment"
+        ],
+        "operationId": "payment_patch",
+        "summary": "Update fields for a payment by id.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PatchPaymentRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Payment Updated",
+            "headers": {
+              "Location": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaymentResponse"
+                },
+                "examples": {
+                  "Complete": {
+                    "value": {
+                      "data": {
+                        "id": "a1b2c3d4e5f6g7h8i9",
+                        "status": "complete"
+                      }
+                    }
+                  },
+                  "Declined": {
+                    "value": {
+                      "data": {
+                        "id": "a1b2c3d4e5f6g7h8i9",
+                        "status": "declined",
+                        "reason": "WexInvalidUnitNumber"
+                      },
+                      "errors": [
+                        {
+                          "code": "unit_number_invalid",
+                          "title": "Unit number invalid"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Payment resource not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errors": {
+                      "$ref": "#/components/schemas/Errors"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "ApiKey": []
+          }
+        ]
+      },
+      "get": {
+        "tags": [
+          "payment"
+        ],
+        "operationId": "payment_get",
+        "description": "Retrieve a payment by id",
+        "summary": "Retrieve a payment by id",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaymentResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Payment resource not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errors": {
+                      "$ref": "#/components/schemas/Errors"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "ApiKey": []
+          }
+        ]
+      }
+    },
+    "/ping": {
+      "get": {
+        "tags": [
+          "ping"
+        ],
+        "operationId": "ping_get",
+        "description": "Ping the payment-api service",
+        "summary": "Ping the payment-api service. Will also validate the api key present on the request",
+        "responses": {
+          "200": {
+            "description": "Service available",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaymentResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "API service available, but there was an issue with the api key configuration on the request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errors": {
+                      "$ref": "#/components/schemas/Errors"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "PaymentResponse": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "data": {
+            "type": "object",
+            "description": "The Payment object returned by the create call",
+            "properties": {
+              "id": {
+                "type": "string",
+                "description": "The id of the payment"
+              },
+              "checkNumber": {
+                "type": "string",
+                "description": "The number of the check that was created, only returned for 'efscheck and tchek' paymentType"
+              },
+              "status": {
+                "type": "string",
+                "description": "The status of the payment"
+              },
+              "reason": {
+                "type": "string",
+                "description": "A description on why a payment is in `failed` status"
+              },
+              "fields": {
+                "type": "array",
+                "description": "Fields to be collected from the user for certain payment types.",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "description": "Name of the field to collect"
+                    },
+                    "required": {
+                      "type": "boolean",
+                      "description": "True if field is required"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "errors": {
+            "$ref": "#/components/schemas/Errors"
+          }
+        }
+      },
+      "PaymentRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "paymentType": {
+            "type": "string",
+            "description": "The type of payment",
+            "enum": [
+              "comdataexpresscode",
+              "efscheck",
+              "tchek",
+              "cardonfile",
+              "wexfuelcard",
+              "comdatafuelcard"
+            ]
+          },
+          "invoiceId": {
+            "type": "string",
+            "description": "The id of a RoadSync Invoice."
+          },
+          "locationId": {
+            "type": "string",
+            "description": "The RoadSync ID of the location creating the invoice"
+          },
+          "firstName": {
+            "type": "string",
+            "description": "The payer's first name"
+          },
+          "lastName": {
+            "type": "string",
+            "description": "The payer's last name"
+          },
+          "email": {
+            "type": "string",
+            "description": "The payer's email address. Either email or phone is required."
+          },
+          "phone": {
+            "type": "string",
+            "description": "The payer's phone number. Either phone or email is required."
+          },
+          "address": {
+            "type": "string",
+            "description": "The payer's street address"
+          },
+          "city": {
+            "type": "string",
+            "description": "The payer's city"
+          },
+          "state": {
+            "type": "string",
+            "description": "The payer's state"
+          },
+          "zipCode": {
+            "type": "string",
+            "description": "The payer's zip code"
+          },
+          "token": {
+            "type": "string",
+            "description": "For credit card payments, the token returned from the front end tokenization service"
+          },
+          "amount": {
+            "type": "number",
+            "description": "The amount of the payment"
+          },
+          "customFields": {
+            "type": "object",
+            "description": "Values for fields configured for the current location. These can be configured to be required."
+          },
+          "expressCode": {
+            "type": "string",
+            "description": "A numeric identifier that represents a prespecified amount the driver can use to pay for something.\nThis is required when the paymentType is `comdataexpresscode`.\n"
+          },
+          "driverNumber": {
+            "type": "string",
+            "description": "Driver employee ID - may be required by some payment types"
+          },
+          "unitNumber": {
+            "type": "string",
+            "description": "Vehicle identifier - may be required by some payment types"
+          },
+          "tripNumber": {
+            "type": "string",
+            "description": "Job identifier - may be required by some payment types"
+          },
+          "deleteCardOnFile": {
+            "type": "boolean",
+            "description": "For `cardonfile` payment type, removes the card on file once payment is complete if set to true."
+          },
+          "hubReading": {
+            "type": "number",
+            "description": "Tractor milage - may be required by some payment types"
+          },
+          "trailerNumber": {
+            "type": "string",
+            "description": "Trailer identifier - may be required by some payment types"
+          },
+          "trailerHubReading": {
+            "type": "number",
+            "description": "Trailer milage - may be required by some payment types"
+          },
+          "trailerHours": {
+            "type": "number",
+            "description": "Trailer hours of service - may be required by some payment types"
+          },
+          "licenseNumber": {
+            "type": "string",
+            "description": "Driver's license number - may be required by some payment types"
+          },
+          "licenseState": {
+            "type": "string",
+            "description": "Driver's license state - may be required by some payment types"
+          },
+          "poNumber": {
+            "type": "string",
+            "description": "Load identifier - may be required by some payment types"
+          }
+        },
+        "required": [
+          "paymentType",
+          "locationId"
+        ]
+      },
+      "PatchPaymentRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "expressCode": {
+            "type": "string",
+            "description": "A numeric identifier that represents a prespecified amount the driver can use to pay for something.\n"
+          },
+          "firstName": {
+            "type": "string",
+            "description": "The payer's first name"
+          },
+          "lastName": {
+            "type": "string",
+            "description": "The payer's last name"
+          },
+          "email": {
+            "type": "string",
+            "description": "The payer's email address. Either email or phone is required."
+          },
+          "phone": {
+            "type": "string",
+            "description": "The payer's phone number. Either phone or email is required."
+          },
+          "customFields": {
+            "type": "object",
+            "description": "Values for fields configured for the current location. These can be configured to be required."
+          },
+          "driverNumber": {
+            "type": "string",
+            "description": "Driver employee ID - may be required by some payment types"
+          },
+          "unitNumber": {
+            "type": "string",
+            "description": "Vehicle identifier - may be required by some payment types"
+          },
+          "tripNumber": {
+            "type": "string",
+            "description": "Job identifier - may be required by some payment types"
+          },
+          "hubReading": {
+            "type": "number",
+            "description": "Tractor milage - may be required by some payment types"
+          },
+          "trailerNumber": {
+            "type": "string",
+            "description": "Trailer identifier - may be required by some payment types"
+          },
+          "trailerHubReading": {
+            "type": "number",
+            "description": "Trailer milage - may be required by some payment types"
+          },
+          "trailerHours": {
+            "type": "number",
+            "description": "Trailer hours of service - may be required by some payment types"
+          },
+          "licenseNumber": {
+            "type": "string",
+            "description": "Driver's license number - may be required by some payment types"
+          },
+          "licenseState": {
+            "type": "string",
+            "description": "Driver's license state - may be required by some payment types"
+          },
+          "poNumber": {
+            "type": "string",
+            "description": "Load identifier - may be required by some payment types"
+          }
+        }
+      },
+      "Errors": {
+        "type": "array",
+        "description": "A list of errors that occurred during payment processing",
+        "items": {
+          "$ref": "#/components/schemas/Error"
+        }
+      },
+      "Error": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "The error code"
+          },
+          "title": {
+            "type": "string",
+            "description": "Summary of error"
+          }
+        }
+      }
+    },
+    "responses": {
+      "Options200": {
+        "description": "Default response for CORS method",
+        "headers": {
+          "Access-Control-Allow-Origin": {
+            "schema": {
+              "type": "string"
+            }
+          },
+          "Access-Control-Allow-Methods": {
+            "schema": {
+              "type": "string"
+            }
+          },
+          "Access-Control-Allow-Headers": {
+            "schema": {
+              "type": "string"
+            }
+          },
+          "Access-Control-Allow-Credentials": {
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        },
+        "content": {}
+      }
+    },
+    "securitySchemes": {
+      "ApiKey": {
+        "type": "apiKey",
+        "name": "x-api-key",
+        "in": "header"
+      }
+    }
+  }
+}

@@ -1,0 +1,415 @@
+generated: '2026-07-21'
+method: derived
+source: openapi/roadsync-client-api-openapi.json components.schemas.PaymentError
+format: enum-derived
+envelope:
+  field: error
+  notes: PaymentError string returned on failed payment/checkout operations (client-api); the Payment
+    API mirrors these on transaction status='declined' with a 'reason' code and human 'title'.
+notes: Derived verbatim from the client-api OpenAPI components.schemas.PaymentError enum (135 codes).
+  Meanings are humanized from the code token; no meanings were invented beyond the token. Codes span card
+  networks, fleet checks (T-Chek/EFS/Fleet One), Comdata Express Codes, and WEX fuel cards used across
+  trucking payments.
+decline_codes:
+- code: funds
+  meaning: funds
+  category: general
+- code: expresscode
+  meaning: expresscode
+  category: general
+- code: invaliddata
+  meaning: invaliddata
+  category: general
+- code: numbernotauthed
+  meaning: numbernotauthed
+  category: general
+- code: invalidchecknumber
+  meaning: invalidchecknumber
+  category: general
+- code: unabletoprocess
+  meaning: unabletoprocess
+  category: general
+- code: invalidtripnumber
+  meaning: invalidtripnumber
+  category: general
+- code: invalidunitnumber
+  meaning: invalidunitnumber
+  category: general
+- code: invaliddrivernumber
+  meaning: invaliddrivernumber
+  category: general
+- code: invalidtripunitdriver
+  meaning: invalidtripunitdriver
+  category: general
+- code: incorrectamount
+  meaning: incorrectamount
+  category: general
+- code: invalidlocation
+  meaning: invalidlocation
+  category: general
+- code: shipperdeclined
+  meaning: shipperdeclined
+  category: general
+- code: tcheckneedsexpiration
+  meaning: tcheckneedsexpiration
+  category: fleet-check
+- code: fleetoneregisterfunds
+  meaning: fleetoneregisterfunds
+  category: fleet-check
+- code: registercheck
+  meaning: registercheck
+  category: general
+- code: callcheckprocessor
+  meaning: callcheckprocessor
+  category: processor-availability
+- code: invalidcardnumber
+  meaning: invalidcardnumber
+  category: card
+- code: invalidcardexpiry
+  meaning: invalidcardexpiry
+  category: card
+- code: invalidcardcvc
+  meaning: invalidcardcvc
+  category: card
+- code: invalidcardzip
+  meaning: invalidcardzip
+  category: card
+- code: carddeclined
+  meaning: carddeclined
+  category: card
+- code: comdatadown
+  meaning: comdatadown
+  category: comdata
+- code: efsdown
+  meaning: efsdown
+  category: fleet-check
+- code: tcheckdown
+  meaning: tcheckdown
+  category: fleet-check
+- code: fleetonedown
+  meaning: fleetonedown
+  category: fleet-check
+- code: instamoneydown
+  meaning: instamoneydown
+  category: fleet-check
+- code: usbankdown
+  meaning: usbankdown
+  category: fleet-check
+- code: systemsdown
+  meaning: systemsdown
+  category: processor-availability
+- code: achfailed
+  meaning: achfailed
+  category: general
+- code: nmirequestdeclined
+  meaning: nmirequestdeclined
+  category: general
+- code: addressmatchonly
+  meaning: addressmatchonly
+  category: avs
+- code: addresscustomernamematchonly
+  meaning: addresscustomernamematchonly
+  category: avs
+- code: 9characternumericzipmatchonly
+  meaning: 9characternumericzipmatchonly
+  category: card
+- code: 5characterzipmatchonly
+  meaning: 5characterzipmatchonly
+  category: card
+- code: 5characterzipcustomernamematchonly
+  meaning: 5characterzipcustomernamematchonly
+  category: card
+- code: noaddressorzipmatchonly
+  meaning: noaddressorzipmatchonly
+  category: card
+- code: noaddressorziporcustomernamematchonly
+  meaning: noaddressorziporcustomernamematchonly
+  category: card
+- code: addressunavailable
+  meaning: addressunavailable
+  category: avs
+- code: nonusissuerdoesnotparticipate
+  meaning: nonusissuerdoesnotparticipate
+  category: general
+- code: issuersystemunavailable
+  meaning: issuersystemunavailable
+  category: general
+- code: notamail/phoneorder
+  meaning: notamail/phoneorder
+  category: general
+- code: servicenotsupported
+  meaning: servicenotsupported
+  category: general
+- code: avsnotavailable
+  meaning: avsnotavailable
+  category: avs
+- code: cvv2/cvc2nomatch
+  meaning: cvv2/cvc2nomatch
+  category: card
+- code: notprocessed
+  meaning: notprocessed
+  category: general
+- code: merchanthasindicatedthatcvv2/cvc2isnotpresentoncard
+  meaning: merchanthasindicatedthatcvv2/cvc2isnotpresentoncard
+  category: card
+- code: issuerisnotcertifiedandorhasnotprovidedvisaencryptionkeys
+  meaning: issuerisnotcertifiedandorhasnotprovidedvisaencryptionkeys
+  category: general
+- code: TransactionWasDeclinedByProcessor
+  meaning: Transaction Was Declined By Processor
+  category: processor-availability
+- code: DoNotHonor
+  meaning: Do Not Honor
+  category: general
+- code: InsufficientFunds
+  meaning: Insufficient Funds
+  category: general
+- code: OverLimit
+  meaning: Over Limit
+  category: general
+- code: TransactionNotAllowed
+  meaning: Transaction Not Allowed
+  category: general
+- code: IncorrectPaymentInformation
+  meaning: Incorrect Payment Information
+  category: general
+- code: NoSuchCardIssuer
+  meaning: No Such Card Issuer
+  category: card
+- code: NoCardNumberOnFileWithIssuer
+  meaning: No Card Number On File With Issuer
+  category: card
+- code: ExpiredCard
+  meaning: Expired Card
+  category: card
+- code: InvalidExpirationDate
+  meaning: Invalid Expiration Date
+  category: card
+- code: InvalidCardSecurityCode
+  meaning: Invalid Card Security Code
+  category: card
+- code: InvalidPin
+  meaning: Invalid Pin
+  category: general
+- code: CallIssuerForFurtherInformation
+  meaning: Call Issuer For Further Information
+  category: general
+- code: PickUpCard
+  meaning: Pick Up Card
+  category: card
+- code: LostCard
+  meaning: Lost Card
+  category: card
+- code: StolenCard
+  meaning: Stolen Card
+  category: card
+- code: FraudulentCard
+  meaning: Fraudulent Card
+  category: card
+- code: DeclinedWithFurtherInstructionsAvailable
+  meaning: Declined With Further Instructions Available
+  category: general
+- code: DeclinedStopAllRecurringPayments
+  meaning: Declined Stop All Recurring Payments
+  category: general
+- code: DeclinedStopThisRecurringProgram
+  meaning: Declined Stop This Recurring Program
+  category: general
+- code: DeclinedUpdateCardholderDataAvailable
+  meaning: Declined Update Cardholder Data Available
+  category: card
+- code: DeclinedRetryInAFewDays
+  meaning: Declined Retry In AFew Days
+  category: general
+- code: TransactionWasRejectedByGateway
+  meaning: Transaction Was Rejected By Gateway
+  category: processor-availability
+- code: TransactionErrorReturnedByProcessor
+  meaning: Transaction Error Returned By Processor
+  category: processor-availability
+- code: InvalidMerchantConfiguration
+  meaning: Invalid Merchant Configuration
+  category: general
+- code: MerchantAccountIsInactive
+  meaning: Merchant Account Is Inactive
+  category: general
+- code: CommunicationError
+  meaning: Communication Error
+  category: processor-availability
+- code: CommunicationErrorWithIssuer
+  meaning: Communication Error With Issuer
+  category: processor-availability
+- code: DuplicateTransactionAtProcessor
+  meaning: Duplicate Transaction At Processor
+  category: processor-availability
+- code: ProcessorFormatError
+  meaning: Processor Format Error
+  category: processor-availability
+- code: InvalidTransactionInformation
+  meaning: Invalid Transaction Information
+  category: general
+- code: ProcessorFeatureNotAvailable
+  meaning: Processor Feature Not Available
+  category: processor-availability
+- code: UnsupportedCardType
+  meaning: Unsupported Card Type
+  category: card
+- code: WEXRequestFailed
+  meaning: WEXRequest Failed
+  category: wex-fuel-card
+- code: WEXAPIisOffline
+  meaning: WEXAPIis Offline
+  category: wex-fuel-card
+- code: WEXEncounteredAnError
+  meaning: WEXEncountered An Error
+  category: wex-fuel-card
+- code: InvalidSiteNumber
+  meaning: Invalid Site Number
+  category: general
+- code: InvalidMessageType
+  meaning: Invalid Message Type
+  category: general
+- code: InvalidMoneyCode
+  meaning: Invalid Money Code
+  category: general
+- code: CheckWasPreviouslyUsed
+  meaning: Check Was Previously Used
+  category: general
+- code: MaxAmountExceeded
+  meaning: Max Amount Exceeded
+  category: general
+- code: MustBeExactAmount
+  meaning: Must Be Exact Amount
+  category: general
+- code: UnknownErrorCode
+  meaning: Unknown Error Code
+  category: general
+- code: ExpressCodeNotOnFile
+  meaning: Express Code Not On File
+  category: general
+- code: UnexpectedError
+  meaning: Unexpected Error
+  category: general
+- code: InvalidRequestError
+  meaning: Invalid Request Error
+  category: general
+- code: UnknownErrorCode46
+  meaning: Unknown Error Code46
+  category: general
+- code: WexInvalidDriverNumber
+  meaning: Wex Invalid Driver Number
+  category: wex-fuel-card
+- code: CheckNumberInvalid
+  meaning: Check Number Invalid
+  category: general
+- code: WexInvalidFuelCardNumber
+  meaning: Wex Invalid Fuel Card Number
+  category: wex-fuel-card
+- code: UnknownErrorCode43
+  meaning: Unknown Error Code43
+  category: general
+- code: WexInvalidUnitNumber
+  meaning: Wex Invalid Unit Number
+  category: wex-fuel-card
+- code: AmountCodeInvalid
+  meaning: Amount Code Invalid
+  category: general
+- code: InvalidProductCode
+  meaning: Invalid Product Code
+  category: general
+- code: WexInactiveFuelCard
+  meaning: Wex Inactive Fuel Card
+  category: wex-fuel-card
+- code: InvalidTerminalId
+  meaning: Invalid Terminal Id
+  category: general
+- code: WexInvalidTripNumber
+  meaning: Wex Invalid Trip Number
+  category: wex-fuel-card
+- code: MissingFieldsError
+  meaning: Missing Fields Error
+  category: general
+- code: WexInvalidTruckStop
+  meaning: Wex Invalid Truck Stop
+  category: wex-fuel-card
+- code: ComdataNameRequired
+  meaning: Comdata Name Required
+  category: comdata
+- code: ComdataInvalidName
+  meaning: Comdata Invalid Name
+  category: comdata
+- code: ComdataMaximumDrawLimit
+  meaning: Comdata Maximum Draw Limit
+  category: comdata
+- code: ComdataTryCheckAuth
+  meaning: Comdata Try Check Auth
+  category: comdata
+- code: ComdataExpressInactive
+  meaning: Comdata Express Inactive
+  category: comdata
+- code: amountexceedsmaximum
+  meaning: amountexceedsmaximum
+  category: general
+- code: ComdataTrailerHoursRequired
+  meaning: Comdata Trailer Hours Required
+  category: comdata
+- code: ComdataTractorHubRequired
+  meaning: Comdata Tractor Hub Required
+  category: comdata
+- code: ComdataTrailerHubInvalid
+  meaning: Comdata Trailer Hub Invalid
+  category: comdata
+- code: ComdataTrailerHubRequired
+  meaning: Comdata Trailer Hub Required
+  category: comdata
+- code: ComdataDLStateInvalid
+  meaning: Comdata DLState Invalid
+  category: comdata
+- code: ComdataDLStateRequired
+  meaning: Comdata DLState Required
+  category: comdata
+- code: ComdataDLNumberInvalid
+  meaning: Comdata DLNumber Invalid
+  category: comdata
+- code: ComdataDLNumberRequired
+  meaning: Comdata DLNumber Required
+  category: comdata
+- code: ComdataTrailerHoursInvalid
+  meaning: Comdata Trailer Hours Invalid
+  category: comdata
+- code: ComdataTrailerNumberRequired
+  meaning: Comdata Trailer Number Required
+  category: comdata
+- code: ComdataPOInvalid
+  meaning: Comdata POInvalid
+  category: comdata
+- code: ComdataPORequired
+  meaning: Comdata PORequired
+  category: comdata
+- code: ComdataDuplicatePO
+  meaning: Comdata Duplicate PO
+  category: comdata
+- code: ComdataPOInvalidThisCard
+  meaning: Comdata POInvalid This Card
+  category: comdata
+- code: ComdataOverPOLimit
+  meaning: Comdata Over POLimit
+  category: comdata
+- code: ComdataTripNumberRequired
+  meaning: Comdata Trip Number Required
+  category: comdata
+- code: ComdataUnitNumberRequired
+  meaning: Comdata Unit Number Required
+  category: comdata
+- code: ComdataDriverNumberRequired
+  meaning: Comdata Driver Number Required
+  category: comdata
+- code: ComdataCardNumberRequired
+  meaning: Comdata Card Number Required
+  category: comdata
+- code: ComdataTrailerNumberInvalid
+  meaning: Comdata Trailer Number Invalid
+  category: comdata
+- code: ComdataLocationInvalid
+  meaning: Comdata Location Invalid
+  category: comdata

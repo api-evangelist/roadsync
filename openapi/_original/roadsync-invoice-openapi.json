@@ -1,0 +1,1080 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Invoice API",
+    "version": "1.0.0",
+    "license": {
+      "name": "Copyright (c) 2022, RoadSync Inc.",
+      "url": "https://roadsync.com"
+    },
+    "description": "Invoice API\n"
+  },
+  "servers": [
+    {
+      "url": "https://test.api.roadsync.app/v1/invoice",
+      "description": "Sandbox/Test Invoice API"
+    },
+    {
+      "url": "https://api.roadsync.app/v1/invoice",
+      "description": "Production Invoice API"
+    },
+    {
+      "url": "{server}",
+      "description": "Development",
+      "variables": {
+        "server": {
+          "default": "https://dev.api.roadsync.app/v1/invoice"
+        }
+      }
+    }
+  ],
+  "tags": [
+    {
+      "name": "invoice",
+      "description": "The Invoice API"
+    }
+  ],
+  "paths": {
+    "/": {
+      "get": {
+        "summary": "Get a list of invoices",
+        "description": "Get a list of invoices\n",
+        "tags": [
+          "invoice"
+        ],
+        "operationId": "get-invoice-list",
+        "parameters": [
+          {
+            "name": "offset",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            },
+            "description": "The starting position for result paging"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            },
+            "description": "The maximum number of results to return. Maximum is 21"
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "schema": {
+              "type": "array",
+              "description": "A list of invoice statuses to filter by",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "unknown",
+                  "new",
+                  "processing",
+                  "completed",
+                  "failed",
+                  "waitingapproval",
+                  "pendingreview",
+                  "sent",
+                  "accepted",
+                  "rejected",
+                  "markedaspaid",
+                  "validated",
+                  "validatedandfailed"
+                ]
+              }
+            }
+          },
+          {
+            "name": "invoiceNumber",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "description": "The invoice number (RS TRANS#) of the invoice to get. If present, all other filters will be ignored."
+          },
+          {
+            "name": "fromDeletedAt",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "description": "The lower bound of the deleted date range. Only invoices deleted after this date will be included in the response. Provide the date and time in ISO 8601 format (e.g., \"2023-06-15T09:30:00Z\")."
+          },
+          {
+            "name": "toDeletedAt",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "description": "The upper bound of the deleted date range. Only invoices deleted before this date will be included in the response. Provide the date and time in ISO 8601 format (e.g., \"2023-06-15T09:30:00Z\")."
+          },
+          {
+            "name": "fromAuthorizedAt",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "description": "The lower bound of the authorized date range. Only invoices authorized after this date will be included in the response. Provide the date and time in ISO 8601 format (e.g., \"2023-06-15T09:30:00Z\")."
+          },
+          {
+            "name": "toAuthorizedAt",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "description": "The upper bound of the authorized date range. Only invoices authorized before this date will be included in the response. Provide the date and time in ISO 8601 format (e.g., \"2023-06-15T09:30:00Z\")."
+          },
+          {
+            "name": "customField",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Custom Field name and value (stringified object with the structure of '{name:name,value:value}') of the invoice to get."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Invoice"
+                      }
+                    }
+                  }
+                },
+                "examples": {
+                  "success": {
+                    "$ref": "#/components/examples/invoiceListResponseExample"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "$ref": "#/components/responses/ErrorResponse"
+          }
+        },
+        "security": [
+          {
+            "ApiKey": []
+          }
+        ]
+      },
+      "post": {
+        "summary": "Create an invoice",
+        "description": "Create an invoice.\n",
+        "tags": [
+          "invoice"
+        ],
+        "operationId": "create-invoice",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "companyId": {
+                    "type": "string",
+                    "description": "The RoadSync ID of the company creating the invoice"
+                  },
+                  "locationId": {
+                    "type": "string",
+                    "description": "The RoadSync ID of the location creating the invoice"
+                  },
+                  "lineItems": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/LineItem"
+                    }
+                  },
+                  "name": {
+                    "type": "string",
+                    "description": "The payer's name"
+                  },
+                  "email": {
+                    "type": "string",
+                    "description": "The payer's email address. Either email or phone is required."
+                  },
+                  "phone": {
+                    "type": "string",
+                    "description": "The payer's phone number. Either phone or email is required."
+                  },
+                  "description": {
+                    "type": "string",
+                    "description": "Optional description of the invoice"
+                  },
+                  "comments": {
+                    "type": "string",
+                    "description": "Optional comments that will be added to the invoice and receipt."
+                  },
+                  "customFields": {
+                    "type": "object",
+                    "description": "Values for fields configured for the current location. These can be configured to be required."
+                  },
+                  "shiftId": {
+                    "type": "string",
+                    "description": "The employee shift when the invoice is being created. Required if the location has at least one shift configured."
+                  },
+                  "storeCardOnFile": {
+                    "type": "boolean",
+                    "description": "Option to save the card for future invoice payments"
+                  }
+                },
+                "required": [
+                  "companyId",
+                  "locationId",
+                  "lineItems",
+                  "name"
+                ]
+              },
+              "example": {
+                "locationId": "O8MqwQ1X3L5Ryax4OanNK2lGxerYA8",
+                "companyId": "2POMkDK9LZNw3BP0GBGoExejWylYq0",
+                "lineItems": [
+                  {
+                    "productId": "8Gdahuy5Nw3BI86BNgtdylYq0",
+                    "description": "Service charge",
+                    "amount": 200,
+                    "isTaxable": true
+                  }
+                ],
+                "phone": "4041231234",
+                "email": "testuser@roadsync.com",
+                "name": "John Doe",
+                "customFields": {
+                  "mileage": "1000"
+                },
+                "shiftId": "kNbRqo6QJjLnxa75yBPzpDZ193MlmA",
+                "comments": "These are the comments"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/Invoice"
+                    }
+                  }
+                },
+                "examples": {
+                  "success": {
+                    "$ref": "#/components/examples/invoiceResponseExample"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "$ref": "#/components/responses/ErrorResponse"
+          }
+        },
+        "security": [
+          {
+            "ApiKey": []
+          }
+        ]
+      }
+    },
+    "/{id}": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "schema": {
+            "type": "string"
+          },
+          "required": true,
+          "description": "The id of the invoice."
+        }
+      ],
+      "get": {
+        "summary": "Get an invoice",
+        "description": "Get an invoice.\n",
+        "tags": [
+          "invoice"
+        ],
+        "operationId": "get-invoice",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/Invoice"
+                    }
+                  }
+                },
+                "examples": {
+                  "success": {
+                    "$ref": "#/components/examples/invoiceResponseExample"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "$ref": "#/components/responses/ErrorResponse"
+          }
+        },
+        "security": [
+          {
+            "ApiKey": []
+          }
+        ]
+      },
+      "patch": {
+        "summary": "Update invoice fields",
+        "description": "Update invoice fields. Only the passed in fields will be updated on the invoice.\n",
+        "tags": [
+          "invoice"
+        ],
+        "operationId": "patch-invoice",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "lineItems": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/LineItem"
+                    }
+                  },
+                  "name": {
+                    "type": "string",
+                    "description": "The payer's name"
+                  },
+                  "email": {
+                    "type": "string",
+                    "description": "The payer's email address"
+                  },
+                  "phone": {
+                    "type": "string",
+                    "description": "The payer's phone number"
+                  },
+                  "description": {
+                    "type": "string",
+                    "description": "Optional description of the invoice"
+                  },
+                  "comments": {
+                    "type": "string",
+                    "description": "Optional comments that will be added to the invoice and receipt."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/Invoice"
+                    }
+                  }
+                },
+                "examples": {
+                  "success": {
+                    "$ref": "#/components/examples/invoiceResponseExample"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "$ref": "#/components/responses/ErrorResponse"
+          }
+        },
+        "security": [
+          {
+            "ApiKey": []
+          }
+        ]
+      }
+    },
+    "/{id}/send": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "schema": {
+            "type": "string"
+          },
+          "required": true,
+          "description": "The id of the invoice."
+        }
+      ],
+      "post": {
+        "summary": "Send an invoice to a recipient",
+        "description": "Send a URL to view the invoice and make payment through Remote Checkout.\n",
+        "tags": [
+          "invoice"
+        ],
+        "operationId": "send-invoice",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "description": "The email address to send the URL to"
+                  },
+                  "phone": {
+                    "type": "string",
+                    "description": "The phone number to SMS the URL to"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Success"
+          },
+          "default": {
+            "$ref": "#/components/responses/ErrorResponse"
+          }
+        },
+        "security": [
+          {
+            "ApiKey": []
+          }
+        ]
+      }
+    },
+    "/{id}/void": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "schema": {
+            "type": "string"
+          },
+          "required": true,
+          "description": "The id of the invoice."
+        }
+      ],
+      "post": {
+        "summary": "Void an invoice",
+        "description": "Void an invoice.\n",
+        "tags": [
+          "invoice"
+        ],
+        "operationId": "void-invoice",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "reason": {
+                    "type": "string",
+                    "description": "The reason the invoice is being voided.",
+                    "enum": [
+                      "requestedbycustomer",
+                      "incorrectamount",
+                      "prepaidcontract",
+                      "duplicate",
+                      "fraudulent",
+                      "alternate",
+                      "driverleft",
+                      "unabletoservice",
+                      "unknown"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Success"
+          },
+          "default": {
+            "$ref": "#/components/responses/ErrorResponse"
+          }
+        },
+        "security": [
+          {
+            "ApiKey": []
+          }
+        ]
+      }
+    },
+    "/{id}/clone": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "schema": {
+            "type": "string"
+          },
+          "required": true,
+          "description": "The id of the invoice."
+        }
+      ],
+      "post": {
+        "summary": "Clone an invoice",
+        "description": "Creates a clone of the specified invoice.\n",
+        "tags": [
+          "invoice"
+        ],
+        "operationId": "clone-invoice",
+        "responses": {
+          "201": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/Invoice"
+                    }
+                  }
+                },
+                "examples": {
+                  "success": {
+                    "$ref": "#/components/examples/invoiceResponseExample"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "$ref": "#/components/responses/ErrorResponse"
+          }
+        },
+        "security": [
+          {
+            "ApiKey": []
+          }
+        ]
+      }
+    },
+    "/{id}/embed": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "schema": {
+            "type": "string"
+          },
+          "required": true,
+          "description": "The id of the invoice."
+        }
+      ],
+      "get": {
+        "summary": "Get the payer embed URL for an invoice",
+        "description": "Returns the payer app embed URL for the specified invoice.\n",
+        "tags": [
+          "invoice"
+        ],
+        "operationId": "get-invoice-embed",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "url": {
+                          "type": "string",
+                          "description": "The payer app embed URL"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "$ref": "#/components/responses/ErrorResponse"
+          }
+        },
+        "security": [
+          {
+            "ApiKey": []
+          }
+        ]
+      }
+    },
+    "/{id}/refund": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "schema": {
+            "type": "string"
+          },
+          "required": true,
+          "description": "The id of the invoice."
+        }
+      ],
+      "post": {
+        "summary": "Refund the payment for an invoice",
+        "description": "Refund the specified amount for a paid invoice. This can only be done for invoices that were paid by credit card.\n",
+        "tags": [
+          "invoice"
+        ],
+        "operationId": "refund-invoice",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "amount": {
+                    "type": "number",
+                    "description": "The amount to refund. This can not be greater than the total invoice amount."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Success"
+          },
+          "default": {
+            "$ref": "#/components/responses/ErrorResponse"
+          }
+        },
+        "security": [
+          {
+            "ApiKey": []
+          }
+        ]
+      }
+    },
+    "/{id}/attach": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "schema": {
+            "type": "string"
+          },
+          "required": true,
+          "description": "The id of the invoice."
+        },
+        {
+          "name": "attachmentName",
+          "in": "query",
+          "schema": {
+            "type": "string"
+          },
+          "description": "The name of the file to attach"
+        }
+      ],
+      "post": {
+        "summary": "Attach a file to an invoice",
+        "description": "Attach a file to an invoice. Must be in PDF, PNG, or JPG format.\n",
+        "tags": [
+          "invoice"
+        ],
+        "operationId": "attachment-invoice",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/pdf": {
+              "schema": {
+                "type": "string",
+                "format": "binary"
+              }
+            },
+            "image/png": {
+              "schema": {
+                "type": "string",
+                "format": "binary"
+              }
+            },
+            "image/jpeg": {
+              "schema": {
+                "type": "string",
+                "format": "binary"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Uploaded"
+          },
+          "default": {
+            "$ref": "#/components/responses/ErrorResponse"
+          }
+        },
+        "security": [
+          {
+            "ApiKey": []
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Invoice": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The invoice id"
+          },
+          "invoiceNumber": {
+            "type": "integer",
+            "description": "The RS Transaction Number of the invoice"
+          },
+          "grandTotal": {
+            "type": "integer",
+            "description": "The total amount of the invoice"
+          },
+          "companyId": {
+            "type": "string",
+            "description": "The RoadSync ID of the company creating the invoice"
+          },
+          "locationId": {
+            "type": "string",
+            "description": "The RoadSync ID of the location creating the invoice"
+          },
+          "name": {
+            "type": "string",
+            "description": "The payer's name"
+          },
+          "email": {
+            "type": "string",
+            "description": "The payer's email address"
+          },
+          "phone": {
+            "type": "string",
+            "description": "The payer's phone number"
+          },
+          "token": {
+            "type": "string",
+            "description": "Optional security token"
+          },
+          "type": {
+            "type": "string",
+            "description": "The type of invoice"
+          },
+          "status": {
+            "type": "string",
+            "description": "The status of the invoice",
+            "enum": [
+              "new",
+              "processing",
+              "sent",
+              "failed",
+              "completed"
+            ]
+          },
+          "failedReason": {
+            "type": "string",
+            "description": "The reason the invoice failed. This is typically a payment error."
+          },
+          "lineItems": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LineItem"
+            }
+          },
+          "description": {
+            "type": "string",
+            "description": "Optional description of the invoice. This will appear in payment details associated with the invoice."
+          },
+          "comments": {
+            "type": "string",
+            "description": "Optional comments that will be added to the invoice and receipt."
+          },
+          "customFields": {
+            "type": "object",
+            "description": "Values for fields configured for the current location. These can be configured to be required."
+          },
+          "shiftId": {
+            "type": "string",
+            "description": "The employee shift when the invoice is being created. Required if the location has at least one shift configured."
+          },
+          "storePaymentDetails": {
+            "type": "string",
+            "description": "Option to save the payment details for future invoice payments"
+          },
+          "void": {
+            "type": "boolean",
+            "description": "Set to true if the invoice has been voided"
+          },
+          "createdAt": {
+            "type": "string",
+            "description": "The date the invoice was created"
+          },
+          "updatedAt": {
+            "type": "string",
+            "description": "The last updated date of the invoice"
+          },
+          "deletedAt": {
+            "type": "string",
+            "description": "The deleted date for voided invoices"
+          },
+          "authorizedAt": {
+            "type": "string",
+            "description": "The date the invoice was paid or authorized"
+          },
+          "depositStatus": {
+            "type": "string",
+            "description": "The status of the deposit the invoice payment will be included in",
+            "enum": [
+              "Processing",
+              "InTransit",
+              "Completed",
+              "Cancelled",
+              "Failed",
+              "Deposited",
+              "ExpeditedPending",
+              "ExpeditedInTransit",
+              "ExpeditedPaid",
+              "ExpeditedPaidAndDeposited"
+            ]
+          }
+        }
+      },
+      "Errors": {
+        "type": "array",
+        "description": "A list of errors that occurred during payment processing",
+        "items": {
+          "$ref": "#/components/schemas/Error"
+        }
+      },
+      "Error": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          }
+        }
+      },
+      "LineItem": {
+        "description": "A single invoice line item.",
+        "type": "object",
+        "properties": {
+          "productId": {
+            "description": "id of the RoadSync product that will represent the item."
+          },
+          "description": {
+            "description": "Description of the item.",
+            "type": "string"
+          },
+          "amount": {
+            "description": "Dollar amount of the item.",
+            "type": "number"
+          },
+          "isTaxable": {
+            "type": "boolean"
+          },
+          "displayOrder": {
+            "description": "Optional. The display order of the line items in the invoice.",
+            "type": "integer"
+          }
+        }
+      }
+    },
+    "responses": {
+      "Options200": {
+        "description": "Default response for CORS method",
+        "headers": {
+          "Access-Control-Allow-Origin": {
+            "schema": {
+              "type": "string"
+            }
+          },
+          "Access-Control-Allow-Methods": {
+            "schema": {
+              "type": "string"
+            }
+          },
+          "Access-Control-Allow-Headers": {
+            "schema": {
+              "type": "string"
+            }
+          },
+          "Access-Control-Allow-Credentials": {
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        },
+        "content": {}
+      },
+      "ErrorResponse": {
+        "description": "Error Response",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errors": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            },
+            "examples": {
+              "error": {
+                "$ref": "#/components/examples/errorResponseExample"
+              }
+            }
+          }
+        }
+      }
+    },
+    "examples": {
+      "invoiceResponseExample": {
+        "value": {
+          "data": {
+            "companyId": "2POMkDK9LZNw3BP0GBGoExejWylYq1",
+            "locationId": "O8MqwQ1X3L5Ryax4OanNK2lGxerYAz",
+            "status": "sent",
+            "description": "This is the test invoice",
+            "comments": "These are the invoice comments",
+            "name": "Test User",
+            "email": "testuser@roadsync.com",
+            "phone": "4041231234",
+            "customFields": {
+              "mileage": "10000"
+            },
+            "shiftId": "ejX52DZVG8A0MB1X8vrkoqwWlJpY6m",
+            "id": "jX52DZVG8A0MB1b1bgrkoqwWlJpY6m",
+            "invoiceNumber": 322943,
+            "token": "ff0jfbyg",
+            "lineItems": [
+              {
+                "productId": "AVeGYqb0d7MJpaD2xB69rlxDOZ8Nmo",
+                "description": "The line item",
+                "amount": 200,
+                "isTaxable": false
+              }
+            ],
+            "grandTotal": 200,
+            "createdAt": "2022-04-12T17:28:45.941903-04:00",
+            "updatedAt": "2022-04-12T17:28:48.442134-04:00",
+            "authorizedAt": "2022-04-12T17:28:48.442134-04:00",
+            "depositStatus": "completed"
+          }
+        }
+      },
+      "invoiceListResponseExample": {
+        "value": {
+          "data": [
+            {
+              "companyId": "2POMkDK9LZNw3BP0GBGoExejWylYq1",
+              "locationId": "O8MqwQ1X3L5Ryax4OanNK2lGxerYAz",
+              "status": "sent",
+              "description": "This is the test invoice",
+              "comments": "These are the invoice comments",
+              "name": "Test User",
+              "email": "testuser@roadsync.com",
+              "phone": "4041231234",
+              "customFields": {
+                "mileage": "10000"
+              },
+              "shiftId": "ejX52DZVG8A0MB1X8vrkoqwWlJpY6m",
+              "id": "jX52DZVG8A0MB1b1bgrkoqwWlJpY6m",
+              "invoiceNumber": 322943,
+              "token": "ff0jfbyg",
+              "lineItems": [
+                {
+                  "productId": "AVeGYqb0d7MJpaD2xB69rlxDOZ8Nmo",
+                  "description": "The line item",
+                  "amount": 200,
+                  "isTaxable": false
+                }
+              ],
+              "grandTotal": 200,
+              "createdAt": "2022-04-12T17:28:45.941903-04:00",
+              "updatedAt": "2022-04-12T17:28:48.442134-04:00",
+              "depositStatus": "completed"
+            }
+          ]
+        }
+      },
+      "errorResponseExample": {
+        "value": {
+          "errors": [
+            {
+              "code": "processing_error"
+            }
+          ]
+        }
+      }
+    },
+    "securitySchemes": {
+      "ApiKey": {
+        "type": "apiKey",
+        "name": "x-api-key",
+        "in": "header"
+      }
+    }
+  },
+  "x-amazon-apigateway-gateway-responses": {
+    "DEFAULT_5XX": {
+      "responseTemplates": {
+        "application/json": "{\"errors\": [{\"code\": \"$context.error.responseType\", \"detail\": $context.error.messageString}]}"
+      }
+    },
+    "DEFAULT_4XX": {
+      "responseTemplates": {
+        "application/json": "{\"errors\": [{\"code\": \"$context.error.responseType\", \"detail\": $context.error.messageString}]}"
+      }
+    }
+  },
+  "x-amazon-apigateway-binary-media-types": [
+    "application/pdf",
+    "image/png",
+    "image/jpeg"
+  ]
+}

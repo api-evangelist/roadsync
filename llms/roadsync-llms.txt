@@ -1,0 +1,41 @@
+# RoadSync
+
+> RoadSync is a digital payments and expense-management platform for the logistics and trucking industry. Its APIs let warehouses, repair and tow shops, brokers, and carriers accept payments (fuel cards, fleet checks, credit cards), issue and collect invoices, manage work orders, and disburse carrier/factoring payments. All APIs are REST over HTTPS, authenticated with an `x-api-key` header, versioned in the URI path, and separated into test (`test.api.roadsync.app`) and production (`api.roadsync.app`) hosts.
+
+## APIs
+
+- [RoadSyncPay Public API](https://developer.roadsync.com/openapi/rspay/overview/): Payee, funding-source, payable, transaction, broker, and load management for carrier/factoring disbursements (ACH, paper check, RTP). Base: https://api.roadsync.app/rspay/v1
+- [Invoice API](https://developer.roadsync.com/openapi/invoice/overview/): Create, list, send, void, clone, refund, embed, and attach files to invoices. Base: https://api.roadsync.app/v1/invoice
+- [Company API](https://developer.roadsync.com/openapi/company/overview/): Company locations and per-location product catalog. Base: https://api.roadsync.app/company/v1
+- [WorkOrders API](https://developer.roadsync.com/openapi/workorder/overview/): Create, list, send, and approve work orders. Base: https://api.roadsync.app/workorders/v1
+- [Payment API](https://developer.roadsync.com/api/): Take, retrieve, and update payments. Base: https://api.roadsync.app/v0/payment
+- [Legacy Client API](https://developer.roadsync.com/openapi/client-api/): Invoices, departments, locations, products, shifts, and session login for RoadSync clients.
+
+## Specs
+
+- openapi/roadsync-rspay-openapi.json — RoadSyncPay Public API (OpenAPI 3.0.1)
+- openapi/roadsync-invoice-openapi.json — Invoice API (OpenAPI 3.0.1)
+- openapi/roadsync-company-openapi.json — Company API (OpenAPI 3.0.1)
+- openapi/roadsync-workorder-openapi.json — WorkOrders API (OpenAPI 3.0.1)
+- openapi/roadsync-payment-openapi.json — Payment API (OpenAPI 3.0.1)
+- openapi/roadsync-client-api-openapi.json — Legacy Client API (OpenAPI 3.0.1)
+
+## Artifacts
+
+- authentication/roadsync-authentication.yml — auth profile (x-api-key + bearer session token)
+- conventions/roadsync-conventions.yml — auth, idempotency, errors, versioning, environments
+- errors/roadsync-problem-types.yml — error/problem catalog (client-api uses RFC 9457)
+- data-model/roadsync-data-model.yml — entity/relationship graph
+- lifecycle/roadsync-lifecycle.yml — versioning + status page
+- sandbox/roadsync-sandbox.yml — test vs production host separation
+- packages/roadsync-packages.yml — @roadsync/roadsync-js JavaScript SDK
+
+## Docs
+
+- [Developer Portal](https://developer.roadsync.com/)
+- [Authentication](https://developer.roadsync.com/api/authentication/)
+- [Checkout API](https://roadsync.com/checkout-api/)
+- [Help Center](https://learn.roadsync.com/knowledge)
+- [Status](http://status.roadsync.com/)
+- [Terms of Use](https://roadsync.com/terms-of-use/)
+- [Privacy Policy](https://roadsync.com/privacy-policy/)

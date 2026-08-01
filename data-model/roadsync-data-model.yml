@@ -1,0 +1,175 @@
+generated: '2026-07-21'
+method: derived
+source: openapi/ components.schemas + id-reference fields
+services:
+- service: client-api
+  production_server: []
+- service: company
+  production_server:
+  - https://api.roadsync.app/company/v1
+- service: invoice
+  production_server:
+  - https://api.roadsync.app/v1/invoice
+- service: payment
+  production_server:
+  - https://api.roadsync.app/v0/payment
+- service: rspay
+  production_server:
+  - https://api.roadsync.app/rspay/v1
+- service: workorder
+  production_server:
+  - https://api.roadsync.app/workorders/v1
+core_entities:
+- payee
+- payable
+- transaction
+- broker
+- load
+- funding_source
+- invoice
+- location
+- product
+- company
+- workorder
+- payment
+relationships:
+- from: Department
+  via: locationId
+  to: location
+  kind: belongs_to
+  service: client-api
+- from: Invoice
+  via: workOrderId
+  to: workorder
+  kind: belongs_to
+  service: client-api
+- from: InvoiceCreateInput
+  via: departmentId
+  to: department
+  kind: belongs_to
+  service: client-api
+- from: InvoiceCreateInput
+  via: locationId
+  to: location
+  kind: belongs_to
+  service: client-api
+- from: InvoiceCreateInput
+  via: shiftId
+  to: shift
+  kind: belongs_to
+  service: client-api
+- from: InvoiceCreateRequest
+  via: companyId
+  to: company
+  kind: belongs_to
+  service: client-api
+- from: InvoiceFile
+  via: invoiceId
+  to: invoice
+  kind: belongs_to
+  service: client-api
+- from: InvoiceLineItem
+  via: productId
+  to: product
+  kind: belongs_to
+  service: client-api
+- from: InvoiceLineItemInput
+  via: productId
+  to: product
+  kind: belongs_to
+  service: client-api
+- from: InvoiceSendRequest
+  via: invoiceId
+  to: invoice
+  kind: belongs_to
+  service: client-api
+- from: InvoiceUpdateInput
+  via: departmentId
+  to: department
+  kind: belongs_to
+  service: client-api
+- from: InvoiceUpdateInput
+  via: shiftId
+  to: shift
+  kind: belongs_to
+  service: client-api
+- from: InvoiceUpdateRequest
+  via: invoiceId
+  to: invoice
+  kind: belongs_to
+  service: client-api
+- from: Location
+  via: companyId
+  to: company
+  kind: belongs_to
+  service: client-api
+- from: Product
+  via: locationId
+  to: location
+  kind: belongs_to
+  service: client-api
+- from: Shift
+  via: locationId
+  to: location
+  kind: belongs_to
+  service: client-api
+- from: ShortCompanyCustomer
+  via: companyId
+  to: company
+  kind: belongs_to
+  service: client-api
+- from: ShortLocation
+  via: companyId
+  to: company
+  kind: belongs_to
+  service: client-api
+- from: UserInfo
+  via: companyId
+  to: company
+  kind: belongs_to
+  service: client-api
+- from: Invoice
+  via: companyId
+  to: company
+  kind: belongs_to
+  service: invoice
+- from: Invoice
+  via: locationId
+  to: location
+  kind: belongs_to
+  service: invoice
+- from: Invoice
+  via: shiftId
+  to: shift
+  kind: belongs_to
+  service: invoice
+- from: LineItem
+  via: productId
+  to: product
+  kind: belongs_to
+  service: invoice
+- from: PaymentRequest
+  via: invoiceId
+  to: invoice
+  kind: belongs_to
+  service: payment
+- from: PaymentRequest
+  via: locationId
+  to: location
+  kind: belongs_to
+  service: payment
+- from: workorder
+  via: companyId
+  to: company
+  kind: belongs_to
+  service: workorder
+- from: workorder
+  via: invoiceId
+  to: invoice
+  kind: belongs_to
+  service: workorder
+- from: location
+  via: companyId
+  to: company
+  kind: belongs_to
+  service: workorder

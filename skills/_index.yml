@@ -1,0 +1,12 @@
+generated: '2026-07-21'
+method: generated
+source: grounded in openapi/ operationIds
+skills:
+  - file: roadsync-create-and-collect-invoice.md
+    name: Create and collect an invoice
+    api: openapi/roadsync-invoice-openapi.json
+    operations: [create-invoice, send-invoice, get-invoice, refund-invoice, void-invoice]
+  - file: roadsync-disburse-carrier-payment.md
+    name: Disburse a payment to a carrier
+    api: openapi/roadsync-rspay-openapi.json
+    operations: [post-payees, get-payees-id, get-funding-sources-id, post-payables, post-transactions, get-transactions-id]

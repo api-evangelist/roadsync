@@ -1,0 +1,28 @@
+generated: '2026-07-21'
+method: derived
+source: openapi/ securitySchemes, responses, tags
+standards:
+- id: oauth2
+  conforms: false
+  evidence: no oauth2 securityScheme; APIs use apiKey (x-api-key) + bearer session token
+- id: oidc
+  conforms: false
+- id: rfc9457-problem-details
+  conforms: true
+  evidence: client-api responses use application/problem+json with https://problems.roadsync.com/problem/
+    type URIs
+- id: api-key-auth
+  conforms: true
+  evidence: all services require x-api-key header
+- id: idempotency
+  conforms: true
+  evidence: RoadSyncPay payables/transactions carry a documented idempotency_key field (components.schemas.idempotencyKey)
+- id: rest
+  conforms: true
+  evidence: standard HTTP methods + status codes across all services
+- id: openapi-3
+  conforms: true
+  evidence: all six specs are OpenAPI 3.0.1
+- id: pci-dss
+  conforms: false
+  evidence: payment processor; no published PCI attestation found on public developer surface

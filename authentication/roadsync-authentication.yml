@@ -1,0 +1,28 @@
+generated: '2026-07-21'
+method: derived
+source: openapi/roadsync-client-api-openapi.json, openapi/roadsync-company-openapi.json, openapi/roadsync-invoice-openapi.json,
+  openapi/roadsync-payment-openapi.json, openapi/roadsync-rspay-openapi.json, openapi/roadsync-workorder-openapi.json
+summary:
+  types:
+  - apiKey
+  - http
+  api_key_in:
+  - header
+schemes:
+- name: api_key
+  type: apiKey
+  in: header
+  parameter: x-api-key
+  sources:
+  - openapi/roadsync-client-api-openapi.json
+  - openapi/roadsync-company-openapi.json
+  - openapi/roadsync-invoice-openapi.json
+  - openapi/roadsync-payment-openapi.json
+  - openapi/roadsync-rspay-openapi.json
+  - openapi/roadsync-workorder-openapi.json
+- name: session_token
+  type: http
+  scheme: bearer
+  bearerFormat: JWT
+  sources:
+  - openapi/roadsync-client-api-openapi.json

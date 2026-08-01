@@ -1,0 +1,3920 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "contact": {
+      "email": "christo.delange@roadsync.com"
+    },
+    "description": "This API allows the Roadsync clients to manage aspects of the RoadSync service via an API.",
+    "license": {
+      "name": "Copyright (c) 2020, RoadSync Inc."
+    },
+    "title": "Client API v1.8",
+    "version": "1.8.45",
+    "x-api-id": "3ea39084-d8df-11ea-ad77-0017b600647f",
+    "x-audience": "external-partner"
+  },
+  "servers": [
+    {
+      "url": "https://client-api.staging.roadsync.com/{basePath}",
+      "variables": {
+        "Product": {
+          "default": "ClientApi"
+        },
+        "basePath": {
+          "default": "v1"
+        }
+      }
+    }
+  ],
+  "security": [
+    {
+      "api_key": []
+    },
+    {
+      "session_token": []
+    }
+  ],
+  "tags": [
+    {
+      "description": "Secured Admin-only calls",
+      "name": "admins"
+    },
+    {
+      "description": "Operations available to regular developers",
+      "name": "developers"
+    },
+    {
+      "description": "Invoice operations",
+      "name": "invoice"
+    },
+    {
+      "description": "Department operations",
+      "name": "department"
+    },
+    {
+      "description": "Company location operations",
+      "name": "location"
+    },
+    {
+      "description": "Unauthenticated operations not otherwise functionally categorized",
+      "name": "unauthenticated"
+    },
+    {
+      "description": "Authenticated operations not otherwise functionally categorized",
+      "name": "authenticated"
+    },
+    {
+      "description": "Product operations (company)",
+      "name": "product"
+    },
+    {
+      "description": "Shift operations (company/ location)",
+      "name": "shift"
+    }
+  ],
+  "paths": {
+    "/department/list": {
+      "get": {
+        "description": "Retrieve a list of departments for a location",
+        "operationId": "department_list_get",
+        "parameters": [
+          {
+            "explode": true,
+            "in": "query",
+            "name": "locationId",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/HashedId"
+            },
+            "style": "form"
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/DepartmentListResponse"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "403": {
+            "$ref": "#/components/responses/ForbiddenError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound404"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests429"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServiceError500"
+          },
+          "default": {
+            "$ref": "#/components/responses/UnexpectedError"
+          }
+        },
+        "security": [
+          {
+            "api_key": []
+          },
+          {
+            "session_token": []
+          }
+        ],
+        "summary": "Retrieve a list of departments for a location",
+        "tags": [
+          "department"
+        ]
+      },
+      "options": {
+        "operationId": "department_list_options",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/Options200"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "403": {
+            "$ref": "#/components/responses/ForbiddenError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound404"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests429"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServiceError500"
+          },
+          "default": {
+            "$ref": "#/components/responses/UnexpectedError"
+          }
+        },
+        "security": [],
+        "tags": [
+          "department"
+        ]
+      }
+    },
+    "/invoice/archive/{invoiceId}": {
+      "get": {
+        "description": "Archive an invoice by Id.\nNote this is same function as /invoice/{invoiceId} DELETE for clients that only support OPTIONS,GET,POST.\n",
+        "operationId": "invoice_archive_get",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/InvoiceArchiveGetResponse"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "403": {
+            "$ref": "#/components/responses/ForbiddenError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound404"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests429"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServiceError500"
+          },
+          "default": {
+            "$ref": "#/components/responses/UnexpectedError"
+          }
+        },
+        "security": [
+          {
+            "api_key": []
+          },
+          {
+            "session_token": []
+          }
+        ],
+        "summary": "Archive an invoice by Id",
+        "tags": [
+          "invoice"
+        ]
+      },
+      "options": {
+        "operationId": "invoice_archive_options",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/Options200"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "403": {
+            "$ref": "#/components/responses/ForbiddenError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound404"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests429"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServiceError500"
+          },
+          "default": {
+            "$ref": "#/components/responses/UnexpectedError"
+          }
+        },
+        "security": [],
+        "tags": [
+          "invoice"
+        ]
+      },
+      "parameters": [
+        {
+          "explode": true,
+          "in": "path",
+          "name": "invoiceId",
+          "required": true,
+          "schema": {
+            "$ref": "#/components/schemas/HashedId"
+          },
+          "style": "simple"
+        }
+      ]
+    },
+    "/invoice/create": {
+      "options": {
+        "operationId": "invoice_create_options",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/Options200"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "403": {
+            "$ref": "#/components/responses/ForbiddenError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound404"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests429"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServiceError500"
+          },
+          "default": {
+            "$ref": "#/components/responses/UnexpectedError"
+          }
+        },
+        "security": [],
+        "tags": [
+          "invoice"
+        ]
+      },
+      "post": {
+        "description": "Create an invoice",
+        "operationId": "invoice_create_post",
+        "requestBody": {
+          "$ref": "#/components/requestBodies/InvoiceCreateRequest"
+        },
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/InvoiceCreateResponse"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "403": {
+            "$ref": "#/components/responses/ForbiddenError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound404"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests429"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServiceError500"
+          },
+          "default": {
+            "$ref": "#/components/responses/UnexpectedError"
+          }
+        },
+        "security": [
+          {
+            "api_key": []
+          },
+          {
+            "session_token": []
+          }
+        ],
+        "summary": "Create an invoice",
+        "tags": [
+          "invoice"
+        ]
+      }
+    },
+    "/invoice/list": {
+      "get": {
+        "description": "Retrieve a list of invoices",
+        "operationId": "invoice_list_get",
+        "parameters": [
+          {
+            "description": "Retrieve a list of invoices per company. Note that most users will have access to only one (their own) company and typically only\nSuperAdmins will be able to access invoices from multiple companies.\npaidState is optional with companyId and defaults to 'NA'\n",
+            "explode": true,
+            "in": "query",
+            "name": "companyId",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/HashedId"
+            },
+            "style": "form"
+          },
+          {
+            "description": "Get a list of invoices filtered by location\n",
+            "explode": true,
+            "in": "query",
+            "name": "locationId",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/HashedId"
+            },
+            "style": "form"
+          },
+          {
+            "description": "companyId is required with paidState. If no companyId is provided the default is the default from UserInfo if available.\nProviding paidState without a companyId will return a BadRequestError\n",
+            "explode": true,
+            "in": "query",
+            "name": "paidState",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/PaidStateEnum"
+            },
+            "style": "form"
+          },
+          {
+            "explode": true,
+            "in": "query",
+            "name": "invoiceids",
+            "required": false,
+            "schema": {
+              "items": {
+                "$ref": "#/components/schemas/HashedId"
+              },
+              "maxItems": 20,
+              "type": "array"
+            },
+            "style": "form"
+          },
+          {
+            "explode": true,
+            "in": "query",
+            "name": "fromcreated",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/DateTime"
+            },
+            "style": "form"
+          },
+          {
+            "explode": true,
+            "in": "query",
+            "name": "tocreated",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/DateTime"
+            },
+            "style": "form"
+          },
+          {
+            "explode": true,
+            "in": "query",
+            "name": "archived",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            },
+            "style": "form"
+          },
+          {
+            "explode": true,
+            "in": "query",
+            "name": "departmentid",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/HashedId"
+            },
+            "style": "form"
+          },
+          {
+            "explode": true,
+            "in": "query",
+            "name": "excludeauthorized",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            },
+            "style": "form"
+          },
+          {
+            "explode": true,
+            "in": "query",
+            "name": "fromauth",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/DateTime"
+            },
+            "style": "form"
+          },
+          {
+            "explode": true,
+            "in": "query",
+            "name": "fromdel",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/DateTime"
+            },
+            "style": "form"
+          },
+          {
+            "explode": true,
+            "in": "query",
+            "name": "fromsentdate",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/DateTime"
+            },
+            "style": "form"
+          },
+          {
+            "description": "The default DefaultPageSize is 20.\nThe original idea was this: Ignore the 'limit' and return 20 items.\nHowever, the way this is implemented in the backend is this:\nif (limit or offset or ignoreLimit) {\n  if limit > 0 { // A specific value between 1 and 20 inclusive retrieves that many items\n    if limit <= DefaultPageSize {\n      retrieve(limit)\n    } else {\n      retrieve(DefaultPageSize)\n    }\n  } else\n    if ignoreLimit == false {\n      retrieve(DefaultPageSize)\n  }\n} else {\n  retrieve(DefaultPageSize)\n}\n\nThis makes ignoreLimit semantics basically useless in that it is only considered if limit==0 and then it is the same as limit=DefaultPageSize!\n\nRecommendation: NEVER use ignoreLimit. Only use offset and limit.\n\nIn v2 of the API ignoreLimit will be silently ignored and have no effect on results whatsoever.\n",
+            "explode": true,
+            "in": "query",
+            "name": "ignoreLimit",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            },
+            "style": "form"
+          },
+          {
+            "explode": true,
+            "in": "query",
+            "name": "includeregular",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            },
+            "style": "form"
+          },
+          {
+            "explode": true,
+            "in": "query",
+            "name": "includevoided",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            },
+            "style": "form"
+          },
+          {
+            "explode": true,
+            "in": "query",
+            "name": "initialinvoicetypes",
+            "required": false,
+            "schema": {
+              "items": {
+                "$ref": "#/components/schemas/InvoiceType"
+              },
+              "maxItems": 64,
+              "type": "array"
+            },
+            "style": "form"
+          },
+          {
+            "explode": true,
+            "in": "query",
+            "name": "invoicestatuses",
+            "required": false,
+            "schema": {
+              "items": {
+                "$ref": "#/components/schemas/InvoiceStatus"
+              },
+              "maxItems": 16,
+              "type": "array"
+            },
+            "style": "form"
+          },
+          {
+            "explode": true,
+            "in": "query",
+            "name": "invoicetypes",
+            "required": false,
+            "schema": {
+              "items": {
+                "$ref": "#/components/schemas/InvoiceType"
+              },
+              "maxItems": 16,
+              "type": "array"
+            },
+            "style": "form"
+          },
+          {
+            "description": "Upper limit for number of items to return. A number >= 1 and <= 20. Default: 20",
+            "explode": true,
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/Count"
+            },
+            "style": "form"
+          },
+          {
+            "explode": true,
+            "in": "query",
+            "name": "locationids",
+            "required": false,
+            "schema": {
+              "items": {
+                "$ref": "#/components/schemas/HashedId"
+              },
+              "maxItems": 16,
+              "type": "array"
+            },
+            "style": "form"
+          },
+          {
+            "description": "The offset of the requested page of \"limit\" items to retrieve. If there are 50 invoices and \"limit\"\nis not provided then items 0 through 19 will be returned by default. If \"offset\" is 10, then\nitems 11 through <limit> will be returned.\n",
+            "explode": true,
+            "in": "query",
+            "name": "offset",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/Count"
+            },
+            "style": "form"
+          },
+          {
+            "explode": true,
+            "in": "query",
+            "name": "search",
+            "required": false,
+            "schema": {
+              "maxLength": 2048,
+              "pattern": "/^.*$/",
+              "type": "string"
+            },
+            "style": "form"
+          },
+          {
+            "explode": true,
+            "in": "query",
+            "name": "shiftid",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/HashedId"
+            },
+            "style": "form"
+          },
+          {
+            "explode": true,
+            "in": "query",
+            "name": "toauth",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/DateTime"
+            },
+            "style": "form"
+          },
+          {
+            "explode": true,
+            "in": "query",
+            "name": "todel",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/DateTime"
+            },
+            "style": "form"
+          },
+          {
+            "explode": true,
+            "in": "query",
+            "name": "tosentdate",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/DateTime"
+            },
+            "style": "form"
+          },
+          {
+            "description": "Timeout in seconds for searching for invoices that meet the criteria. If the search exceeds this limit a Continuation response will be sent and optionally (if asyncResult == true and asynchronous results are availble) an asyncronous result set token.",
+            "explode": true,
+            "in": "query",
+            "name": "timeout",
+            "required": false,
+            "schema": {
+              "default": 19,
+              "format": "float",
+              "maximum": 29,
+              "minimum": 1,
+              "type": "number"
+            },
+            "style": "form"
+          },
+          {
+            "description": "Turn on/off the asynchronous result set for this request if the `timeout` time is exceeded during the execution of this search.",
+            "explode": true,
+            "in": "query",
+            "name": "asyncResult",
+            "required": false,
+            "schema": {
+              "default": true,
+              "type": "boolean"
+            },
+            "style": "form"
+          },
+          {
+            "description": "Optionally indicate on subsequent search request (typically with the same filters) where the search in the master list of invoices should be resumed.",
+            "explode": true,
+            "in": "query",
+            "name": "searchStart",
+            "required": false,
+            "schema": {
+              "default": 0,
+              "format": "int64",
+              "minimum": 0,
+              "type": "number"
+            },
+            "style": "form"
+          },
+          {
+            "description": "Optionally indicate on subsequent search request (typically with the same filters) where the search in the master list of invoices should be resumed.",
+            "explode": true,
+            "in": "query",
+            "name": "resultToken",
+            "required": false,
+            "schema": {
+              "maxLength": 256,
+              "pattern": "/^.*$/",
+              "type": "string"
+            },
+            "style": "form"
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/InvoiceListResponse"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "403": {
+            "$ref": "#/components/responses/ForbiddenError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound404"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests429"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServiceError500"
+          },
+          "default": {
+            "$ref": "#/components/responses/UnexpectedError"
+          }
+        },
+        "security": [
+          {
+            "api_key": []
+          },
+          {
+            "session_token": []
+          }
+        ],
+        "summary": "Retrieve a list of invoices",
+        "tags": [
+          "invoice"
+        ]
+      },
+      "options": {
+        "operationId": "invoice_list_options",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/Options200"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "403": {
+            "$ref": "#/components/responses/ForbiddenError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound404"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests429"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServiceError500"
+          },
+          "default": {
+            "$ref": "#/components/responses/UnexpectedError"
+          }
+        },
+        "security": [],
+        "tags": [
+          "invoice"
+        ]
+      }
+    },
+    "/invoice/report": {
+      "get": {
+        "description": "Retrieve an invoice report in the designated format",
+        "operationId": "invoice_report_get",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/InvoiceReportResponse"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "403": {
+            "$ref": "#/components/responses/ForbiddenError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound404"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests429"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServiceError500"
+          },
+          "default": {
+            "$ref": "#/components/responses/UnexpectedError"
+          }
+        },
+        "security": [
+          {
+            "api_key": []
+          },
+          {
+            "session_token": []
+          }
+        ],
+        "summary": "Retrieve an invoice report in the designated format",
+        "tags": [
+          "invoice"
+        ]
+      },
+      "options": {
+        "operationId": "invoice_report_options",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/Options200"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "403": {
+            "$ref": "#/components/responses/ForbiddenError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound404"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests429"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServiceError500"
+          },
+          "default": {
+            "$ref": "#/components/responses/UnexpectedError"
+          }
+        },
+        "security": [],
+        "tags": [
+          "invoice"
+        ]
+      },
+      "parameters": [
+        {
+          "description": "The format of the report. CSV is the default. Valid values are: CSV",
+          "explode": true,
+          "in": "query",
+          "name": "format",
+          "required": false,
+          "schema": {
+            "$ref": "#/components/schemas/FormatEnum"
+          },
+          "style": "form"
+        }
+      ]
+    },
+    "/invoice/search": {
+      "options": {
+        "operationId": "invoice_search_options",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/Options200"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "403": {
+            "$ref": "#/components/responses/ForbiddenError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound404"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests429"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServiceError500"
+          },
+          "default": {
+            "$ref": "#/components/responses/UnexpectedError"
+          }
+        },
+        "security": [],
+        "tags": [
+          "invoice"
+        ]
+      },
+      "post": {
+        "description": "Search for invoices with search criteria and retrieve a paged list of invoices.\n\nValid filters are:\n- All valid parameters of /invoice/list\n- Filters specific to /invoice/search as detailed below. TODO\n\nPagination has the defaults as specified in its schema, but 'pagination' is an optional search request attribute!\nFilters can have three items that apply to pagination (Supported by /invoice/list and factored in for compatibility):\n- offset\n- limit\n- ignoreLimit\nThe precedence of these filter items and pagination attributes are as follows:\n- No attributes from either set provided: Pagination defaults apply\n- No Pagination and some 'pagination' filters: Pagination defaults with overrides as follows when applicable:\n  PageNumber: offset / ItemsPerPage\n  TotalItems: limit if ignoreLimit==false else ItemsPerPage\n  TotalPages: 1\n  ItemsPerPage: 20\n- Pagination provided: limit filters are completely ignored\n\nNOTE: The following pattern in the request body/shape constitutes a request for \"the default Pagination settings\"\nand will cause 'limit' filters to be IGNORED because you are providing explicit Pagination:\n{\n  \"pagination\": \"\"\n}\n\nFilters:\n- Valid parameters of /invoice/list\nExamples:\n  Include voided invoices:\n\n      \"filters\": [\n        {\n          \"type\": \"boolean\",\n          \"field\": \"includevoided\",\n          \"value\": \"true\"\n        }\n      ]\n\n  Multiple, specific invoices:\n\n      \"filters\": [\n        {\n          \"type\": \"list\",\n          \"field\": \"invoiceids\",\n          \"value\": \"A1A1A1A1A1A1A1A1,B2B2B2B2B2B2B2B2,C3C3C3C3C3C3C3C3\"\n        }\n      ]\n\n  Weak pagination via limit and offset:\n\n      \"filters\": [\n        {\n          \"type\": \"integer\",\n          \"field\": \"limit\",\n          \"value\": \"10\"\n        },\n        {\n          \"type\": \"integer\",\n          \"field\": \"offset\",\n          \"value\": \"10\"\n        },\n        {\n          \"type\": \"boolean\",\n          \"field\": \"includevoided\",\n          \"value\": \"true\"\n        }\n      ]\n\n  Better pagination:\n\n      \"filters\": [\n        {\n          \"type\": \"boolean\",\n          \"field\": \"includevoided\",\n          \"value\": \"true\"\n        }\n      ],\n      \"pagination\": {\n        \"TotalItems\": 20,\n        \"ItemsPerPage\": 10,\n        \"PageNumber\": 2\n      }\n",
+        "operationId": "invoice_search_post",
+        "requestBody": {
+          "$ref": "#/components/requestBodies/InvoiceSearchRequest"
+        },
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/InvoiceSearchResponse"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "403": {
+            "$ref": "#/components/responses/ForbiddenError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound404"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests429"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServiceError500"
+          },
+          "default": {
+            "$ref": "#/components/responses/UnexpectedError"
+          }
+        },
+        "security": [
+          {
+            "api_key": []
+          },
+          {
+            "session_token": []
+          }
+        ],
+        "summary": "Search for invoices",
+        "tags": [
+          "invoice"
+        ]
+      }
+    },
+    "/invoice/stats": {
+      "get": {
+        "description": "Retrieve invoices statistics",
+        "operationId": "invoice_stats_get",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/InvoiceStatsResponse"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "403": {
+            "$ref": "#/components/responses/ForbiddenError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound404"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests429"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServiceError500"
+          },
+          "default": {
+            "$ref": "#/components/responses/UnexpectedError"
+          }
+        },
+        "security": [
+          {
+            "api_key": []
+          },
+          {
+            "session_token": []
+          }
+        ],
+        "summary": "Retrieve invoices statistics",
+        "tags": [
+          "invoice"
+        ]
+      },
+      "options": {
+        "operationId": "invoice_stats_options",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/Options200"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "403": {
+            "$ref": "#/components/responses/ForbiddenError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound404"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests429"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServiceError500"
+          },
+          "default": {
+            "$ref": "#/components/responses/UnexpectedError"
+          }
+        },
+        "security": [],
+        "tags": [
+          "invoice"
+        ]
+      }
+    },
+    "/invoice/update": {
+      "options": {
+        "operationId": "invoice_update_options",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/Options200"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "403": {
+            "$ref": "#/components/responses/ForbiddenError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound404"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests429"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServiceError500"
+          },
+          "default": {
+            "$ref": "#/components/responses/UnexpectedError"
+          }
+        },
+        "security": [],
+        "tags": [
+          "invoice"
+        ]
+      },
+      "post": {
+        "description": "Update an invoice",
+        "operationId": "invoice_update_post",
+        "requestBody": {
+          "$ref": "#/components/requestBodies/InvoiceUpdateRequest"
+        },
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/InvoiceUpdateResponse"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "403": {
+            "$ref": "#/components/responses/ForbiddenError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound404"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests429"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServiceError500"
+          },
+          "default": {
+            "$ref": "#/components/responses/UnexpectedError"
+          }
+        },
+        "security": [
+          {
+            "api_key": []
+          },
+          {
+            "session_token": []
+          }
+        ],
+        "summary": "Update an invoice",
+        "tags": [
+          "invoice"
+        ]
+      }
+    },
+    "/invoice/{invoiceId}": {
+      "delete": {
+        "description": "Archive an invoice by Id",
+        "operationId": "invoice_archive_delete",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/InvoiceDeleteResponse"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "403": {
+            "$ref": "#/components/responses/ForbiddenError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound404"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests429"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServiceError500"
+          },
+          "default": {
+            "$ref": "#/components/responses/UnexpectedError"
+          }
+        },
+        "security": [
+          {
+            "api_key": []
+          },
+          {
+            "session_token": []
+          }
+        ],
+        "summary": "Archive an invoice by Id",
+        "tags": [
+          "invoice"
+        ]
+      },
+      "get": {
+        "description": "Retrieve an invoice by Id",
+        "operationId": "invoice_get_get",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/InvoiceGetResponse"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "403": {
+            "$ref": "#/components/responses/ForbiddenError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound404"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests429"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServiceError500"
+          },
+          "default": {
+            "$ref": "#/components/responses/UnexpectedError"
+          }
+        },
+        "security": [
+          {
+            "api_key": []
+          },
+          {
+            "session_token": []
+          }
+        ],
+        "summary": "Retrieve an invoice by Id",
+        "tags": [
+          "invoice"
+        ]
+      },
+      "options": {
+        "operationId": "invoice_get_options",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/Options200"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "403": {
+            "$ref": "#/components/responses/ForbiddenError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound404"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests429"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServiceError500"
+          },
+          "default": {
+            "$ref": "#/components/responses/UnexpectedError"
+          }
+        },
+        "security": [],
+        "tags": [
+          "invoice"
+        ]
+      },
+      "parameters": [
+        {
+          "explode": true,
+          "in": "path",
+          "name": "invoiceId",
+          "required": true,
+          "schema": {
+            "$ref": "#/components/schemas/HashedId"
+          },
+          "style": "simple"
+        }
+      ]
+    },
+    "/location/list": {
+      "get": {
+        "description": "Retrieve a list of company locations. If no CompanyId is provided the user's companyId is used (if set).\nIf the user's company Id is also not set and error will be returned.\n",
+        "operationId": "location_list_get",
+        "parameters": [
+          {
+            "explode": true,
+            "in": "query",
+            "name": "companyId",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/HashedId"
+            },
+            "style": "form"
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/LocationListResponse"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "403": {
+            "$ref": "#/components/responses/ForbiddenError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound404"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests429"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServiceError500"
+          },
+          "default": {
+            "$ref": "#/components/responses/UnexpectedError"
+          }
+        },
+        "security": [
+          {
+            "api_key": []
+          },
+          {
+            "session_token": []
+          }
+        ],
+        "summary": "Retrieve a list of company locations",
+        "tags": [
+          "location"
+        ]
+      },
+      "options": {
+        "operationId": "location_list_options",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/Options200"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "403": {
+            "$ref": "#/components/responses/ForbiddenError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound404"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests429"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServiceError500"
+          },
+          "default": {
+            "$ref": "#/components/responses/UnexpectedError"
+          }
+        },
+        "security": [],
+        "tags": [
+          "location"
+        ]
+      }
+    },
+    "/login": {
+      "options": {
+        "operationId": "login_options",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/Options200"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "403": {
+            "$ref": "#/components/responses/ForbiddenError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound404"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests429"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServiceError500"
+          },
+          "default": {
+            "$ref": "#/components/responses/UnexpectedError"
+          }
+        },
+        "security": [],
+        "tags": [
+          "unauthenticated"
+        ]
+      },
+      "post": {
+        "description": "Validate credentials and establish session",
+        "operationId": "login_post",
+        "requestBody": {
+          "$ref": "#/components/requestBodies/LoginRequest"
+        },
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/LoginResponse"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "403": {
+            "$ref": "#/components/responses/ForbiddenError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound404"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests429"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServiceError500"
+          },
+          "default": {
+            "$ref": "#/components/responses/UnexpectedError"
+          }
+        },
+        "security": [
+          {
+            "api_key": []
+          }
+        ],
+        "summary": "Accepts user credentials for validation, create a session and returns a session token",
+        "tags": [
+          "unauthenticated"
+        ]
+      }
+    },
+    "/logout": {
+      "get": {
+        "description": "End session",
+        "operationId": "logout_get",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/LogoutResponse"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "403": {
+            "$ref": "#/components/responses/ForbiddenError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound404"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests429"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServiceError500"
+          },
+          "default": {
+            "$ref": "#/components/responses/UnexpectedError"
+          }
+        },
+        "security": [
+          {
+            "api_key": []
+          },
+          {
+            "session_token": []
+          }
+        ],
+        "summary": "Log user out and invalidate session token",
+        "tags": [
+          "authenticated"
+        ]
+      },
+      "options": {
+        "operationId": "logout_options",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/Options200"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "403": {
+            "$ref": "#/components/responses/ForbiddenError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound404"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests429"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServiceError500"
+          },
+          "default": {
+            "$ref": "#/components/responses/UnexpectedError"
+          }
+        },
+        "security": [],
+        "tags": [
+          "authenticated"
+        ]
+      }
+    },
+    "/ping": {
+      "get": {
+        "description": "Test backend connectivity",
+        "operationId": "ping_get",
+        "parameters": [
+          {
+            "explode": true,
+            "in": "query",
+            "name": "pong",
+            "required": false,
+            "schema": {
+              "maxLength": 2048,
+              "pattern": "/^.*$/",
+              "type": "string"
+            },
+            "style": "form"
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/PingResponse"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "403": {
+            "$ref": "#/components/responses/ForbiddenError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound404"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests429"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServiceError500"
+          },
+          "default": {
+            "$ref": "#/components/responses/UnexpectedError"
+          }
+        },
+        "security": [
+          {
+            "api_key": []
+          }
+        ],
+        "summary": "Does roundtrip with the backend API",
+        "tags": [
+          "unauthenticated"
+        ]
+      },
+      "options": {
+        "operationId": "ping_options",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/Options200"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "403": {
+            "$ref": "#/components/responses/ForbiddenError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound404"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests429"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServiceError500"
+          },
+          "default": {
+            "$ref": "#/components/responses/UnexpectedError"
+          }
+        },
+        "security": [],
+        "tags": [
+          "unauthenticated"
+        ]
+      }
+    },
+    "/product/list": {
+      "get": {
+        "description": "Retrieve a list of products for a location",
+        "operationId": "product_list_get",
+        "parameters": [
+          {
+            "explode": true,
+            "in": "query",
+            "name": "locationId",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/HashedId"
+            },
+            "style": "form"
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/ProductListResponse"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "403": {
+            "$ref": "#/components/responses/ForbiddenError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound404"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests429"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServiceError500"
+          },
+          "default": {
+            "$ref": "#/components/responses/UnexpectedError"
+          }
+        },
+        "security": [
+          {
+            "api_key": []
+          },
+          {
+            "session_token": []
+          }
+        ],
+        "summary": "Retrieve a list of products for a location",
+        "tags": [
+          "product"
+        ]
+      },
+      "options": {
+        "operationId": "product_list_options",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/Options200"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "403": {
+            "$ref": "#/components/responses/ForbiddenError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound404"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests429"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServiceError500"
+          },
+          "default": {
+            "$ref": "#/components/responses/UnexpectedError"
+          }
+        },
+        "security": [],
+        "tags": [
+          "product"
+        ]
+      }
+    },
+    "/shift/list": {
+      "get": {
+        "description": "Retrieve a list of shifts for a location",
+        "operationId": "shift_list_get",
+        "parameters": [
+          {
+            "explode": true,
+            "in": "query",
+            "name": "locationId",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/HashedId"
+            },
+            "style": "form"
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/ShiftListResponse"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "403": {
+            "$ref": "#/components/responses/ForbiddenError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound404"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests429"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServiceError500"
+          },
+          "default": {
+            "$ref": "#/components/responses/UnexpectedError"
+          }
+        },
+        "security": [
+          {
+            "api_key": []
+          },
+          {
+            "session_token": []
+          }
+        ],
+        "summary": "Retrieve a list of shifts for a location",
+        "tags": [
+          "shift"
+        ]
+      },
+      "options": {
+        "operationId": "shift_list_options",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/Options200"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "403": {
+            "$ref": "#/components/responses/ForbiddenError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound404"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests429"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServiceError500"
+          },
+          "default": {
+            "$ref": "#/components/responses/UnexpectedError"
+          }
+        },
+        "security": [],
+        "tags": [
+          "shift"
+        ]
+      }
+    }
+  },
+  "components": {
+    "requestBodies": {
+      "InvoiceCreateRequest": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/InvoiceCreateRequest"
+            }
+          }
+        },
+        "description": "Create an invoice input",
+        "required": true
+      },
+      "InvoiceSearchRequest": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/InvoiceSearchRequest"
+            }
+          }
+        },
+        "description": "Search for invoices",
+        "required": true
+      },
+      "InvoiceSendRequest": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/InvoiceSendRequest"
+            }
+          }
+        },
+        "description": "Send invoices",
+        "required": true
+      },
+      "InvoiceUpdateRequest": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/InvoiceUpdateRequest"
+            }
+          }
+        },
+        "description": "Update an invoice input",
+        "required": true
+      },
+      "LoginRequest": {
+        "content": {
+          "application/json": {
+            "examples": {
+              "userlogin": {
+                "summary": "API user login example",
+                "value": {
+                  "Password": "password",
+                  "Username": "user"
+                }
+              }
+            },
+            "schema": {
+              "$ref": "#/components/schemas/UsernamePassword"
+            }
+          }
+        },
+        "description": "Perform user authentication against the API",
+        "required": true
+      }
+    },
+    "responses": {
+      "DepartmentListResponse": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/DepartmentListResponse"
+            }
+          }
+        },
+        "description": "A department list response"
+      },
+      "ForbiddenError": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/CodeMessage"
+            }
+          }
+        },
+        "description": "Request is completely forbidden. API not provided or method and or endpoint not supported",
+        "headers": {
+          "WWW_Authenticate": {
+            "explode": false,
+            "schema": {
+              "maxLength": 2048,
+              "pattern": "/^.*$/",
+              "type": "string"
+            },
+            "style": "simple"
+          }
+        }
+      },
+      "InvoiceArchiveGetResponse": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/InvoiceResponse"
+            }
+          }
+        },
+        "description": "An invoice archive response"
+      },
+      "InvoiceCreateResponse": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/InvoiceResponse"
+            }
+          }
+        },
+        "description": "An invoice response"
+      },
+      "InvoiceDeleteResponse": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/InvoiceResponse"
+            }
+          }
+        },
+        "description": "An invoice response"
+      },
+      "InvoiceGetResponse": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/InvoiceResponse"
+            }
+          }
+        },
+        "description": "An invoice response"
+      },
+      "InvoiceListResponse": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/InvoiceListResponse"
+            }
+          }
+        },
+        "description": "An invoice list response"
+      },
+      "InvoiceReportResponse": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/InvoiceReportResponse"
+            }
+          }
+        },
+        "description": "An invoice report"
+      },
+      "InvoiceSearchResponse": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/InvoiceSearchResponse"
+            }
+          }
+        },
+        "description": "An invoice list response"
+      },
+      "InvoiceSendResponse": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/InvoiceResponse"
+            }
+          }
+        },
+        "description": "An invoice archive response"
+      },
+      "InvoiceStatsResponse": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/InvoiceStatsResponse"
+            }
+          }
+        },
+        "description": "An invoices statistics response"
+      },
+      "InvoiceUpdateResponse": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/InvoiceResponse"
+            }
+          }
+        },
+        "description": "An invoice response"
+      },
+      "LocationListResponse": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/LocationListResponse"
+            }
+          }
+        },
+        "description": "A location list response"
+      },
+      "LoginResponse": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/LoginResponse"
+            }
+          }
+        },
+        "description": "A login response"
+      },
+      "LogoutResponse": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/LogoutResponse"
+            }
+          }
+        },
+        "description": "A logout response"
+      },
+      "NotFound404": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Problem"
+            }
+          }
+        },
+        "description": "404 Not found"
+      },
+      "Options200": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "additionalProperties": false,
+              "type": "object"
+            }
+          }
+        },
+        "description": "200 response",
+        "headers": {
+          "Access-Control-Allow-Credentials": {
+            "explode": false,
+            "schema": {
+              "type": "boolean"
+            },
+            "style": "simple"
+          },
+          "Access-Control-Allow-Headers": {
+            "explode": false,
+            "schema": {
+              "maxLength": 256,
+              "pattern": "^[a-zA-Z0-9 ,]*$",
+              "type": "string"
+            },
+            "style": "simple"
+          },
+          "Access-Control-Allow-Methods": {
+            "explode": false,
+            "schema": {
+              "maxLength": 256,
+              "pattern": "^[a-zA-Z0-9 ,]*$",
+              "type": "string"
+            },
+            "style": "simple"
+          },
+          "Access-Control-Allow-Origin": {
+            "explode": false,
+            "schema": {
+              "maxLength": 256,
+              "pattern": "/^.*$/",
+              "type": "string"
+            },
+            "style": "simple"
+          },
+          "Cache-Control": {
+            "explode": false,
+            "schema": {
+              "maxLength": 256,
+              "pattern": "^[a-zA-Z0-9 ,\\-]*$",
+              "type": "string"
+            },
+            "style": "simple"
+          },
+          "Expires": {
+            "explode": false,
+            "schema": {
+              "maxLength": 256,
+              "pattern": "^[a-zA-Z0-9 \\-]*$",
+              "type": "string"
+            },
+            "style": "simple"
+          },
+          "Pragma": {
+            "explode": false,
+            "schema": {
+              "maxLength": 256,
+              "pattern": "^[a-zA-Z0-9 ,]*$",
+              "type": "string"
+            },
+            "style": "simple"
+          }
+        }
+      },
+      "PingResponse": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/PingResponse"
+            }
+          }
+        },
+        "description": "A backend test response"
+      },
+      "ProductListResponse": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ProductListResponse"
+            }
+          }
+        },
+        "description": "A product list response"
+      },
+      "ServiceError500": {
+        "content": {
+          "application/problem+json": {
+            "schema": {
+              "$ref": "#/components/schemas/Problem"
+            }
+          }
+        },
+        "description": "Service Error"
+      },
+      "ShiftListResponse": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ShiftListResponse"
+            }
+          }
+        },
+        "description": "A shift list response"
+      },
+      "TooManyRequests429": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Problem"
+            }
+          }
+        },
+        "description": "429 too many requests response"
+      },
+      "UnauthorizedError": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/CodeMessage"
+            }
+          }
+        },
+        "description": "API key is missing or invalid",
+        "headers": {
+          "WWW_Authenticate": {
+            "explode": false,
+            "schema": {
+              "maxLength": 2048,
+              "pattern": "/^.*$/",
+              "type": "string"
+            },
+            "style": "simple"
+          }
+        }
+      },
+      "UnexpectedError": {
+        "content": {
+          "application/problem+json": {
+            "schema": {
+              "$ref": "#/components/schemas/Problem"
+            }
+          }
+        },
+        "description": "unexpected error response"
+      }
+    },
+    "schemas": {
+      "AccountingProduct": {
+        "additionalProperties": false,
+        "properties": {
+          "externalId": {
+            "maxLength": 2048,
+            "pattern": "/^.*$/",
+            "type": "string"
+          },
+          "featureType": {
+            "$ref": "#/components/schemas/FeatureType"
+          }
+        },
+        "type": "object"
+      },
+      "Amount": {
+        "format": "float",
+        "maximum": 999999999.99,
+        "minimum": -999999999.99,
+        "type": "number"
+      },
+      "CodeEnum": {
+        "default": "Success",
+        "enum": [
+          "Success",
+          "Error",
+          "Exception"
+        ],
+        "type": "string"
+      },
+      "CodeMessage": {
+        "additionalProperties": false,
+        "description": "A generic error object generally used for 500 responses",
+        "properties": {
+          "code": {
+            "$ref": "#/components/schemas/CodeEnum"
+          },
+          "message": {
+            "$ref": "#/components/schemas/Message"
+          }
+        },
+        "required": [
+          "code",
+          "message"
+        ]
+      },
+      "CompanyType": {
+        "enum": [
+          "",
+          "system",
+          "shipper",
+          "lumper",
+          "towandrepair",
+          "warehouse",
+          "owneroperator",
+          "payer"
+        ],
+        "type": "string"
+      },
+      "Continuation": {
+        "additionalProperties": false,
+        "properties": {
+          "search_start": {
+            "$ref": "#/components/schemas/Count"
+          }
+        },
+        "type": "object"
+      },
+      "Count": {
+        "format": "int64",
+        "maximum": 999999999,
+        "minimum": 0,
+        "type": "integer"
+      },
+      "CustomField": {
+        "additionalProperties": false,
+        "properties": {
+          "deletedAt": {
+            "$ref": "#/components/schemas/DateTime"
+          },
+          "id": {
+            "$ref": "#/components/schemas/HashedId"
+          },
+          "isRequired": {
+            "type": "boolean"
+          },
+          "isShownInList": {
+            "type": "boolean"
+          },
+          "name": {
+            "maxLength": 256,
+            "pattern": "/^.*$/",
+            "type": "string"
+          },
+          "options": {
+            "additionalProperties": false,
+            "type": "object"
+          },
+          "title": {
+            "maxLength": 2048,
+            "pattern": "/^.*$/",
+            "type": "string"
+          },
+          "type": {
+            "$ref": "#/components/schemas/CustomFieldType"
+          }
+        },
+        "type": "object"
+      },
+      "CustomFieldType": {
+        "enum": [
+          "",
+          "unknown",
+          "input",
+          "phone",
+          "email",
+          "select",
+          "numeric"
+        ],
+        "type": "string"
+      },
+      "DateTime": {
+        "description": "A timestamp of last modification of the entry.",
+        "example": "2020-07-21 17:32:28Z",
+        "format": "date-time",
+        "type": "string"
+      },
+      "Department": {
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/HashedId"
+          },
+          "locationId": {
+            "$ref": "#/components/schemas/HashedId"
+          },
+          "name": {
+            "maxLength": 2048,
+            "pattern": "/^.*$/",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "DepartmentListResponse": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/CodeMessage"
+          },
+          {
+            "additionalProperties": false,
+            "properties": {
+              "department_list": {
+                "description": "A list of Departments",
+                "items": {
+                  "$ref": "#/components/schemas/Department"
+                },
+                "maxItems": 64,
+                "type": "array"
+              }
+            },
+            "type": "object"
+          }
+        ]
+      },
+      "DepositStatus": {
+        "enum": [
+          "",
+          "unknown",
+          "processing",
+          "in_transit",
+          "completed",
+          "cancelled",
+          "failed"
+        ],
+        "type": "string"
+      },
+      "Description": {
+        "maxLength": 1024,
+        "pattern": "/^.*$/",
+        "type": "string"
+      },
+      "EmailAddress": {
+        "maxLength": 256,
+        "pattern": "/^([a-z0-9_\\.-]+)@([\\da-z\\.-]+)\\.([a-z\\.]{2,5})$/",
+        "type": "string"
+      },
+      "FeatureType": {
+        "enum": [
+          "unknown",
+          "cash",
+          "expeditedpayout",
+          "cards",
+          "rcptnotifs",
+          "paycodes",
+          "monthlyfee",
+          "feeperproduct",
+          "treatcashascard",
+          "hideclerkname",
+          "signaturecapture",
+          "payoutamountsinemail",
+          "zeroamountsinemail",
+          "disableinvoices",
+          "enableworkorders",
+          "enableproductscomment",
+          "disablefleetcheck",
+          "publiccheckout",
+          "invoiceattachment",
+          "cardautopayout",
+          "reportdollarsigndisabled",
+          "allowdisableconvfee",
+          "paysafepayment",
+          "notifyinvoicestatuschange",
+          "survey",
+          "invoicecsvtimestampenabled",
+          "directbill",
+          "hostbill",
+          "companydashboard",
+          "addmultiplelineitems",
+          "expeditedach",
+          "namerequiredwithcard",
+          "licenserequiredwithcard",
+          "invoicesubmissionconfirmation",
+          "accountingquickbooks",
+          "accountingfreshbooks",
+          "allowzerodollarinvoice",
+          "instantpayout",
+          "canpayinvoices",
+          "twodaymanualpayout",
+          "ach",
+          "creditcardatpubliccheckoutonly",
+          "conveniencefeeperlineitem",
+          "invoicebatches",
+          "skipcheckdetailsscreen",
+          "sendtotaltopayerbutton",
+          "generalledger",
+          "wexapi",
+          "roadsynccreditcardprocessing"
+        ],
+        "type": "string"
+      },
+      "FilterItem": {
+        "additionalProperties": false,
+        "properties": {
+          "field": {
+            "maxLength": 128,
+            "pattern": "/^.*$/",
+            "type": "string"
+          },
+          "type": {
+            "enum": [
+              "integer",
+              "decimal",
+              "string",
+              "boolean",
+              "date",
+              "datetime",
+              "dictionary",
+              "object",
+              "json",
+              "csv",
+              "list"
+            ],
+            "type": "string"
+          },
+          "value": {
+            "$ref": "#/components/schemas/FilterItemValue"
+          }
+        },
+        "type": "object"
+      },
+      "FilterItemValue": {
+        "maxLength": 1024,
+        "pattern": "/^.*$/",
+        "type": "string"
+      },
+      "FormatEnum": {
+        "default": "CSV",
+        "enum": [
+          "",
+          "CSV"
+        ],
+        "type": "string"
+      },
+      "HashedId": {
+        "maxLength": 128,
+        "pattern": "/^\\w+$/",
+        "type": "string"
+      },
+      "Invoice": {
+        "additionalProperties": false,
+        "properties": {
+          "amount": {
+            "$ref": "#/components/schemas/Amount"
+          },
+          "attachmentCount": {
+            "format": "int64",
+            "maximum": 6,
+            "minimum": 0,
+            "type": "integer"
+          },
+          "authorizedAt": {
+            "$ref": "#/components/schemas/DateTime"
+          },
+          "baseAmt": {
+            "$ref": "#/components/schemas/Amount"
+          },
+          "comments": {
+            "maxLength": 4096,
+            "pattern": "/^.*$/",
+            "type": "string"
+          },
+          "company": {
+            "$ref": "#/components/schemas/ShortCompany"
+          },
+          "convFee": {
+            "$ref": "#/components/schemas/Amount"
+          },
+          "convFeeDisable": {
+            "type": "boolean"
+          },
+          "createdAt": {
+            "$ref": "#/components/schemas/DateTime"
+          },
+          "customFields": {
+            "$ref": "#/components/schemas/StringMap"
+          },
+          "customer": {
+            "$ref": "#/components/schemas/ShortCompanyCustomer"
+          },
+          "customerId": {
+            "$ref": "#/components/schemas/HashedId"
+          },
+          "deletedAt": {
+            "$ref": "#/components/schemas/DateTime"
+          },
+          "deletionReason": {
+            "$ref": "#/components/schemas/InvoiceDeletionReason"
+          },
+          "department": {
+            "$ref": "#/components/schemas/Department"
+          },
+          "depositStatus": {
+            "$ref": "#/components/schemas/DepositStatus"
+          },
+          "description": {
+            "$ref": "#/components/schemas/Description"
+          },
+          "files": {
+            "items": {
+              "$ref": "#/components/schemas/InvoiceFile"
+            },
+            "maxItems": 20,
+            "type": "array"
+          },
+          "id": {
+            "$ref": "#/components/schemas/HashedId"
+          },
+          "initialType": {
+            "$ref": "#/components/schemas/InvoiceType"
+          },
+          "invoiceNumber": {
+            "$ref": "#/components/schemas/PublicId"
+          },
+          "lineItems": {
+            "items": {
+              "$ref": "#/components/schemas/InvoiceLineItem"
+            },
+            "maxItems": 64,
+            "type": "array"
+          },
+          "location": {
+            "$ref": "#/components/schemas/ShortLocation"
+          },
+          "payerEmail": {
+            "$ref": "#/components/schemas/EmailAddress"
+          },
+          "payerName": {
+            "maxLength": 256,
+            "pattern": "/^.*$/",
+            "type": "string"
+          },
+          "payerPhone": {
+            "$ref": "#/components/schemas/PhoneNumberInternational"
+          },
+          "paymentError": {
+            "$ref": "#/components/schemas/PaymentError"
+          },
+          "publicId": {
+            "$ref": "#/components/schemas/PublicId"
+          },
+          "receipt": {
+            "$ref": "#/components/schemas/Receipt"
+          },
+          "sentAt": {
+            "$ref": "#/components/schemas/DateTime"
+          },
+          "shift": {
+            "$ref": "#/components/schemas/Shift"
+          },
+          "status": {
+            "$ref": "#/components/schemas/InvoiceStatus"
+          },
+          "subtype": {
+            "maxLength": 128,
+            "pattern": "/^.*$/",
+            "type": "string"
+          },
+          "temporaryCustomerName": {
+            "maxLength": 256,
+            "pattern": "/^.*$/",
+            "type": "string"
+          },
+          "timezone": {
+            "$ref": "#/components/schemas/TimeZone"
+          },
+          "token": {
+            "maxLength": 1024,
+            "pattern": "/^.*$/",
+            "type": "string"
+          },
+          "type": {
+            "$ref": "#/components/schemas/InvoiceType"
+          },
+          "updatedAt": {
+            "$ref": "#/components/schemas/DateTime"
+          },
+          "user": {
+            "$ref": "#/components/schemas/ShortUser"
+          },
+          "userId": {
+            "$ref": "#/components/schemas/HashedId"
+          },
+          "workOrderId": {
+            "$ref": "#/components/schemas/HashedId"
+          },
+          "workflowStatus": {
+            "$ref": "#/components/schemas/WorkflowStatus"
+          }
+        },
+        "type": "object"
+      },
+      "InvoiceCreateInput": {
+        "additionalProperties": false,
+        "properties": {
+          "comments": {
+            "maxLength": 4096,
+            "pattern": "/^.*$/",
+            "type": "string"
+          },
+          "convFeeDisable": {
+            "type": "boolean"
+          },
+          "customFields": {
+            "$ref": "#/components/schemas/StringMap"
+          },
+          "customerId": {
+            "$ref": "#/components/schemas/HashedId"
+          },
+          "departmentId": {
+            "$ref": "#/components/schemas/HashedId"
+          },
+          "description": {
+            "$ref": "#/components/schemas/Description"
+          },
+          "lineItems": {
+            "items": {
+              "$ref": "#/components/schemas/InvoiceLineItemInput"
+            },
+            "maxItems": 64,
+            "type": "array"
+          },
+          "locationId": {
+            "$ref": "#/components/schemas/HashedId"
+          },
+          "payerEmail": {
+            "$ref": "#/components/schemas/EmailAddress"
+          },
+          "payerName": {
+            "maxLength": 256,
+            "pattern": "/^.*$/",
+            "type": "string"
+          },
+          "payerPhone": {
+            "$ref": "#/components/schemas/PhoneNumberInternational"
+          },
+          "shiftId": {
+            "$ref": "#/components/schemas/HashedId"
+          },
+          "temporaryCustomerName": {
+            "maxLength": 256,
+            "pattern": "/^.*$/",
+            "type": "string"
+          },
+          "workflowStatus": {
+            "$ref": "#/components/schemas/WorkflowStatus"
+          }
+        },
+        "type": "object"
+      },
+      "InvoiceCreateRequest": {
+        "additionalProperties": false,
+        "properties": {
+          "companyId": {
+            "$ref": "#/components/schemas/HashedId"
+          },
+          "invoiceCreateInput": {
+            "$ref": "#/components/schemas/InvoiceCreateInput"
+          }
+        },
+        "type": "object"
+      },
+      "InvoiceDeletionReason": {
+        "enum": [
+          "",
+          "unknown",
+          "requestedbycustomer",
+          "incorrectamount",
+          "prepaidcontract",
+          "duplicate",
+          "fraudulent",
+          "alternate",
+          "driverleft",
+          "unabletoservice"
+        ],
+        "type": "string"
+      },
+      "InvoiceFile": {
+        "additionalProperties": false,
+        "properties": {
+          "fileId": {
+            "$ref": "#/components/schemas/HashedId"
+          },
+          "fileName": {
+            "maxLength": 2048,
+            "pattern": "/^.*$/",
+            "type": "string"
+          },
+          "invoiceFileId": {
+            "$ref": "#/components/schemas/HashedId"
+          },
+          "invoiceId": {
+            "$ref": "#/components/schemas/HashedId"
+          },
+          "type": {
+            "$ref": "#/components/schemas/InvoiceFileType"
+          }
+        },
+        "type": "object"
+      },
+      "InvoiceFileType": {
+        "enum": [
+          "",
+          "unknown",
+          "signature",
+          "pdf",
+          "image"
+        ],
+        "type": "string"
+      },
+      "InvoiceLineItem": {
+        "additionalProperties": false,
+        "properties": {
+          "cost": {
+            "$ref": "#/components/schemas/Amount"
+          },
+          "description": {
+            "$ref": "#/components/schemas/Description"
+          },
+          "isTaxable": {
+            "type": "boolean"
+          },
+          "product": {
+            "$ref": "#/components/schemas/Product"
+          },
+          "productId": {
+            "$ref": "#/components/schemas/HashedId"
+          },
+          "qty": {
+            "$ref": "#/components/schemas/Quantity"
+          },
+          "type": {
+            "$ref": "#/components/schemas/ProductType"
+          }
+        },
+        "type": "object"
+      },
+      "InvoiceLineItemInput": {
+        "additionalProperties": false,
+        "properties": {
+          "description": {
+            "$ref": "#/components/schemas/Description"
+          },
+          "isTaxable": {
+            "type": "boolean"
+          },
+          "productId": {
+            "$ref": "#/components/schemas/HashedId"
+          },
+          "qty": {
+            "$ref": "#/components/schemas/Quantity"
+          }
+        },
+        "type": "object"
+      },
+      "InvoiceListResponse": {
+        "additionalProperties": false,
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/CodeMessage"
+          },
+          {
+            "additionalProperties": false,
+            "properties": {
+              "continuation": {
+                "$ref": "#/components/schemas/Continuation"
+              },
+              "invoice_list": {
+                "description": "A list of invoices - Each invocation returns a maximum of 20 items",
+                "items": {
+                  "$ref": "#/components/schemas/Invoice"
+                },
+                "maxItems": 20,
+                "type": "array"
+              },
+              "paging": {
+                "$ref": "#/components/schemas/Paging"
+              },
+              "parameters": {
+                "$ref": "#/components/schemas/StringMap"
+              },
+              "result_token": {
+                "$ref": "#/components/schemas/HashedId"
+              },
+              "stats": {
+                "$ref": "#/components/schemas/StringMap"
+              }
+            },
+            "type": "object"
+          }
+        ],
+        "type": "object"
+      },
+      "InvoiceReport": {
+        "additionalProperties": false,
+        "properties": {
+          "format": {
+            "$ref": "#/components/schemas/FormatEnum"
+          },
+          "report": {
+            "maxLength": 2048,
+            "pattern": "/^.*$/",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "InvoiceReportResponse": {
+        "additionalProperties": false,
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/CodeMessage"
+          },
+          {
+            "additionalProperties": false,
+            "properties": {
+              "invoice_report": {
+                "$ref": "#/components/schemas/InvoiceReport"
+              }
+            },
+            "type": "object"
+          }
+        ],
+        "type": "object"
+      },
+      "InvoiceResponse": {
+        "additionalProperties": false,
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/CodeMessage"
+          },
+          {
+            "additionalProperties": false,
+            "properties": {
+              "invoice": {
+                "$ref": "#/components/schemas/Invoice"
+              }
+            },
+            "type": "object"
+          }
+        ],
+        "type": "object"
+      },
+      "InvoiceSearchRequest": {
+        "additionalProperties": false,
+        "description": "Documenting the shape here get's lost by SwaggerUI implementations like readme.io",
+        "properties": {
+          "asyncResult": {
+            "default": true,
+            "description": "Turn on/off the asynchronous result set for this request if the `timeout` time is exceeded during the execution of this search.",
+            "type": "boolean"
+          },
+          "filters": {
+            "items": {
+              "$ref": "#/components/schemas/FilterItem"
+            },
+            "type": "array"
+          },
+          "pagination": {
+            "$ref": "#/components/schemas/Pagination"
+          },
+          "resultToken": {
+            "description": "Optionally indicate on subsequent search request (typically with the same filters) where the search in the master list of invoices should be resumed.",
+            "maxLength": 256,
+            "pattern": "/^.*$/",
+            "type": "string"
+          },
+          "searchStart": {
+            "default": 0,
+            "description": "Optionally indicate on subsequent search request (typically with the same filters) where the search in the master list of invoices should be resumed.",
+            "format": "int64",
+            "minimum": 0,
+            "type": "integer"
+          },
+          "timeout": {
+            "default": 19,
+            "description": "Timeout in seconds for searching for invoices that meet the criteria. If the search exceeds this limit a Continuation response will be sent and optionally (if asyncResult == true and asynchronous results are availble) an asyncronous result set token.",
+            "format": "float",
+            "maximum": 29,
+            "minimum": 1,
+            "type": "number"
+          }
+        },
+        "type": "object"
+      },
+      "InvoiceSearchResponse": {
+        "additionalProperties": false,
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/CodeMessage"
+          },
+          {
+            "additionalProperties": false,
+            "properties": {
+              "continuation": {
+                "$ref": "#/components/schemas/Continuation"
+              },
+              "invoice_list": {
+                "description": "A list of invoices",
+                "items": {
+                  "$ref": "#/components/schemas/Invoice"
+                },
+                "maxItems": 100,
+                "type": "array"
+              },
+              "pagination": {
+                "$ref": "#/components/schemas/Pagination"
+              },
+              "parameters": {
+                "$ref": "#/components/schemas/StringMap"
+              },
+              "result_token": {
+                "$ref": "#/components/schemas/HashedId"
+              },
+              "stats": {
+                "$ref": "#/components/schemas/StringMap"
+              }
+            },
+            "type": "object"
+          }
+        ],
+        "type": "object"
+      },
+      "InvoiceSendInput": {
+        "additionalProperties": false,
+        "properties": {
+          "companyPublicId": {
+            "$ref": "#/components/schemas/Count"
+          },
+          "email": {
+            "$ref": "#/components/schemas/EmailAddress"
+          },
+          "phoneNumber": {
+            "$ref": "#/components/schemas/PhoneNumberInternational"
+          },
+          "token": {
+            "maxLength": 2048,
+            "pattern": "/^.*$/",
+            "type": "string"
+          },
+          "username": {
+            "maxLength": 256,
+            "pattern": "/^.*$/",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "InvoiceSendRequest": {
+        "additionalProperties": false,
+        "description": "Documenting the shape here get's lost by SwaggerUI implementations like readme.io",
+        "properties": {
+          "invoiceId": {
+            "$ref": "#/components/schemas/HashedId"
+          },
+          "invoiceSendInput": {
+            "$ref": "#/components/schemas/InvoiceSendInput"
+          }
+        },
+        "type": "object"
+      },
+      "InvoiceStats": {
+        "additionalProperties": false,
+        "properties": {
+          "count": {
+            "$ref": "#/components/schemas/Count"
+          },
+          "total": {
+            "$ref": "#/components/schemas/Amount"
+          }
+        },
+        "type": "object"
+      },
+      "InvoiceStatsResponse": {
+        "additionalProperties": false,
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/CodeMessage"
+          },
+          {
+            "additionalProperties": false,
+            "properties": {
+              "invoice_stats": {
+                "$ref": "#/components/schemas/InvoiceStats"
+              }
+            },
+            "type": "object"
+          }
+        ],
+        "type": "object"
+      },
+      "InvoiceStatus": {
+        "enum": [
+          "",
+          "unknown",
+          "new",
+          "processing",
+          "completed",
+          "failed",
+          "waitingapproval",
+          "pendingreview",
+          "sent"
+        ],
+        "type": "string"
+      },
+      "InvoiceType": {
+        "enum": [
+          "",
+          "cash",
+          "check",
+          "paycode",
+          "card",
+          "remotecheckout",
+          "directbill",
+          "hostbill",
+          "ach",
+          "batch",
+          "fuelcard"
+        ],
+        "type": "string"
+      },
+      "InvoiceUpdateInput": {
+        "additionalProperties": false,
+        "properties": {
+          "comments": {
+            "maxLength": 4096,
+            "pattern": "/^.*$/",
+            "type": "string"
+          },
+          "convFeeDisable": {
+            "type": "boolean"
+          },
+          "customFields": {
+            "$ref": "#/components/schemas/StringMap"
+          },
+          "customerId": {
+            "$ref": "#/components/schemas/HashedId"
+          },
+          "departmentId": {
+            "$ref": "#/components/schemas/HashedId"
+          },
+          "description": {
+            "$ref": "#/components/schemas/Description"
+          },
+          "lineItems": {
+            "items": {
+              "$ref": "#/components/schemas/InvoiceLineItemInput"
+            },
+            "maxItems": 64,
+            "type": "array"
+          },
+          "payerEmail": {
+            "$ref": "#/components/schemas/EmailAddress"
+          },
+          "payerName": {
+            "maxLength": 256,
+            "pattern": "/^.*$/",
+            "type": "string"
+          },
+          "payerPhone": {
+            "$ref": "#/components/schemas/PhoneNumberInternational"
+          },
+          "shiftId": {
+            "$ref": "#/components/schemas/HashedId"
+          },
+          "temporaryCustomerName": {
+            "maxLength": 256,
+            "minLength": 0,
+            "pattern": "/^.*$/",
+            "type": "string"
+          },
+          "workflowStatus": {
+            "$ref": "#/components/schemas/WorkflowStatus"
+          }
+        },
+        "type": "object"
+      },
+      "InvoiceUpdateRequest": {
+        "additionalProperties": false,
+        "properties": {
+          "invoiceId": {
+            "$ref": "#/components/schemas/HashedId"
+          },
+          "invoiceUpdateInput": {
+            "$ref": "#/components/schemas/InvoiceUpdateInput"
+          }
+        },
+        "type": "object"
+      },
+      "Location": {
+        "additionalProperties": false,
+        "properties": {
+          "city": {
+            "maxLength": 256,
+            "pattern": "/^.*$/",
+            "type": "string"
+          },
+          "companyId": {
+            "$ref": "#/components/schemas/HashedId"
+          },
+          "createdAt": {
+            "$ref": "#/components/schemas/DateTime"
+          },
+          "customFields": {
+            "items": {
+              "$ref": "#/components/schemas/CustomField"
+            },
+            "maxItems": 64,
+            "type": "array"
+          },
+          "departments": {
+            "items": {
+              "$ref": "#/components/schemas/Department"
+            },
+            "maxItems": 64,
+            "type": "array"
+          },
+          "id": {
+            "$ref": "#/components/schemas/HashedId"
+          },
+          "locationReference": {
+            "maxLength": 2048,
+            "pattern": "/^.*$/",
+            "type": "string"
+          },
+          "name": {
+            "maxLength": 256,
+            "pattern": "/^.*$/",
+            "type": "string"
+          },
+          "shifts": {
+            "items": {
+              "$ref": "#/components/schemas/Shift"
+            },
+            "maxItems": 128,
+            "type": "array"
+          },
+          "state": {
+            "$ref": "#/components/schemas/StateCode"
+          },
+          "street": {
+            "maxLength": 2048,
+            "pattern": "/^.*$/",
+            "type": "string"
+          },
+          "street2": {
+            "maxLength": 2048,
+            "pattern": "/^.*$/",
+            "type": "string"
+          },
+          "timezone": {
+            "$ref": "#/components/schemas/TimeZone"
+          },
+          "updatedAt": {
+            "$ref": "#/components/schemas/DateTime"
+          },
+          "zip": {
+            "maxLength": 10,
+            "pattern": "^[0-9]{5}(|-[0-9]{4})$",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "LocationListResponse": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/CodeMessage"
+          },
+          {
+            "properties": {
+              "location_list": {
+                "description": "A list of locations",
+                "items": {
+                  "$ref": "#/components/schemas/Location"
+                },
+                "maxItems": 128,
+                "type": "array"
+              }
+            },
+            "type": "object"
+          }
+        ]
+      },
+      "LoginResponse": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/CodeMessage"
+          },
+          {
+            "additionalProperties": false,
+            "properties": {
+              "SessionToken": {
+                "$ref": "#/components/schemas/SessionToken"
+              },
+              "UserInfo": {
+                "$ref": "#/components/schemas/UserInfo"
+              }
+            },
+            "type": "object"
+          }
+        ],
+        "description": "Session token / identifier",
+        "type": "object"
+      },
+      "LogoutResponse": {
+        "additionalProperties": false,
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/CodeMessage"
+          }
+        ],
+        "type": "object"
+      },
+      "Message": {
+        "maxLength": 2048,
+        "pattern": "/^[a-zA-Z0-9 ]*$/",
+        "type": "string"
+      },
+      "Pagination": {
+        "additionalProperties": false,
+        "properties": {
+          "ItemsPerPage": {
+            "default": 20,
+            "format": "int32",
+            "maximum": 999999,
+            "minimum": 1,
+            "type": "integer"
+          },
+          "PageNumber": {
+            "default": 1,
+            "format": "int32",
+            "maximum": 999999,
+            "minimum": 1,
+            "type": "integer"
+          },
+          "SortColumn": {
+            "default": "",
+            "maxLength": 64,
+            "pattern": "/^.*$/",
+            "type": "string"
+          },
+          "SortDirection": {
+            "$ref": "#/components/schemas/SortDirection"
+          },
+          "TotalItems": {
+            "default": 20,
+            "format": "int32",
+            "maximum": 999999,
+            "minimum": 1,
+            "type": "integer"
+          },
+          "TotalPages": {
+            "default": 1,
+            "format": "int32",
+            "maximum": 999999,
+            "minimum": 1,
+            "type": "integer"
+          }
+        },
+        "type": "object"
+      },
+      "Paging": {
+        "additionalProperties": false,
+        "description": "Paging information for achieving the resulting invoice_list",
+        "properties": {
+          "limit": {
+            "$ref": "#/components/schemas/Count"
+          },
+          "offset": {
+            "$ref": "#/components/schemas/Count"
+          }
+        },
+        "type": "object"
+      },
+      "PaidStateEnum": {
+        "default": "",
+        "enum": [
+          "",
+          "Paid",
+          "Unpaid",
+          "NA"
+        ],
+        "type": "string"
+      },
+      "PaymentError": {
+        "enum": [
+          "",
+          "funds",
+          "expresscode",
+          "invaliddata",
+          "numbernotauthed",
+          "invalidchecknumber",
+          "unabletoprocess",
+          "invalidtripnumber",
+          "invalidunitnumber",
+          "invaliddrivernumber",
+          "invalidtripunitdriver",
+          "incorrectamount",
+          "invalidlocation",
+          "shipperdeclined",
+          "tcheckneedsexpiration",
+          "fleetoneregisterfunds",
+          "registercheck",
+          "callcheckprocessor",
+          "invalidcardnumber",
+          "invalidcardexpiry",
+          "invalidcardcvc",
+          "invalidcardzip",
+          "carddeclined",
+          "comdatadown",
+          "efsdown",
+          "tcheckdown",
+          "fleetonedown",
+          "instamoneydown",
+          "usbankdown",
+          "systemsdown",
+          "achfailed",
+          "nmirequestdeclined",
+          "addressmatchonly",
+          "addresscustomernamematchonly",
+          "9characternumericzipmatchonly",
+          "5characterzipmatchonly",
+          "5characterzipcustomernamematchonly",
+          "noaddressorzipmatchonly",
+          "noaddressorziporcustomernamematchonly",
+          "addressunavailable",
+          "nonusissuerdoesnotparticipate",
+          "issuersystemunavailable",
+          "notamail/phoneorder",
+          "servicenotsupported",
+          "avsnotavailable",
+          "cvv2/cvc2nomatch",
+          "notprocessed",
+          "merchanthasindicatedthatcvv2/cvc2isnotpresentoncard",
+          "issuerisnotcertifiedandorhasnotprovidedvisaencryptionkeys",
+          "TransactionWasDeclinedByProcessor",
+          "DoNotHonor",
+          "InsufficientFunds",
+          "OverLimit",
+          "TransactionNotAllowed",
+          "IncorrectPaymentInformation",
+          "NoSuchCardIssuer",
+          "NoCardNumberOnFileWithIssuer",
+          "ExpiredCard",
+          "InvalidExpirationDate",
+          "InvalidCardSecurityCode",
+          "InvalidPin",
+          "CallIssuerForFurtherInformation",
+          "PickUpCard",
+          "LostCard",
+          "StolenCard",
+          "FraudulentCard",
+          "DeclinedWithFurtherInstructionsAvailable",
+          "DeclinedStopAllRecurringPayments",
+          "DeclinedStopThisRecurringProgram",
+          "DeclinedUpdateCardholderDataAvailable",
+          "DeclinedRetryInAFewDays",
+          "TransactionWasRejectedByGateway",
+          "TransactionErrorReturnedByProcessor",
+          "InvalidMerchantConfiguration",
+          "MerchantAccountIsInactive",
+          "CommunicationError",
+          "CommunicationErrorWithIssuer",
+          "DuplicateTransactionAtProcessor",
+          "ProcessorFormatError",
+          "InvalidTransactionInformation",
+          "ProcessorFeatureNotAvailable",
+          "UnsupportedCardType",
+          "WEXRequestFailed",
+          "WEXAPIisOffline",
+          "WEXEncounteredAnError",
+          "InvalidSiteNumber",
+          "InvalidMessageType",
+          "InvalidMoneyCode",
+          "CheckWasPreviouslyUsed",
+          "MaxAmountExceeded",
+          "MustBeExactAmount",
+          "UnknownErrorCode",
+          "ExpressCodeNotOnFile",
+          "UnexpectedError",
+          "InvalidRequestError",
+          "UnknownErrorCode46",
+          "WexInvalidDriverNumber",
+          "CheckNumberInvalid",
+          "WexInvalidFuelCardNumber",
+          "UnknownErrorCode43",
+          "WexInvalidUnitNumber",
+          "AmountCodeInvalid",
+          "InvalidProductCode",
+          "WexInactiveFuelCard",
+          "InvalidTerminalId",
+          "WexInvalidTripNumber",
+          "MissingFieldsError",
+          "WexInvalidTruckStop",
+          "ComdataNameRequired",
+          "ComdataInvalidName",
+          "ComdataMaximumDrawLimit",
+          "ComdataTryCheckAuth",
+          "ComdataExpressInactive",
+          "amountexceedsmaximum",
+          "ComdataTrailerHoursRequired",
+          "ComdataTractorHubRequired",
+          "ComdataTrailerHubInvalid",
+          "ComdataTrailerHubRequired",
+          "ComdataDLStateInvalid",
+          "ComdataDLStateRequired",
+          "ComdataDLNumberInvalid",
+          "ComdataDLNumberRequired",
+          "ComdataTrailerHoursInvalid",
+          "ComdataTrailerNumberRequired",
+          "ComdataPOInvalid",
+          "ComdataPORequired",
+          "ComdataDuplicatePO",
+          "ComdataPOInvalidThisCard",
+          "ComdataOverPOLimit",
+          "ComdataTripNumberRequired",
+          "ComdataUnitNumberRequired",
+          "ComdataDriverNumberRequired",
+          "ComdataCardNumberRequired",
+          "ComdataTrailerNumberInvalid",
+          "ComdataLocationInvalid"
+        ],
+        "type": "string"
+      },
+      "PhoneNumberInternational": {
+        "maxLength": 128,
+        "pattern": "/^(?:(?:\\(?(?:00|\\+)([1-4]\\d\\d|[1-9]\\d?)\\)?)?[\\-\\.\\ \\\\\\/]?)?((?:\\(?\\d{1,}\\)?[\\-\\.\\ \\\\\\/]?){0,})(?:[\\-\\.\\ \\\\\\/]?(?:#|ext\\.?|extension|x)[\\-\\.\\ \\\\\\/]?(\\d+))?$/",
+        "type": "string"
+      },
+      "PingResponse": {
+        "additionalProperties": false,
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/CodeMessage"
+          },
+          {
+            "$ref": "#/components/schemas/Pong"
+          }
+        ],
+        "type": "object"
+      },
+      "Pong": {
+        "additionalProperties": false,
+        "description": "A ping response which also has API version",
+        "example": {
+          "pong": "pong",
+          "version": "1.8.45"
+        },
+        "properties": {
+          "pong": {
+            "maxLength": 2048,
+            "pattern": "/^.*$/",
+            "type": "string"
+          },
+          "timestamp": {
+            "$ref": "#/components/schemas/DateTime"
+          },
+          "version": {
+            "maxLength": 64,
+            "pattern": "^[a-zA-Z0-9]*$",
+            "type": "string"
+          }
+        },
+        "required": [
+          "version"
+        ],
+        "type": "object"
+      },
+      "Problem": {
+        "additionalProperties": false,
+        "properties": {
+          "detail": {
+            "description": "A human readable explanation specific to this occurrence of the\nproblem.\n",
+            "example": "Connection to database timed out",
+            "maxLength": 2048,
+            "pattern": "/^.*$/",
+            "type": "string"
+          },
+          "instance": {
+            "description": "An absolute URI that identifies the specific occurrence of the problem.\nIt may or may not yield further information if dereferenced.\n",
+            "format": "uri",
+            "maxLength": 2048,
+            "pattern": "/^.*$/",
+            "type": "string"
+          },
+          "status": {
+            "description": "The HTTP status code generated by the origin server for this occurrence\nof the problem.\n",
+            "example": 503,
+            "exclusiveMaximum": true,
+            "format": "int32",
+            "maximum": 600,
+            "minimum": 100,
+            "type": "integer"
+          },
+          "title": {
+            "description": "A short, summary of the problem type. Written in english and readable\nfor engineers (usually not suited for non technical stakeholders and\nnot localized); example: Service Unavailable\n",
+            "maxLength": 256,
+            "pattern": "/^.*$/",
+            "type": "string"
+          },
+          "type": {
+            "default": "about:blank",
+            "description": "An absolute URI that identifies the problem type.  When dereferenced,\nit SHOULD provide human-readable documentation for the problem type\n(e.g., using HTML).\n",
+            "example": "https://problems.roadsync.com/problem/unspecified-error",
+            "format": "uri",
+            "maxLength": 2048,
+            "pattern": "/^.*$/",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "Product": {
+        "additionalProperties": false,
+        "properties": {
+          "accountingProducts": {
+            "items": {
+              "$ref": "#/components/schemas/AccountingProduct"
+            },
+            "maxItems": 128,
+            "type": "array"
+          },
+          "cost": {
+            "format": "float",
+            "maximum": 999999999.99,
+            "minimum": -999999999.99,
+            "type": "number"
+          },
+          "generalLedger": {
+            "maxLength": 2048,
+            "pattern": "/^.*$/",
+            "type": "string"
+          },
+          "id": {
+            "$ref": "#/components/schemas/HashedId"
+          },
+          "isTaxable": {
+            "type": "boolean"
+          },
+          "locationId": {
+            "$ref": "#/components/schemas/HashedId"
+          },
+          "name": {
+            "maxLength": 2048,
+            "pattern": "/^.*$/",
+            "type": "string"
+          },
+          "parentId": {
+            "$ref": "#/components/schemas/HashedId"
+          },
+          "parentPath": {
+            "maxLength": 2048,
+            "pattern": "/^.*$/",
+            "type": "string"
+          },
+          "selectType": {
+            "$ref": "#/components/schemas/ProductSelectType"
+          },
+          "type": {
+            "$ref": "#/components/schemas/ProductType"
+          },
+          "weight": {
+            "format": "int64",
+            "maximum": 999999999,
+            "minimum": 0,
+            "type": "integer"
+          }
+        },
+        "type": "object"
+      },
+      "ProductListResponse": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/CodeMessage"
+          },
+          {
+            "properties": {
+              "product_list": {
+                "description": "A list of products",
+                "items": {
+                  "$ref": "#/components/schemas/Product"
+                },
+                "maxItems": 128,
+                "type": "array"
+              }
+            },
+            "type": "object"
+          }
+        ]
+      },
+      "ProductSelectType": {
+        "enum": [
+          "",
+          "none",
+          "preselected",
+          "obligatory"
+        ],
+        "type": "string"
+      },
+      "ProductType": {
+        "enum": [
+          "service",
+          "item",
+          "custom",
+          "other",
+          "addmultiplelineitems",
+          "category",
+          "tax",
+          ""
+        ],
+        "type": "string"
+      },
+      "PublicId": {
+        "format": "int64",
+        "maximum": 999999999,
+        "minimum": 0,
+        "type": "integer"
+      },
+      "Quantity": {
+        "format": "float",
+        "maximum": 999999999.99,
+        "minimum": -999999999.99,
+        "type": "number"
+      },
+      "Receipt": {
+        "additionalProperties": false,
+        "properties": {
+          "url": {
+            "maxLength": 2048,
+            "pattern": "/^.*$/",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "Role": {
+        "enum": [
+          "",
+          "superadmin",
+          "companyadmin",
+          "accountant",
+          "employee",
+          "warehouseworker",
+          "rsemployee",
+          "shiftmanager",
+          "clientsupport",
+          "implementation",
+          "wexsettlementservice"
+        ],
+        "type": "string"
+      },
+      "SessionToken": {
+        "description": "Session token / identifier",
+        "format": "password",
+        "maxLength": 2048,
+        "pattern": "/^.*$/",
+        "type": "string"
+      },
+      "Shift": {
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/HashedId"
+          },
+          "locationId": {
+            "$ref": "#/components/schemas/HashedId"
+          },
+          "name": {
+            "maxLength": 256,
+            "pattern": "/^.*$/",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "ShiftListResponse": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/CodeMessage"
+          },
+          {
+            "properties": {
+              "shift_list": {
+                "description": "A list of Shifts",
+                "items": {
+                  "$ref": "#/components/schemas/Shift"
+                },
+                "maxItems": 64,
+                "type": "array"
+              }
+            },
+            "type": "object"
+          }
+        ]
+      },
+      "ShortCompany": {
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/HashedId"
+          },
+          "logoUrl": {
+            "maxLength": 2048,
+            "pattern": "/^.*$/",
+            "type": "string"
+          },
+          "name": {
+            "maxLength": 2048,
+            "pattern": "/^.*$/",
+            "type": "string"
+          },
+          "phone": {
+            "$ref": "#/components/schemas/PhoneNumberInternational"
+          },
+          "publicId": {
+            "$ref": "#/components/schemas/Count"
+          },
+          "type": {
+            "$ref": "#/components/schemas/CompanyType"
+          }
+        },
+        "type": "object"
+      },
+      "ShortCompanyCustomer": {
+        "additionalProperties": false,
+        "properties": {
+          "city": {
+            "maxLength": 2048,
+            "pattern": "/^.*$/",
+            "type": "string"
+          },
+          "companyId": {
+            "$ref": "#/components/schemas/HashedId"
+          },
+          "contactEmail": {
+            "$ref": "#/components/schemas/EmailAddress"
+          },
+          "contactPhone": {
+            "$ref": "#/components/schemas/PhoneNumberInternational"
+          },
+          "customerCompanyId": {
+            "$ref": "#/components/schemas/HashedId"
+          },
+          "id": {
+            "$ref": "#/components/schemas/HashedId"
+          },
+          "name": {
+            "maxLength": 256,
+            "pattern": "/^.*$/",
+            "type": "string"
+          },
+          "nickname": {
+            "maxLength": 256,
+            "pattern": "/^.*$/",
+            "type": "string"
+          },
+          "publicId": {
+            "$ref": "#/components/schemas/Count"
+          },
+          "state": {
+            "$ref": "#/components/schemas/StateCode"
+          }
+        },
+        "type": "object"
+      },
+      "ShortLocation": {
+        "additionalProperties": false,
+        "properties": {
+          "city": {
+            "maxLength": 2048,
+            "pattern": "/^.*$/",
+            "type": "string"
+          },
+          "companyId": {
+            "$ref": "#/components/schemas/HashedId"
+          },
+          "customFields": {
+            "items": {
+              "$ref": "#/components/schemas/CustomField"
+            },
+            "maxItems": 64,
+            "type": "array"
+          },
+          "id": {
+            "$ref": "#/components/schemas/HashedId"
+          },
+          "name": {
+            "maxLength": 256,
+            "pattern": "/^.*$/",
+            "type": "string"
+          },
+          "state": {
+            "$ref": "#/components/schemas/StateCode"
+          },
+          "timezone": {
+            "$ref": "#/components/schemas/TimeZone"
+          }
+        },
+        "type": "object"
+      },
+      "ShortUser": {
+        "additionalProperties": false,
+        "properties": {
+          "avatarUrl": {
+            "maxLength": 2048,
+            "pattern": "/^.*$/",
+            "type": "string"
+          },
+          "email": {
+            "$ref": "#/components/schemas/EmailAddress"
+          },
+          "first": {
+            "maxLength": 256,
+            "pattern": "/^.*$/",
+            "type": "string"
+          },
+          "id": {
+            "$ref": "#/components/schemas/HashedId"
+          },
+          "isVerified": {
+            "type": "boolean"
+          },
+          "last": {
+            "maxLength": 2048,
+            "pattern": "/^.*$/",
+            "type": "string"
+          },
+          "phone": {
+            "$ref": "#/components/schemas/PhoneNumberInternational"
+          }
+        },
+        "type": "object"
+      },
+      "SortDirection": {
+        "default": "ascending",
+        "description": "Sort direction; asc accepted for ascending and desc accepted for descending",
+        "enum": [
+          "asc",
+          "ascending",
+          "desc",
+          "descending"
+        ],
+        "type": "string"
+      },
+      "StateCode": {
+        "enum": [
+          "AL",
+          "AK",
+          "AZ",
+          "AR",
+          "CA",
+          "CO",
+          "CT",
+          "DE",
+          "DC",
+          "FL",
+          "GA",
+          "HI",
+          "ID",
+          "IL",
+          "IN",
+          "IA",
+          "KS",
+          "KY",
+          "LA",
+          "ME",
+          "MD",
+          "MA",
+          "MI",
+          "MN",
+          "MS",
+          "MO",
+          "MT",
+          "NE",
+          "NV",
+          "NH",
+          "NJ",
+          "NM",
+          "NY",
+          "NC",
+          "ND",
+          "OH",
+          "OK",
+          "OR",
+          "PA",
+          "RI",
+          "SC",
+          "SD",
+          "TN",
+          "TX",
+          "UT",
+          "VT",
+          "VA",
+          "WA",
+          "WV",
+          "WI",
+          "WY",
+          "MEX",
+          "CAN"
+        ],
+        "type": "string"
+      },
+      "StringMap": {
+        "additionalProperties": false,
+        "type": "object"
+      },
+      "TimeZone": {
+        "enum": [
+          "US/Hawaii",
+          "US/Alaska",
+          "US/Pacific",
+          "US/Mountain",
+          "US/Central",
+          "US/Eastern",
+          ""
+        ],
+        "type": "string"
+      },
+      "UserInfo": {
+        "additionalProperties": false,
+        "properties": {
+          "avatarUrl": {
+            "maxLength": 2048,
+            "pattern": "/^.*$/",
+            "type": "string"
+          },
+          "companyId": {
+            "$ref": "#/components/schemas/HashedId"
+          },
+          "createdAt": {
+            "$ref": "#/components/schemas/DateTime"
+          },
+          "email": {
+            "$ref": "#/components/schemas/EmailAddress"
+          },
+          "fileId": {
+            "$ref": "#/components/schemas/HashedId"
+          },
+          "first": {
+            "maxLength": 256,
+            "pattern": "/^.*$/",
+            "type": "string"
+          },
+          "firstPasswordReset": {
+            "type": "boolean"
+          },
+          "freshchatRestoreId": {
+            "maxLength": 256,
+            "pattern": "/^.*$/",
+            "type": "string"
+          },
+          "id": {
+            "$ref": "#/components/schemas/HashedId"
+          },
+          "isLocked": {
+            "type": "boolean"
+          },
+          "isVerified": {
+            "type": "boolean"
+          },
+          "last": {
+            "maxLength": 256,
+            "pattern": "/^.*$/",
+            "type": "string"
+          },
+          "lastLogin": {
+            "$ref": "#/components/schemas/DateTime"
+          },
+          "locationIds": {
+            "items": {
+              "$ref": "#/components/schemas/HashedId"
+            },
+            "maxItems": 64,
+            "type": "array"
+          },
+          "lockedAt": {
+            "$ref": "#/components/schemas/DateTime"
+          },
+          "phone": {
+            "$ref": "#/components/schemas/PhoneNumberInternational"
+          },
+          "roles": {
+            "items": {
+              "$ref": "#/components/schemas/Role"
+            },
+            "maxItems": 64,
+            "type": "array"
+          },
+          "tfaEnabled": {
+            "type": "boolean"
+          },
+          "updatedAt": {
+            "$ref": "#/components/schemas/DateTime"
+          },
+          "username": {
+            "maxLength": 256,
+            "pattern": "/^.*$/",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "UsernamePassword": {
+        "additionalProperties": false,
+        "description": "User credentials object",
+        "properties": {
+          "Password": {
+            "maxLength": 128,
+            "pattern": "/^.*$/",
+            "type": "string"
+          },
+          "Username": {
+            "maxLength": 64,
+            "pattern": "/^.*$/",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "WorkflowStatus": {
+        "enum": [
+          "",
+          "unknown",
+          "default",
+          "savelineitemsforlater"
+        ],
+        "type": "string"
+      }
+    },
+    "securitySchemes": {
+      "api_key": {
+        "in": "header",
+        "name": "x-api-key",
+        "type": "apiKey",
+        "x-apikeyInfoFunc": "client_api_server.controllers.authorization_controller.check_api_key"
+      },
+      "session_token": {
+        "bearerFormat": "JWT",
+        "scheme": "bearer",
+        "type": "http",
+        "x-apikeyInfoFunc": "client_api_server.controllers.authorization_controller.check_session_token"
+      }
+    }
+  }
+}

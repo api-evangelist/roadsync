@@ -1,0 +1,195 @@
+generated: '2026-07-21'
+method: derived
+status: candidate
+source: derived from openapi/ operations; no official RoadSync MCP server found on public developer surface
+  (2026-07 probe)
+server:
+  name: roadsync
+  transport: http
+tools:
+- name: client_api_department_list_get
+  description: Retrieve a list of departments for a location
+  source_operation: openapi/roadsync-client-api-openapi.json#department_list_get
+- name: client_api_invoice_archive_get
+  description: Archive an invoice by Id
+  source_operation: openapi/roadsync-client-api-openapi.json#invoice_archive_get
+- name: client_api_invoice_create_post
+  description: Create an invoice
+  source_operation: openapi/roadsync-client-api-openapi.json#invoice_create_post
+- name: client_api_invoice_list_get
+  description: Retrieve a list of invoices
+  source_operation: openapi/roadsync-client-api-openapi.json#invoice_list_get
+- name: client_api_invoice_report_get
+  description: Retrieve an invoice report in the designated format
+  source_operation: openapi/roadsync-client-api-openapi.json#invoice_report_get
+- name: client_api_invoice_search_post
+  description: Search for invoices
+  source_operation: openapi/roadsync-client-api-openapi.json#invoice_search_post
+- name: client_api_invoice_stats_get
+  description: Retrieve invoices statistics
+  source_operation: openapi/roadsync-client-api-openapi.json#invoice_stats_get
+- name: client_api_invoice_update_post
+  description: Update an invoice
+  source_operation: openapi/roadsync-client-api-openapi.json#invoice_update_post
+- name: client_api_invoice_archive_delete
+  description: Archive an invoice by Id
+  source_operation: openapi/roadsync-client-api-openapi.json#invoice_archive_delete
+- name: client_api_invoice_get_get
+  description: Retrieve an invoice by Id
+  source_operation: openapi/roadsync-client-api-openapi.json#invoice_get_get
+- name: client_api_location_list_get
+  description: Retrieve a list of company locations
+  source_operation: openapi/roadsync-client-api-openapi.json#location_list_get
+- name: client_api_login_post
+  description: Accepts user credentials for validation, create a session and returns a session token
+  source_operation: openapi/roadsync-client-api-openapi.json#login_post
+- name: client_api_logout_get
+  description: Log user out and invalidate session token
+  source_operation: openapi/roadsync-client-api-openapi.json#logout_get
+- name: client_api_ping_get
+  description: Does roundtrip with the backend API
+  source_operation: openapi/roadsync-client-api-openapi.json#ping_get
+- name: client_api_product_list_get
+  description: Retrieve a list of products for a location
+  source_operation: openapi/roadsync-client-api-openapi.json#product_list_get
+- name: client_api_shift_list_get
+  description: Retrieve a list of shifts for a location
+  source_operation: openapi/roadsync-client-api-openapi.json#shift_list_get
+- name: company_get_location_list
+  description: Get a Location list
+  source_operation: openapi/roadsync-company-openapi.json#get-location-list
+- name: company_get_location
+  description: Get a Location
+  source_operation: openapi/roadsync-company-openapi.json#get-location
+- name: company_get_location_product_list
+  description: Get a Product list
+  source_operation: openapi/roadsync-company-openapi.json#get-location-product-list
+- name: invoice_get_invoice_list
+  description: Get a list of invoices
+  source_operation: openapi/roadsync-invoice-openapi.json#get-invoice-list
+- name: invoice_create_invoice
+  description: Create an invoice
+  source_operation: openapi/roadsync-invoice-openapi.json#create-invoice
+- name: invoice_get_invoice
+  description: Get an invoice
+  source_operation: openapi/roadsync-invoice-openapi.json#get-invoice
+- name: invoice_patch_invoice
+  description: Update invoice fields
+  source_operation: openapi/roadsync-invoice-openapi.json#patch-invoice
+- name: invoice_send_invoice
+  description: Send an invoice to a recipient
+  source_operation: openapi/roadsync-invoice-openapi.json#send-invoice
+- name: invoice_void_invoice
+  description: Void an invoice
+  source_operation: openapi/roadsync-invoice-openapi.json#void-invoice
+- name: invoice_clone_invoice
+  description: Clone an invoice
+  source_operation: openapi/roadsync-invoice-openapi.json#clone-invoice
+- name: invoice_get_invoice_embed
+  description: Get the payer embed URL for an invoice
+  source_operation: openapi/roadsync-invoice-openapi.json#get-invoice-embed
+- name: invoice_refund_invoice
+  description: Refund the payment for an invoice
+  source_operation: openapi/roadsync-invoice-openapi.json#refund-invoice
+- name: invoice_attachment_invoice
+  description: Attach a file to an invoice
+  source_operation: openapi/roadsync-invoice-openapi.json#attachment-invoice
+- name: payment_payment_post
+  description: Create a payment
+  source_operation: openapi/roadsync-payment-openapi.json#payment_post
+- name: payment_payment_patch
+  description: Update fields for a payment by id.
+  source_operation: openapi/roadsync-payment-openapi.json#payment_patch
+- name: payment_payment_get
+  description: Retrieve a payment by id
+  source_operation: openapi/roadsync-payment-openapi.json#payment_get
+- name: payment_ping_get
+  description: Ping the payment-api service. Will also validate the api key present on the request
+  source_operation: openapi/roadsync-payment-openapi.json#ping_get
+- name: rspay_get_payees
+  description: Get a List of All Payees
+  source_operation: openapi/roadsync-rspay-openapi.json#get-payees
+- name: rspay_post_payees
+  description: Create a Payee
+  source_operation: openapi/roadsync-rspay-openapi.json#post-payees
+- name: rspay_get_payees_id
+  description: Get a Single Payee
+  source_operation: openapi/roadsync-rspay-openapi.json#get-payees-id
+- name: rspay_patch_payees_id
+  description: Update a Single Payee
+  source_operation: openapi/roadsync-rspay-openapi.json#patch-payees-id
+- name: rspay_get_funding_sources_id
+  description: Get a Payee's Funding Sources
+  source_operation: openapi/roadsync-rspay-openapi.json#get-funding-sources-id
+- name: rspay_post_payee_funding_sources
+  description: Create a Funding Source for a Payee
+  source_operation: openapi/roadsync-rspay-openapi.json#post-payee-funding-sources
+- name: rspay_update_payee_funding_sources
+  description: Update a Funding Source for a Payee
+  source_operation: openapi/roadsync-rspay-openapi.json#update-payee-funding-sources
+- name: rspay_get_all_payables
+  description: Get a List of Payables
+  source_operation: openapi/roadsync-rspay-openapi.json#get-all-payables
+- name: rspay_post_payables
+  description: Create a Payable
+  source_operation: openapi/roadsync-rspay-openapi.json#post-payables
+- name: rspay_get_payables
+  description: Get a Single Payable
+  source_operation: openapi/roadsync-rspay-openapi.json#get-payables
+- name: rspay_patch_payables_id
+  description: Update a Single Payable
+  source_operation: openapi/roadsync-rspay-openapi.json#patch-payables-id
+- name: rspay_delete_payables_id
+  description: Delete a Single Payable
+  source_operation: openapi/roadsync-rspay-openapi.json#delete-payables-id
+- name: rspay_get_transactions
+  description: Get a List of Transactions
+  source_operation: openapi/roadsync-rspay-openapi.json#get-transactions
+- name: rspay_post_transactions
+  description: Create a Single Transaction
+  source_operation: openapi/roadsync-rspay-openapi.json#post-transactions
+- name: rspay_get_transactions_id
+  description: Get a Single Transaction
+  source_operation: openapi/roadsync-rspay-openapi.json#get-transactions-id
+- name: rspay_get_brokers
+  description: Get All Brokers
+  source_operation: openapi/roadsync-rspay-openapi.json#get-brokers
+- name: rspay_get_brokers_id
+  description: Get a Single Broker
+  source_operation: openapi/roadsync-rspay-openapi.json#get-brokers-id
+- name: rspay_get_broker_funding_sources_id
+  description: Get a Broker's Funding Sources
+  source_operation: openapi/roadsync-rspay-openapi.json#get-broker-funding-sources-id
+- name: rspay_get_eta
+  description: Get ETA Information
+  source_operation: openapi/roadsync-rspay-openapi.json#get-eta
+- name: rspay_get_payee_candidates
+  description: Search Payee Candidates
+  source_operation: openapi/roadsync-rspay-openapi.json#get-payee-candidates
+- name: rspay_get_loads
+  description: Get a List of All Loads
+  source_operation: openapi/roadsync-rspay-openapi.json#get-loads
+- name: rspay_post_loads
+  description: Create a Load
+  source_operation: openapi/roadsync-rspay-openapi.json#post-loads
+- name: rspay_get_load
+  description: Get a single Load
+  source_operation: openapi/roadsync-rspay-openapi.json#get-load
+- name: workorder_get_workorder_workorderId
+  description: Get Workorder by ID
+  source_operation: openapi/roadsync-workorder-openapi.json#get-workorder-workorderId
+- name: workorder_delete_workorders_id
+  description: Delete workorders by ID
+  source_operation: openapi/roadsync-workorder-openapi.json#delete-workorders-id
+- name: workorder_get_workorders
+  description: Get All Recent Workorders
+  source_operation: openapi/roadsync-workorder-openapi.json#get-workorders
+- name: workorder_post_workorder
+  description: Create New Workorder
+  source_operation: openapi/roadsync-workorder-openapi.json#post-workorder
+- name: workorder_post_id_send
+  description: Send workorder
+  source_operation: openapi/roadsync-workorder-openapi.json#post-id-send
+- name: workorder_post_id_approve
+  description: Approve Workorders
+  source_operation: openapi/roadsync-workorder-openapi.json#post-id-approve

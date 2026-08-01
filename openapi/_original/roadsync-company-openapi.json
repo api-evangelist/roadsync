@@ -1,0 +1,383 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Company API",
+    "version": "1.0.0",
+    "description": "Company API v1\n"
+  },
+  "servers": [
+    {
+      "url": "https://test.api.roadsync.app/company/v1",
+      "description": "Sandbox/Test Company API"
+    },
+    {
+      "url": "https://api.roadsync.app/company/v1",
+      "description": "Production Company API"
+    },
+    {
+      "url": "{server}",
+      "description": "Development",
+      "variables": {
+        "server": {
+          "default": "https://dev.api.roadsync.app/company/v1"
+        }
+      }
+    }
+  ],
+  "tags": [
+    {
+      "name": "location",
+      "description": "Location information"
+    }
+  ],
+  "paths": {
+    "/location": {
+      "get": {
+        "summary": "Get a Location list",
+        "description": "Get a Location list.\n",
+        "tags": [
+          "location"
+        ],
+        "operationId": "get-location-list",
+        "security": [],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/LocationList"
+                    },
+                    "errors": {
+                      "$ref": "#/components/schemas/Errors"
+                    }
+                  }
+                },
+                "examples": {
+                  "success": {
+                    "$ref": "#/components/examples/LocationListResponseExample"
+                  },
+                  "error": {
+                    "$ref": "#/components/examples/ErrorResponseExample"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/location/{location_id}": {
+      "parameters": [
+        {
+          "name": "location_id",
+          "in": "path",
+          "schema": {
+            "type": "string"
+          },
+          "required": true,
+          "description": "The id of the location."
+        }
+      ],
+      "get": {
+        "summary": "Get a Location",
+        "description": "Get a Location.\n",
+        "tags": [
+          "location"
+        ],
+        "operationId": "get-location",
+        "security": [],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/Location"
+                    },
+                    "errors": {
+                      "$ref": "#/components/schemas/Errors"
+                    }
+                  }
+                },
+                "examples": {
+                  "success": {
+                    "$ref": "#/components/examples/LocationResponseExample"
+                  },
+                  "error": {
+                    "$ref": "#/components/examples/ErrorResponseExample"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/location/{location_id}/product": {
+      "parameters": [
+        {
+          "name": "location_id",
+          "in": "path",
+          "schema": {
+            "type": "string"
+          },
+          "required": true,
+          "description": "The id of the location."
+        }
+      ],
+      "get": {
+        "summary": "Get a Product list",
+        "description": "Get a Product list.\n",
+        "tags": [
+          "location"
+        ],
+        "operationId": "get-location-product-list",
+        "security": [],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/ProductList"
+                    },
+                    "errors": {
+                      "$ref": "#/components/schemas/Errors"
+                    }
+                  }
+                },
+                "examples": {
+                  "success": {
+                    "$ref": "#/components/examples/ProductListResponseExample"
+                  },
+                  "error": {
+                    "$ref": "#/components/examples/ErrorResponseExample"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Location": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The location id"
+          },
+          "name": {
+            "type": "string",
+            "description": "The location name"
+          },
+          "customFields": {
+            "type": "array",
+            "description": "List of arrays that describe each custom field",
+            "items": {
+              "$ref": "#/components/schemas/CustomField"
+            }
+          }
+        }
+      },
+      "LocationList": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/Location"
+        }
+      },
+      "Product": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The product id"
+          },
+          "name": {
+            "type": "string",
+            "description": "The product name"
+          }
+        }
+      },
+      "ProductList": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/Product"
+        }
+      },
+      "Errors": {
+        "type": "array",
+        "description": "A list of errors that occurred during processing",
+        "items": {
+          "$ref": "#/components/schemas/Error"
+        }
+      },
+      "Error": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string"
+          }
+        }
+      },
+      "CustomField": {
+        "type": "array",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "custom field name"
+          },
+          "title": {
+            "type": "string",
+            "description": "custom field title"
+          },
+          "type": {
+            "type": "string",
+            "description": "custom field type"
+          },
+          "isRequired": {
+            "type": "boolean",
+            "description": "is this required"
+          },
+          "options": {
+            "type": "array",
+            "description": "custom field options"
+          },
+          "isShownInList": {
+            "type": "boolean",
+            "description": "is this custom field shown in the list"
+          },
+          "isEditable": {
+            "type": "boolean",
+            "description": "can custom field be edited"
+          }
+        }
+      }
+    },
+    "examples": {
+      "LocationResponseExample": {
+        "value": {
+          "data": {
+            "id": "jX52DZVG8A0MB1b1bgrkoqwWlJpY6m",
+            "name": "Location 1",
+            "custom_fields": [
+              {
+                "name": "customField2",
+                "title": "customField2",
+                "type": "input",
+                "isRequired": false,
+                "options": {},
+                "isShownInList": false,
+                "isEditable": true
+              },
+              {
+                "name": "customField1",
+                "title": "customFields1",
+                "type": "input",
+                "isRequired": false,
+                "options": {},
+                "isShownInList": false,
+                "isEditable": true
+              }
+            ]
+          }
+        }
+      },
+      "LocationListResponseExample": {
+        "value": {
+          "data": [
+            {
+              "id": "jX52DZVG8A0MB1b1bgrkoqwWlJpY6m",
+              "name": "Location 1"
+            },
+            {
+              "id": "HgTjnbkjbuyo786590KJBKjtfdGgjy",
+              "name": "Location 2"
+            },
+            {
+              "id": "awefawef3wfaw3fh445hhsdrrsUHuy",
+              "name": "Location 3"
+            }
+          ]
+        }
+      },
+      "ProductListResponseExample": {
+        "value": {
+          "data": [
+            {
+              "id": "jX52DZVG8A0MB1b1bgrkoqwWlJpY6m",
+              "name": "Product 1"
+            },
+            {
+              "id": "HgTjnbkjbuyo786590KJBKjtfdGgjy",
+              "name": "Product 2"
+            },
+            {
+              "id": "awefawef3wfaw3fh445hhsdrrsUHuy",
+              "name": "Product 3"
+            }
+          ]
+        }
+      },
+      "ErrorResponseExample": {
+        "value": {
+          "errors": [
+            {
+              "code": "processing_error"
+            }
+          ]
+        }
+      }
+    },
+    "securitySchemes": {
+      "ApiKey": {
+        "type": "apiKey",
+        "name": "x-api-key",
+        "in": "header"
+      }
+    },
+    "responses": {
+      "Options200": {
+        "description": "Default response for CORS method",
+        "headers": {
+          "Access-Control-Allow-Origin": {
+            "schema": {
+              "type": "string"
+            }
+          },
+          "Access-Control-Allow-Methods": {
+            "schema": {
+              "type": "string"
+            }
+          },
+          "Access-Control-Allow-Headers": {
+            "schema": {
+              "type": "string"
+            }
+          },
+          "Access-Control-Allow-Credentials": {
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        },
+        "content": {}
+      }
+    }
+  }
+}

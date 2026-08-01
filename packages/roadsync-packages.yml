@@ -1,0 +1,17 @@
+generated: '2026-07-21'
+method: searched
+source: npm registry search + https://developer.roadsync.com/
+packages:
+  - language: javascript
+    registry: npm
+    name: "@roadsync/roadsync-js"
+    version: 0.0.12
+    url: https://www.npmjs.com/package/@roadsync/roadsync-js
+    install: npm install @roadsync/roadsync-js
+    description: RoadSync JavaScript SDK
+    license: MIT
+    official: true
+    evidence: "npm author 'RoadSync', maintainer 'bradberger_roadsync', scope @roadsync"
+notes: >-
+  Registries probed 2026-07-21: npm (hit), PyPI (none), RubyGems (none),
+  Packagist (none). Only a first-party JavaScript SDK is published.

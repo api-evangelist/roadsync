@@ -1,0 +1,29 @@
+generated: '2026-07-21'
+method: searched
+source: live probes 2026-07-21
+notes: >-
+  No /.well-known/ discovery documents were served. api.roadsync.app returns 403
+  (WAF) on all probed paths; www.roadsync.com and developer.roadsync.com return
+  404. Absence recorded for auditability; no WellKnown/SecurityTxt pointer wired.
+hosts:
+  - host: https://api.roadsync.app
+    documents:
+      - {path: /.well-known/security.txt, status: 403}
+      - {path: /.well-known/openid-configuration, status: 403}
+      - {path: /.well-known/oauth-authorization-server, status: 403}
+      - {path: /.well-known/api-catalog, status: 403}
+      - {path: /.well-known/ai-plugin.json, status: 403}
+  - host: https://www.roadsync.com
+    documents:
+      - {path: /.well-known/security.txt, status: 404}
+      - {path: /.well-known/openid-configuration, status: 404}
+      - {path: /.well-known/oauth-authorization-server, status: 404}
+      - {path: /.well-known/api-catalog, status: 404}
+      - {path: /.well-known/ai-plugin.json, status: 404}
+  - host: https://developer.roadsync.com
+    documents:
+      - {path: /.well-known/security.txt, status: 404}
+      - {path: /.well-known/openid-configuration, status: 404}
+      - {path: /.well-known/oauth-authorization-server, status: 404}
+      - {path: /.well-known/api-catalog, status: 404}
+      - {path: /.well-known/ai-plugin.json, status: 404}

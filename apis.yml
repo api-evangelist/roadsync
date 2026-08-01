@@ -1,8 +1,14 @@
 aid: roadsync
 name: Roadsync
-description: 'Roadsync is a company surfaced as a portfolio company of partech and added to the API Evangelist
-  network as a stub for enrichment. Sector: Financial Services. This profile is a lead awaiting the enrichment
-  pipeline.'
+description: >-
+  RoadSync is a digital payments and expense-management platform for the logistics and trucking
+  industry, enabling warehouses, repair and tow shops, brokers, and carriers to accept and disburse
+  payments faster. RoadSync publishes a REST API surface across six services: the RoadSyncPay Public
+  API (payees, funding sources, payables, transactions, brokers, loads for ACH/paper-check/RTP carrier
+  disbursements), the Invoice API (create, send, void, clone, refund, and embed invoices), the Company
+  API (locations and product catalog), the WorkOrders API (create, send, approve work orders), a
+  Payment API for taking payments, and a legacy Client API. All APIs are HTTPS REST, authenticated with
+  an x-api-key header, versioned in the URI path, and split into test and production hosts.
 url: https://raw.githubusercontent.com/api-evangelist/roadsync/refs/heads/main/apis.yml
 x-type: company
 x-source: vc-portfolio
@@ -10,18 +16,272 @@ x-backed-by:
 - partech
 x-tier: stub
 x-tier-reason: portfolio-lead
+accessModel:
+  pricing: unknown
+  onboarding: self-serve
+  trial: false
+  try_now: false
+  public: false
+  label: Self-serve signup
+  confidence: medium
+  source:
+  - authentication
+  generated: '2026-07-22'
+  method: derived
 specificationVersion: '0.20'
 created: '2026-07-17'
-modified: '2026-07-17'
+modified: '2026-07-21'
+x-enrichment:
+  date: '2026-07-21'
+  status: enriched
+  artifacts_added: 29
+  pass: local-v1
+image: https://roadsync.com/wp-content/uploads/2022/05/cropped-RS-1000-192x192.png
 tags:
 - Company
 - Financial Services
-apis: []
+- Payments
+- Logistics
+- Trucking
+- Invoicing
+- Transportation
+- Fintech
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
 - FN: APIs.json
   email: info@apis.io
+apis:
+- aid: roadsync:roadsync-authenticated-api
+  name: Roadsync authenticated API
+  description: Authenticated operations not otherwise functionally categorized
+  humanURL: https://developer.roadsync.com/openapi/rspay/overview/
+  baseURL: https://api.roadsync.app/rspay/v1
+  tags:
+  - authenticated
+  properties:
+  - type: OpenAPI
+    url: openapi/roadsync-authenticated-api-openapi.yml
+- aid: roadsync:roadsync-brokers-api
+  name: Roadsync brokers API
+  description: The brokers API from Roadsync — 2 operation(s) for brokers.
+  humanURL: https://developer.roadsync.com/openapi/rspay/overview/
+  baseURL: https://api.roadsync.app/rspay/v1
+  tags:
+  - brokers
+  properties:
+  - type: OpenAPI
+    url: openapi/roadsync-brokers-api-openapi.yml
+- aid: roadsync:roadsync-department-api
+  name: Roadsync department API
+  description: Department operations
+  humanURL: https://developer.roadsync.com/openapi/rspay/overview/
+  baseURL: https://api.roadsync.app/rspay/v1
+  tags:
+  - department
+  properties:
+  - type: OpenAPI
+    url: openapi/roadsync-department-api-openapi.yml
+- aid: roadsync:roadsync-directory-api
+  name: Roadsync directory API
+  description: The directory API from Roadsync — 1 operation(s) for directory.
+  humanURL: https://developer.roadsync.com/openapi/rspay/overview/
+  baseURL: https://api.roadsync.app/rspay/v1
+  tags:
+  - directory
+  properties:
+  - type: OpenAPI
+    url: openapi/roadsync-directory-api-openapi.yml
+- aid: roadsync:roadsync-eta-api
+  name: Roadsync eta API
+  description: ETA (Estimated Time of Arrival) endpoints
+  humanURL: https://developer.roadsync.com/openapi/rspay/overview/
+  baseURL: https://api.roadsync.app/rspay/v1
+  tags:
+  - eta
+  properties:
+  - type: OpenAPI
+    url: openapi/roadsync-eta-api-openapi.yml
+- aid: roadsync:roadsync-funding-sources-api
+  name: Roadsync funding sources API
+  description: The funding sources API from Roadsync — 2 operation(s) for funding sources.
+  humanURL: https://developer.roadsync.com/openapi/rspay/overview/
+  baseURL: https://api.roadsync.app/rspay/v1
+  tags:
+  - funding sources
+  properties:
+  - type: OpenAPI
+    url: openapi/roadsync-funding-sources-api-openapi.yml
+- aid: roadsync:roadsync-invoice-api
+  name: Roadsync invoice API
+  description: Invoice operations
+  humanURL: https://developer.roadsync.com/openapi/rspay/overview/
+  baseURL: https://api.roadsync.app/rspay/v1
+  tags:
+  - invoice
+  properties:
+  - type: OpenAPI
+    url: openapi/roadsync-invoice-api-openapi.yml
+- aid: roadsync:roadsync-loads-api
+  name: Roadsync loads API
+  description: The loads API from Roadsync — 2 operation(s) for loads.
+  humanURL: https://developer.roadsync.com/openapi/rspay/overview/
+  baseURL: https://api.roadsync.app/rspay/v1
+  tags:
+  - loads
+  properties:
+  - type: OpenAPI
+    url: openapi/roadsync-loads-api-openapi.yml
+- aid: roadsync:roadsync-location-api
+  name: Roadsync location API
+  description: Company location operations
+  humanURL: https://developer.roadsync.com/openapi/rspay/overview/
+  baseURL: https://api.roadsync.app/rspay/v1
+  tags:
+  - location
+  properties:
+  - type: OpenAPI
+    url: openapi/roadsync-location-api-openapi.yml
+- aid: roadsync:roadsync-payables-api
+  name: Roadsync payables API
+  description: The payables API from Roadsync — 2 operation(s) for payables.
+  humanURL: https://developer.roadsync.com/openapi/rspay/overview/
+  baseURL: https://api.roadsync.app/rspay/v1
+  tags:
+  - payables
+  properties:
+  - type: OpenAPI
+    url: openapi/roadsync-payables-api-openapi.yml
+- aid: roadsync:roadsync-payees-api
+  name: Roadsync payees API
+  description: The payees end point
+  humanURL: https://developer.roadsync.com/openapi/rspay/overview/
+  baseURL: https://api.roadsync.app/rspay/v1
+  tags:
+  - payees
+  properties:
+  - type: OpenAPI
+    url: openapi/roadsync-payees-api-openapi.yml
+- aid: roadsync:roadsync-payment-api
+  name: Roadsync payment API
+  description: Payment API Operations
+  humanURL: https://developer.roadsync.com/openapi/rspay/overview/
+  baseURL: https://api.roadsync.app/rspay/v1
+  tags:
+  - payment
+  properties:
+  - type: OpenAPI
+    url: openapi/roadsync-payment-api-openapi.yml
+- aid: roadsync:roadsync-ping-api
+  name: Roadsync ping API
+  description: The ping API from Roadsync — 1 operation(s) for ping.
+  humanURL: https://developer.roadsync.com/openapi/rspay/overview/
+  baseURL: https://api.roadsync.app/rspay/v1
+  tags:
+  - ping
+  properties:
+  - type: OpenAPI
+    url: openapi/roadsync-ping-api-openapi.yml
+- aid: roadsync:roadsync-product-api
+  name: Roadsync product API
+  description: Product operations (company)
+  humanURL: https://developer.roadsync.com/openapi/rspay/overview/
+  baseURL: https://api.roadsync.app/rspay/v1
+  tags:
+  - product
+  properties:
+  - type: OpenAPI
+    url: openapi/roadsync-product-api-openapi.yml
+- aid: roadsync:roadsync-shift-api
+  name: Roadsync shift API
+  description: Shift operations (company/ location)
+  humanURL: https://developer.roadsync.com/openapi/rspay/overview/
+  baseURL: https://api.roadsync.app/rspay/v1
+  tags:
+  - shift
+  properties:
+  - type: OpenAPI
+    url: openapi/roadsync-shift-api-openapi.yml
+- aid: roadsync:roadsync-transactions-api
+  name: Roadsync transactions API
+  description: The transactions API from Roadsync — 2 operation(s) for transactions.
+  humanURL: https://developer.roadsync.com/openapi/rspay/overview/
+  baseURL: https://api.roadsync.app/rspay/v1
+  tags:
+  - transactions
+  properties:
+  - type: OpenAPI
+    url: openapi/roadsync-transactions-api-openapi.yml
+- aid: roadsync:roadsync-unauthenticated-api
+  name: Roadsync unauthenticated API
+  description: Unauthenticated operations not otherwise functionally categorized
+  humanURL: https://developer.roadsync.com/openapi/rspay/overview/
+  baseURL: https://api.roadsync.app/rspay/v1
+  tags:
+  - unauthenticated
+  properties:
+  - type: OpenAPI
+    url: openapi/roadsync-unauthenticated-api-openapi.yml
+- aid: roadsync:roadsync-workorders-api
+  name: Roadsync workorders API
+  description: The Workorders API
+  humanURL: https://developer.roadsync.com/openapi/rspay/overview/
+  baseURL: https://api.roadsync.app/rspay/v1
+  tags:
+  - workorders
+  properties:
+  - type: OpenAPI
+    url: openapi/roadsync-workorders-api-openapi.yml
 common:
+- type: DeveloperPortal
+  url: https://developer.roadsync.com/
+- type: Documentation
+  url: https://developer.roadsync.com/api/
+- type: APIReference
+  url: https://developer.roadsync.com/api/
+- type: Authentication
+  url: authentication/roadsync-authentication.yml
+- type: Conventions
+  url: conventions/roadsync-conventions.yml
+- type: Idempotency
+  url: conventions/roadsync-conventions.yml
+- type: ErrorCatalog
+  url: errors/roadsync-problem-types.yml
+- type: DeclineCodes
+  url: errors/roadsync-decline-codes.yml
+- type: Lifecycle
+  url: lifecycle/roadsync-lifecycle.yml
+- type: StatusPage
+  url: http://status.roadsync.com/
+- type: Conformance
+  url: conformance/roadsync-conformance.yml
+- type: DataModel
+  url: data-model/roadsync-data-model.yml
+- type: Sandbox
+  url: sandbox/roadsync-sandbox.yml
+- type: DomainSecurity
+  url: security/roadsync-domain-security.yml
+- type: AgenticAccess
+  url: agentic-access/roadsync-agentic-access.yml
+- type: MCPServer
+  url: mcp/roadsync-mcp.yml
+- type: LLMsTxt
+  url: llms/roadsync-llms.txt
+- type: Packages
+  url: packages/roadsync-packages.yml
+- type: SDKs
+  url: packages/roadsync-packages.yml
+- type: AgentSkill
+  url: skills/_index.yml
+- type: Support
+  url: https://roadsync.com/contact-support/
+- type: HelpCenter
+  url: https://learn.roadsync.com/knowledge
+- type: Blog
+  url: https://roadsync.com/blog/
+- type: TermsOfService
+  url: https://roadsync.com/terms-of-use/
+- type: PrivacyPolicy
+  url: https://roadsync.com/privacy-policy/
 - type: Website
   url: https://www.roadsync.com/

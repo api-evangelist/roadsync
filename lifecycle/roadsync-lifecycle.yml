@@ -1,0 +1,22 @@
+generated: '2026-07-21'
+method: searched
+source: https://developer.roadsync.com/ + http://status.roadsync.com/
+versioning:
+  scheme: uri-path
+  services:
+    - {api: client-api, version: '1.8.45'}
+    - {api: invoice, version: '1.0.0'}
+    - {api: company, version: '1.0.0'}
+    - {api: payment, version: '0.5.13'}
+    - {api: rspay, version: '1.0'}
+    - {api: workorder, version: '1.0'}
+  notes: Major version carried in the URI path (v0 / v1 / rspay/v1 / workorders/v1).
+status_page: http://status.roadsync.com/
+deprecation:
+  policy_url: null
+  sunset_header: false
+  notes: No public deprecation policy or RFC 8594 Sunset/Deprecation header support documented.
+sla:
+  url: null
+  uptime_target: null
+deprecated_operations: []

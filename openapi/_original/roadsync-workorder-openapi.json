@@ -1,0 +1,698 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "version": "1.0",
+    "title": "workorder-api"
+  },
+  "servers": [
+    {
+      "url": "https://test.api.roadsync.app/workorders/v1",
+      "description": "test"
+    },
+    {
+      "url": "https://api.roadsync.app/workorders/v1",
+      "description": "prod"
+    }
+  ],
+  "tags": [
+    {
+      "name": "workorders",
+      "description": "The Workorders API"
+    }
+  ],
+  "paths": {
+    "/{id}": {
+      "get": {
+        "tags": [
+          "workorders"
+        ],
+        "summary": "Get Workorder by ID",
+        "description": "Retrieve the information of the workorder with the matching workorder ID.",
+        "operationId": "get-workorder-workorderId",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The ID number of the object being returned",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "2378'"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/workorder"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "x-amazon-apigateway-integration": {
+          "uri": {
+            "Fn::Sub": "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${GetWorkordersFunction.Arn}/invocations"
+          },
+          "httpMethod": "POST",
+          "type": "aws_proxy"
+        }
+      },
+      "delete": {
+        "tags": [
+          "workorders"
+        ],
+        "summary": "Delete workorders by ID",
+        "description": "Deletes the workorder with a specific ID.",
+        "operationId": "delete-workorders-id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The ID number of the object being returned",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "2378"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "x-amazon-apigateway-integration": {
+          "uri": {
+            "Fn::Sub": "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${DeleteWorkordersFunction.Arn}/invocations"
+          },
+          "httpMethod": "POST",
+          "type": "aws_proxy"
+        }
+      }
+    },
+    "/": {
+      "get": {
+        "tags": [
+          "workorders"
+        ],
+        "summary": "Get All Recent Workorders",
+        "description": "Retrieve 20 Most Recent Workorders.",
+        "operationId": "get-workorders",
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/workorder"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "x-amazon-apigateway-integration": {
+          "uri": {
+            "Fn::Sub": "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${GetAllWorkordersFunction.Arn}/invocations"
+          },
+          "httpMethod": "POST",
+          "type": "aws_proxy"
+        }
+      },
+      "post": {
+        "tags": [
+          "workorders"
+        ],
+        "summary": "Create New Workorder",
+        "description": "Create a new workorder.",
+        "operationId": "post-workorder",
+        "requestBody": {
+          "description": "Post the necessary fields for the API to create a new workorder.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/workorder"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "allOf": [
+                    {},
+                    {}
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "409": {
+            "description": "Conflict"
+          }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "x-amazon-apigateway-integration": {
+          "uri": {
+            "Fn::Sub": "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${CreateWorkordersFunction.Arn}/invocations"
+          },
+          "httpMethod": "POST",
+          "type": "aws_proxy"
+        }
+      }
+    },
+    "/{id}/send": {
+      "parameters": [
+        {
+          "schema": {
+            "type": "string"
+          },
+          "name": "id",
+          "in": "path",
+          "required": true
+        }
+      ],
+      "post": {
+        "tags": [
+          "workorders"
+        ],
+        "summary": "Send workorder",
+        "operationId": "post-id-send",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "x-stoplight": {
+          "id": "y05euchkiofvx"
+        },
+        "x-amazon-apigateway-integration": {
+          "uri": {
+            "Fn::Sub": "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${SendWorkordersFunction.Arn}/invocations"
+          },
+          "httpMethod": "POST",
+          "type": "aws_proxy"
+        },
+        "description": "Send a workorder to a recipient via email or text.",
+        "requestBody": {
+          "$ref": "#/components/requestBodies/workorderSend"
+        },
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/{id}/approve": {
+      "parameters": [
+        {
+          "schema": {
+            "type": "string"
+          },
+          "name": "id",
+          "in": "path",
+          "required": true
+        }
+      ],
+      "post": {
+        "tags": [
+          "workorders"
+        ],
+        "summary": "Approve Workorders",
+        "operationId": "post-id-approve",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "x-stoplight": {
+          "id": "vw9kug26e1gm9"
+        },
+        "description": "",
+        "x-amazon-apigateway-integration": {
+          "uri": {
+            "Fn::Sub": "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${ApproveWorkordersFunction.Arn}/invocations"
+          },
+          "httpMethod": "POST",
+          "type": "aws_proxy"
+        },
+        "requestBody": {
+          "$ref": "#/components/requestBodies/workorderApprove"
+        },
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "ApiKeyAuth": {
+        "type": "apiKey",
+        "name": "x-api-key",
+        "in": "header"
+      }
+    },
+    "schemas": {
+      "workorder": {
+        "type": "object",
+        "title": "workorder",
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/id"
+          },
+          "publicId": {
+            "$ref": "#/components/schemas/publicId"
+          },
+          "workOrderSettingsId": {
+            "$ref": "#/components/schemas/workOrderSettingsId"
+          },
+          "reference": {
+            "$ref": "#/components/schemas/reference"
+          },
+          "status": {
+            "$ref": "#/components/schemas/status"
+          },
+          "companyId": {
+            "$ref": "#/components/schemas/companyId"
+          },
+          "userId": {
+            "$ref": "#/components/schemas/userId"
+          },
+          "signedCarrierName": {
+            "$ref": "#/components/schemas/signedCarrierName"
+          },
+          "signedContactName": {
+            "$ref": "#/components/schemas/signedContactName"
+          },
+          "signedDriverName": {
+            "$ref": "#/components/schemas/signedDriverName"
+          },
+          "signedDriverEmail": {
+            "$ref": "#/components/schemas/signedDriverEmail"
+          },
+          "signedDriverPhone": {
+            "$ref": "#/components/schemas/signedDriverPhone"
+          },
+          "signedContactEmail": {
+            "$ref": "#/components/schemas/signedContactEmail"
+          },
+          "signedContactPhone": {
+            "$ref": "#/components/schemas/signedContactPhone"
+          },
+          "signedCustomFields": {
+            "type": "object",
+            "properties": {
+              "dropdown": {
+                "type": "string"
+              },
+              "email": {
+                "type": "string"
+              }
+            }
+          },
+          "createdAt": {
+            "$ref": "#/components/schemas/createdAt"
+          },
+          "updatedAt": {
+            "$ref": "#/components/schemas/updatedAt"
+          },
+          "invoiceId": {
+            "$ref": "#/components/schemas/invoiceId"
+          },
+          "invoiceStatus": {
+            "$ref": "#/components/schemas/invoiceStatus"
+          },
+          "location": {
+            "$ref": "#/components/schemas/location"
+          }
+        },
+        "description": ""
+      },
+      "id": {
+        "type": "string",
+        "title": "id",
+        "description": "The id number of the object being returned.",
+        "example": "6XLeG3x91pQlBWjnXvARYO2onNVM0q"
+      },
+      "publicId": {
+        "type": "integer",
+        "title": "publicId",
+        "description": "The Roadsync Public ID of the workorder",
+        "example": 2381
+      },
+      "workOrderSettingsId": {
+        "type": "string",
+        "title": "workOrderSettingsId",
+        "description": "Hashed ID for the workorder settings",
+        "example": "O8MqwQ1X3L5RyaxVLBnNK2lGxerYAz"
+      },
+      "reference": {
+        "type": "string",
+        "title": "reference",
+        "description": "Workorder reference for record keeping purposes",
+        "example": "Trucker LLC"
+      },
+      "status": {
+        "enum": [
+          "unknown",
+          "new",
+          "sent",
+          "completed"
+        ],
+        "description": "Enum containing the possible workorder status",
+        "example": "sent"
+      },
+      "companyId": {
+        "type": "string",
+        "title": "companyId",
+        "description": "Hashed company ID attached to each workorder",
+        "example": "rZNz3VwGoJDMEaok3aQY7dqWRAL4y8"
+      },
+      "userId": {
+        "type": "string",
+        "title": "userId",
+        "description": "ID of the user creating workorders",
+        "example": "AVeGYqb0d7MJpaDZxB69rlxDOZ8Nmo"
+      },
+      "signedCarrierName": {
+        "type": "string",
+        "title": "signedCarrierName",
+        "description": "Name of carrier who signed workorder",
+        "example": "Jimbo"
+      },
+      "signedContactName": {
+        "type": "string",
+        "title": "signedContactName",
+        "description": "Name of the contact signing the workorder",
+        "example": "Jimbo"
+      },
+      "signedDriverName": {
+        "type": "string",
+        "title": "signedDriverName",
+        "description": "Name of driver who signed the workorder",
+        "example": "Jimbo"
+      },
+      "signedDriverEmail": {
+        "type": "string",
+        "title": "signedDriverEmail",
+        "description": "Email of driver who signed the workorder",
+        "example": "jimbo@gmail.com"
+      },
+      "signedDriverPhone": {
+        "type": "string",
+        "title": "signedDriverPhone",
+        "description": "Phone number of driver who signed the workorder",
+        "example": "4045194104"
+      },
+      "signedContactEmail": {
+        "type": "string",
+        "title": "signedContactEmail",
+        "description": "Email of the contact signing the workorder",
+        "example": "jimbo@gmail.com"
+      },
+      "signedContactPhone": {
+        "type": "string",
+        "title": "signedContactPhone",
+        "description": "Phone number of the contact signing the workorder",
+        "example": "4045194104"
+      },
+      "createdAt": {
+        "type": "string",
+        "title": "createdAt",
+        "description": "Created at value for workorder",
+        "format": "date-time",
+        "example": "2023-11-14T16:27:56.419546Z"
+      },
+      "updatedAt": {
+        "type": "string",
+        "title": "updatedAt",
+        "description": "Updated at value for workorder",
+        "format": "date-time",
+        "example": "2023-11-14T16:27:56.419546Z"
+      },
+      "invoiceId": {
+        "type": "string",
+        "title": "invoiceId",
+        "description": "Hashed invoice ID for the workorder",
+        "example": "rZNz3VwGoJDMEaok3aQY7dqWRAL4y8"
+      },
+      "invoiceStatus": {
+        "type": "string",
+        "title": "invoiceStatus",
+        "description": "Status of invoice attached to workorder",
+        "example": "completed"
+      },
+      "location": {
+        "type": "object",
+        "description": "Location for the workorder",
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/locationId"
+          },
+          "companyId": {
+            "$ref": "#/components/schemas/companyId"
+          },
+          "name": {
+            "$ref": "#/components/schemas/locationName"
+          },
+          "city": {
+            "$ref": "#/components/schemas/city"
+          },
+          "state": {
+            "$ref": "#/components/schemas/state"
+          },
+          "timezone": {
+            "$ref": "#/components/schemas/timezone"
+          },
+          "customFields": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          },
+          "isLocked": {
+            "$ref": "#/components/schemas/isLocked"
+          },
+          "lockedAt": {
+            "$ref": "#/components/schemas/lockedAt"
+          },
+          "comdataApiLocationId": {
+            "$ref": "#/components/schemas/comdataApiLocationId"
+          }
+        },
+        "x-examples": {
+          "Example 1": {
+            "id": "7VkjKzEOPNZnrveEXv8A4L9Y52b16G",
+            "companyId": "rZNz3VwGoJDMEaok3aQY7dqWRAL4y8",
+            "name": "Robertstown",
+            "city": "New Jack City",
+            "state": "AL",
+            "timezone": "US/Eastern",
+            "customFields": [],
+            "isLocked": false,
+            "comdataApiLocationId": "RS301"
+          }
+        }
+      },
+      "locationId": {
+        "type": "string",
+        "title": "locationId",
+        "description": "Hashed ID value for the location",
+        "example": "7VkjKzEOPNZnrveEXv8A4L9Y52b16G"
+      },
+      "locationName": {
+        "type": "string",
+        "title": "locationName",
+        "description": "Name of the location",
+        "example": "Robertstown"
+      },
+      "city": {
+        "type": "string",
+        "title": "city",
+        "description": "A valid city in the United States.",
+        "example": "Atlanta"
+      },
+      "state": {
+        "type": "string",
+        "title": "state",
+        "description": "A valid 2 character state code in the United States.",
+        "example": "GA"
+      },
+      "timezone": {
+        "type": "string",
+        "title": "timezone",
+        "description": "Timezone for the location",
+        "example": "US/Eastern"
+      },
+      "isLocked": {
+        "type": "boolean",
+        "title": "isLocked",
+        "description": "Boolean representation of if the location is locked"
+      },
+      "lockedAt": {
+        "type": "string",
+        "title": "lockedAt",
+        "description": "Time the location was locked",
+        "format": "date-time",
+        "example": "2023-11-14T16:28:20.085115Z"
+      },
+      "comdataApiLocationId": {
+        "type": "string",
+        "title": "comdataApiLocationId",
+        "description": "Location's unique Roadsync API ID from comdata",
+        "example": "RS301"
+      },
+      "email": {
+        "title": "email",
+        "x-stoplight": {
+          "id": "vxsl7ligmau5r"
+        },
+        "type": "string",
+        "example": "user@example.com"
+      },
+      "phone": {
+        "title": "phone",
+        "x-stoplight": {
+          "id": "fnlotiw3umas3"
+        },
+        "type": "string",
+        "example": "555-555-5555",
+        "pattern": "^\\d{3}-\\d{3}-\\d{4}$"
+      },
+      "signedCustomFields": {
+        "title": "signedCustomFields",
+        "x-stoplight": {
+          "id": "cvlo0mxljty0f"
+        },
+        "type": "string",
+        "description": "Signed custom fields for workorders"
+      },
+      "signedFileId": {
+        "title": "signedFileId",
+        "x-stoplight": {
+          "id": "zc55hhfccdzqq"
+        },
+        "type": "string"
+      }
+    },
+    "requestBodies": {
+      "workorderSend": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "anyOf": [
+                {
+                  "$ref": "#/components/schemas/email"
+                },
+                {
+                  "$ref": "#/components/schemas/phone"
+                }
+              ]
+            }
+          }
+        },
+        "description": ""
+      },
+      "workorderApprove": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "signedCarrierName": {
+                  "$ref": "#/components/schemas/signedCarrierName"
+                },
+                "signedContactPhone": {
+                  "$ref": "#/components/schemas/signedContactPhone"
+                },
+                "signedCustomFields": {
+                  "$ref": "#/components/schemas/signedCustomFields"
+                },
+                "signedDriverName": {
+                  "$ref": "#/components/schemas/signedDriverName"
+                },
+                "signedDriverPhone": {
+                  "$ref": "#/components/schemas/signedDriverPhone"
+                },
+                "signedFileId": {
+                  "$ref": "#/components/schemas/signedFileId"
+                }
+              }
+            }
+          }
+        }
+      },
+      "workorderCreate": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "locationId": {
+                  "$ref": "#/components/schemas/locationId"
+                },
+                "reference": {
+                  "$ref": "#/components/schemas/reference"
+                },
+                "signedCarrierName": {
+                  "$ref": "#/components/schemas/signedCarrierName"
+                },
+                "signedCustomFields": {
+                  "$ref": "#/components/schemas/signedCustomFields"
+                },
+                "signedDriverEmail": {
+                  "$ref": "#/components/schemas/signedDriverEmail"
+                },
+                "signedDriverPhone": {
+                  "$ref": "#/components/schemas/signedDriverPhone"
+                },
+                "workorderSettingsId": {
+                  "$ref": "#/components/schemas/workOrderSettingsId"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

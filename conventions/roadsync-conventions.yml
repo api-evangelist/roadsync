@@ -1,0 +1,63 @@
+generated: '2026-07-21'
+method: searched
+source: https://developer.roadsync.com/api/ + openapi/
+summary: >-
+  Cross-cutting request/response semantics for the RoadSync REST APIs (Checkout /
+  Invoice / Company / WorkOrders / Payment) and the RoadSyncPay Public API. All
+  services are REST over HTTPS using standard HTTP methods and status codes.
+authentication:
+  style: api-key
+  header: x-api-key
+  docs: https://developer.roadsync.com/api/authentication/
+  notes: >-
+    Every service requires an API key passed in the x-api-key header. The legacy
+    Client API additionally accepts a bearer session_token (JWT) obtained via
+    POST /login.
+idempotency:
+  supported: true
+  mechanism: request-body-field
+  field: idempotency_key
+  scope: RoadSyncPay payables and transactions
+  source: openapi/roadsync-rspay-openapi.json components.schemas.idempotencyKey
+  notes: >-
+    RoadSyncPay carries a documented idempotency_key string on payable and
+    transaction objects so a create can be safely retried without duplicating a
+    disbursement. Other services do not document an idempotency contract.
+error_envelope:
+  client_api:
+    media_type: application/problem+json
+    format: rfc9457
+    type_base: https://problems.roadsync.com/problem/
+  other_services:
+    media_type: application/json
+    format: status-code + description
+  cross_link: errors/roadsync-problem-types.yml
+versioning:
+  scheme: uri-path
+  examples:
+    - https://api.roadsync.app/v1/invoice
+    - https://api.roadsync.app/rspay/v1
+    - https://api.roadsync.app/company/v1
+    - https://api.roadsync.app/workorders/v1
+    - https://api.roadsync.app/v0/payment
+  cross_link: lifecycle/roadsync-lifecycle.yml
+environments:
+  production_host: api.roadsync.app
+  test_host: test.api.roadsync.app
+  dev_host: dev.api.roadsync.app
+  notes: >-
+    Test and production are separated by host (test.api.roadsync.app vs
+    api.roadsync.app), declared as distinct servers[] in each OpenAPI spec.
+  cross_link: sandbox/roadsync-sandbox.yml
+pagination:
+  supported: partially
+  notes: >-
+    List operations (e.g. RoadSyncPay GET /payables, GET /transactions, Invoice
+    GET /) exist; a uniform documented cursor/offset convention was not published
+    on the public developer surface at probe time.
+rate_limiting:
+  signaled: true
+  notes: >-
+    The legacy Client API declares a 429 Too Many Requests response
+    (#/components/responses/TooManyRequests429); no numeric limit or
+    RateLimit-* header contract is published.
