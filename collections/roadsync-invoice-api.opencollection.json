@@ -1,0 +1,739 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Client API v1.8 authenticated invoice API",
+    "version": "1.8.45"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "x-api-key",
+      "value": "{{x-api-key}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "invoice",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Archive an invoice by Id",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://client-api.staging.roadsync.com/{basePath}/invoice/archive/:invoiceId",
+            "params": [
+              {
+                "name": "invoiceId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-api-key",
+              "value": "{{x-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Archive an invoice by Id.\nNote this is same function as /invoice/{invoiceId} DELETE for clients that only support OPTIONS,GET,POST.\n"
+        },
+        {
+          "info": {
+            "name": "invoice_archive_options",
+            "type": "http"
+          },
+          "http": {
+            "method": "OPTIONS",
+            "url": "https://client-api.staging.roadsync.com/{basePath}/invoice/archive/:invoiceId",
+            "params": [
+              {
+                "name": "invoiceId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          }
+        },
+        {
+          "info": {
+            "name": "Create an invoice",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://client-api.staging.roadsync.com/{basePath}/invoice/create",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "x-api-key",
+              "value": "{{x-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Create an invoice"
+        },
+        {
+          "info": {
+            "name": "invoice_create_options",
+            "type": "http"
+          },
+          "http": {
+            "method": "OPTIONS",
+            "url": "https://client-api.staging.roadsync.com/{basePath}/invoice/create"
+          }
+        },
+        {
+          "info": {
+            "name": "Retrieve a list of invoices",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://client-api.staging.roadsync.com/{basePath}/invoice/list",
+            "params": [
+              {
+                "name": "companyId",
+                "value": "",
+                "type": "query",
+                "description": "Retrieve a list of invoices per company. Note that most users will have access to only one (their own) company and typically only\nSuperAdmins will be able to access invoices from multiple companies.\npaidState is optional with companyId and defaults to 'NA'\n"
+              },
+              {
+                "name": "locationId",
+                "value": "",
+                "type": "query",
+                "description": "Get a list of invoices filtered by location\n"
+              },
+              {
+                "name": "paidState",
+                "value": "",
+                "type": "query",
+                "description": "companyId is required with paidState. If no companyId is provided the default is the default from UserInfo if available.\nProviding paidState without a companyId will return a BadRequestError\n"
+              },
+              {
+                "name": "invoiceids",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "fromcreated",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "tocreated",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "archived",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "departmentid",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "excludeauthorized",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "fromauth",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "fromdel",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "fromsentdate",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "ignoreLimit",
+                "value": "",
+                "type": "query",
+                "description": "The default DefaultPageSize is 20.\nThe original idea was this: Ignore the 'limit' and return 20 items.\nHowever, the way this is implemented in the backend is this:\nif (limit or offset or ignoreLimit) {\n  if limit > 0 { // A specific value between 1 and 20 inclusive retrieves that many items\n    if limit <= DefaultPageSize {\n      retrieve(limit)\n    } else {\n      retrieve(DefaultPageSize)\n    }\n  } else\n    if ignoreLimit == false {\n      retrieve(DefaultPageSize)\n  }\n} else {\n  retrieve(DefaultPageSize)\n}\n\nThis makes ignoreLimit semantics basically useless in that it is only considered if limit==0 and then it is the same as limit=DefaultPageSize!\n\nRecommendation: NEVER use ignoreLimit. Only use offset and limit.\n\nIn v2 of the API ignoreLimit will be silently ignored and have no effect on results whatsoever.\n"
+              },
+              {
+                "name": "includeregular",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "includevoided",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "initialinvoicetypes",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "invoicestatuses",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "invoicetypes",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Upper limit for number of items to return. A number >= 1 and <= 20. Default: 20"
+              },
+              {
+                "name": "locationids",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query",
+                "description": "The offset of the requested page of \"limit\" items to retrieve. If there are 50 invoices and \"limit\"\nis not provided then items 0 through 19 will be returned by default. If \"offset\" is 10, then\nitems 11 through <limit> will be returned.\n"
+              },
+              {
+                "name": "search",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "shiftid",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "toauth",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "todel",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "tosentdate",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "timeout",
+                "value": "",
+                "type": "query",
+                "description": "Timeout in seconds for searching for invoices that meet the criteria. If the search exceeds this limit a Continuation response will be sent and optionally (if asyncResult == true and asynchronous results are availble) an asyncronous result set token."
+              },
+              {
+                "name": "asyncResult",
+                "value": "",
+                "type": "query",
+                "description": "Turn on/off the asynchronous result set for this request if the `timeout` time is exceeded during the execution of this search."
+              },
+              {
+                "name": "searchStart",
+                "value": "",
+                "type": "query",
+                "description": "Optionally indicate on subsequent search request (typically with the same filters) where the search in the master list of invoices should be resumed."
+              },
+              {
+                "name": "resultToken",
+                "value": "",
+                "type": "query",
+                "description": "Optionally indicate on subsequent search request (typically with the same filters) where the search in the master list of invoices should be resumed."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-api-key",
+              "value": "{{x-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Retrieve a list of invoices"
+        },
+        {
+          "info": {
+            "name": "invoice_list_options",
+            "type": "http"
+          },
+          "http": {
+            "method": "OPTIONS",
+            "url": "https://client-api.staging.roadsync.com/{basePath}/invoice/list"
+          }
+        },
+        {
+          "info": {
+            "name": "Retrieve an invoice report in the designated format",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://client-api.staging.roadsync.com/{basePath}/invoice/report",
+            "params": [
+              {
+                "name": "format",
+                "value": "",
+                "type": "query",
+                "description": "The format of the report. CSV is the default. Valid values are: CSV"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-api-key",
+              "value": "{{x-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Retrieve an invoice report in the designated format"
+        },
+        {
+          "info": {
+            "name": "invoice_report_options",
+            "type": "http"
+          },
+          "http": {
+            "method": "OPTIONS",
+            "url": "https://client-api.staging.roadsync.com/{basePath}/invoice/report",
+            "params": [
+              {
+                "name": "format",
+                "value": "",
+                "type": "query",
+                "description": "The format of the report. CSV is the default. Valid values are: CSV"
+              }
+            ]
+          }
+        },
+        {
+          "info": {
+            "name": "Search for invoices",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://client-api.staging.roadsync.com/{basePath}/invoice/search",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "x-api-key",
+              "value": "{{x-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Search for invoices with search criteria and retrieve a paged list of invoices.\n\nValid filters are:\n- All valid parameters of /invoice/list\n- Filters specific to /invoice/search as detailed below. TODO\n\nPagination has the defaults as specified in its schema, but 'pagination' is an optional search request attribute!\nFilters can have three items that apply to pagination (Supported by /invoice/list and factored in for compatibility):\n- offset\n- limit\n- ignoreLimit\nThe precedence of these filter ite"
+        },
+        {
+          "info": {
+            "name": "invoice_search_options",
+            "type": "http"
+          },
+          "http": {
+            "method": "OPTIONS",
+            "url": "https://client-api.staging.roadsync.com/{basePath}/invoice/search"
+          }
+        },
+        {
+          "info": {
+            "name": "Retrieve invoices statistics",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://client-api.staging.roadsync.com/{basePath}/invoice/stats",
+            "auth": {
+              "type": "apikey",
+              "key": "x-api-key",
+              "value": "{{x-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Retrieve invoices statistics"
+        },
+        {
+          "info": {
+            "name": "invoice_stats_options",
+            "type": "http"
+          },
+          "http": {
+            "method": "OPTIONS",
+            "url": "https://client-api.staging.roadsync.com/{basePath}/invoice/stats"
+          }
+        },
+        {
+          "info": {
+            "name": "Update an invoice",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://client-api.staging.roadsync.com/{basePath}/invoice/update",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "x-api-key",
+              "value": "{{x-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Update an invoice"
+        },
+        {
+          "info": {
+            "name": "invoice_update_options",
+            "type": "http"
+          },
+          "http": {
+            "method": "OPTIONS",
+            "url": "https://client-api.staging.roadsync.com/{basePath}/invoice/update"
+          }
+        },
+        {
+          "info": {
+            "name": "Retrieve an invoice by Id",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://client-api.staging.roadsync.com/{basePath}/invoice/:invoiceId",
+            "params": [
+              {
+                "name": "invoiceId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-api-key",
+              "value": "{{x-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Retrieve an invoice by Id"
+        },
+        {
+          "info": {
+            "name": "Archive an invoice by Id",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://client-api.staging.roadsync.com/{basePath}/invoice/:invoiceId",
+            "params": [
+              {
+                "name": "invoiceId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-api-key",
+              "value": "{{x-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Archive an invoice by Id"
+        },
+        {
+          "info": {
+            "name": "invoice_get_options",
+            "type": "http"
+          },
+          "http": {
+            "method": "OPTIONS",
+            "url": "https://client-api.staging.roadsync.com/{basePath}/invoice/:invoiceId",
+            "params": [
+              {
+                "name": "invoiceId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          }
+        },
+        {
+          "info": {
+            "name": "Get a list of invoices",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://client-api.staging.roadsync.com/{basePath}/",
+            "params": [
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query",
+                "description": "The starting position for result paging"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "The maximum number of results to return. Maximum is 21"
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "invoiceNumber",
+                "value": "",
+                "type": "query",
+                "description": "The invoice number (RS TRANS#) of the invoice to get. If present, all other filters will be ignored."
+              },
+              {
+                "name": "fromDeletedAt",
+                "value": "",
+                "type": "query",
+                "description": "The lower bound of the deleted date range. Only invoices deleted after this date will be included in the response. Provide the date and time in ISO 8601 format (e.g., \"2023-06-15T09:30:00Z\")."
+              },
+              {
+                "name": "toDeletedAt",
+                "value": "",
+                "type": "query",
+                "description": "The upper bound of the deleted date range. Only invoices deleted before this date will be included in the response. Provide the date and time in ISO 8601 format (e.g., \"2023-06-15T09:30:00Z\")."
+              },
+              {
+                "name": "fromAuthorizedAt",
+                "value": "",
+                "type": "query",
+                "description": "The lower bound of the authorized date range. Only invoices authorized after this date will be included in the response. Provide the date and time in ISO 8601 format (e.g., \"2023-06-15T09:30:00Z\")."
+              },
+              {
+                "name": "toAuthorizedAt",
+                "value": "",
+                "type": "query",
+                "description": "The upper bound of the authorized date range. Only invoices authorized before this date will be included in the response. Provide the date and time in ISO 8601 format (e.g., \"2023-06-15T09:30:00Z\")."
+              },
+              {
+                "name": "customField",
+                "value": "",
+                "type": "query",
+                "description": "Custom Field name and value (stringified object with the structure of '{name:name,value:value}') of the invoice to get."
+              }
+            ]
+          },
+          "docs": "Get a list of invoices\n"
+        },
+        {
+          "info": {
+            "name": "Create an invoice",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://client-api.staging.roadsync.com/{basePath}/",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create an invoice.\n"
+        },
+        {
+          "info": {
+            "name": "Get an invoice",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://client-api.staging.roadsync.com/{basePath}/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The id of the invoice."
+              }
+            ]
+          },
+          "docs": "Get an invoice.\n"
+        },
+        {
+          "info": {
+            "name": "Update invoice fields",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://client-api.staging.roadsync.com/{basePath}/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The id of the invoice."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update invoice fields. Only the passed in fields will be updated on the invoice.\n"
+        },
+        {
+          "info": {
+            "name": "Send an invoice to a recipient",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://client-api.staging.roadsync.com/{basePath}/:id/send",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The id of the invoice."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Send a URL to view the invoice and make payment through Remote Checkout.\n"
+        },
+        {
+          "info": {
+            "name": "Void an invoice",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://client-api.staging.roadsync.com/{basePath}/:id/void",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The id of the invoice."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Void an invoice.\n"
+        },
+        {
+          "info": {
+            "name": "Clone an invoice",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://client-api.staging.roadsync.com/{basePath}/:id/clone",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The id of the invoice."
+              }
+            ]
+          },
+          "docs": "Creates a clone of the specified invoice.\n"
+        },
+        {
+          "info": {
+            "name": "Get the payer embed URL for an invoice",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://client-api.staging.roadsync.com/{basePath}/:id/embed",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The id of the invoice."
+              }
+            ]
+          },
+          "docs": "Returns the payer app embed URL for the specified invoice.\n"
+        },
+        {
+          "info": {
+            "name": "Refund the payment for an invoice",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://client-api.staging.roadsync.com/{basePath}/:id/refund",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The id of the invoice."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Refund the specified amount for a paid invoice. This can only be done for invoices that were paid by credit card.\n"
+        },
+        {
+          "info": {
+            "name": "Attach a file to an invoice",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://client-api.staging.roadsync.com/{basePath}/:id/attach",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The id of the invoice."
+              },
+              {
+                "name": "attachmentName",
+                "value": "",
+                "type": "query",
+                "description": "The name of the file to attach"
+              }
+            ]
+          },
+          "docs": "Attach a file to an invoice. Must be in PDF, PNG, or JPG format.\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

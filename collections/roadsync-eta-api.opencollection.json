@@ -1,0 +1,51 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Client API v1.8 authenticated eta API",
+    "version": "1.8.45"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "x-api-key",
+      "value": "{{x-api-key}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "eta",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get ETA Information",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://client-api.staging.roadsync.com/{basePath}/eta",
+            "params": [
+              {
+                "name": "transfer_method",
+                "value": "",
+                "type": "query",
+                "description": "The transfer method for calculating ETA. Must be one of the supported payment methods."
+              },
+              {
+                "name": "scheduled_date",
+                "value": "",
+                "type": "query",
+                "description": "The scheduled date for the transfer"
+              }
+            ]
+          },
+          "docs": "Get estimated time of arrival (ETA) for a transfer based on transfer method and scheduled date."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

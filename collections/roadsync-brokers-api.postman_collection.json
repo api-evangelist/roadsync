@@ -1,0 +1,511 @@
+{
+  "item": [
+    {
+      "id": "0ccfea75-b67d-4206-9ce7-13296b1cb35c",
+      "name": "brokers",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "307cf290-37d1-48b8-982a-a67008541788",
+          "name": "Get All Brokers",
+          "request": {
+            "name": "Get All Brokers",
+            "description": {
+              "content": "Return a list of all the brokers linked to your API Key.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "brokers"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{Product}}",
+                  "key": "Product"
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{basePath}}",
+                  "key": "basePath"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET"
+          },
+          "response": [
+            {
+              "id": "dfc5c05a-f04c-4f4f-b1c3-f639b8503196",
+              "name": "Example response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "brokers"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{Product}}",
+                      "key": "Product"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{basePath}}",
+                      "key": "basePath"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"id\": 66305,\n    \"name\": \"Atlanta Brokerage\",\n    \"email_address\": \"virginia@atlantabrokerage.com\",\n    \"phone_number\": \"3243444347\",\n    \"address_line_one\": \"715 Peachtree St\",\n    \"address_line_two\": \"APT 23\",\n    \"address_city\": \"Atlanta\",\n    \"address_state\": \"GA\",\n    \"address_zip\": \"30306\",\n    \"ach_funding_source_id\": 87346,\n    \"paper_check_funding_source_id\": 87346,\n    \"wallet_funding_source_id\": 87346\n  },\n  {\n    \"id\": 66305,\n    \"name\": \"Atlanta Brokerage\",\n    \"email_address\": \"virginia@atlantabrokerage.com\",\n    \"phone_number\": \"3243444347\",\n    \"address_line_one\": \"715 Peachtree St\",\n    \"address_line_two\": \"APT 23\",\n    \"address_city\": \"Atlanta\",\n    \"address_state\": \"GA\",\n    \"address_zip\": \"30306\",\n    \"ach_funding_source_id\": 87346,\n    \"paper_check_funding_source_id\": 87346,\n    \"wallet_funding_source_id\": 87346\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "0503acfc-3b40-4daf-a390-7044cf2ea7f7",
+          "name": "Get a Single Broker",
+          "request": {
+            "name": "Get a Single Broker",
+            "description": {
+              "content": "Get a single broker.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "brokers",
+                ":broker_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "broker_id",
+                  "description": "(Required) "
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{Product}}",
+                  "key": "Product"
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{basePath}}",
+                  "key": "basePath"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET"
+          },
+          "response": [
+            {
+              "id": "4ce206bf-ebd1-46ee-bf20-64b82913d8e9",
+              "name": "Response from /brokers GET",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "brokers",
+                    ":broker_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "broker_id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{Product}}",
+                      "key": "Product"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{basePath}}",
+                      "key": "basePath"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"id\": 66305,\n    \"name\": \"Atlanta Brokerage\",\n    \"email_address\": \"virginia@atlantabrokerage.com\",\n    \"phone_number\": \"3243444347\",\n    \"address_line_one\": \"715 Peachtree St\",\n    \"address_line_two\": \"APT 23\",\n    \"address_city\": \"Atlanta\",\n    \"address_state\": \"GA\",\n    \"address_zip\": \"30306\",\n    \"ach_funding_source_id\": 87346,\n    \"paper_check_funding_source_id\": 87346,\n    \"wallet_funding_source_id\": 87346\n  },\n  {\n    \"id\": 66305,\n    \"name\": \"Atlanta Brokerage\",\n    \"email_address\": \"virginia@atlantabrokerage.com\",\n    \"phone_number\": \"3243444347\",\n    \"address_line_one\": \"715 Peachtree St\",\n    \"address_line_two\": \"APT 23\",\n    \"address_city\": \"Atlanta\",\n    \"address_state\": \"GA\",\n    \"address_zip\": \"30306\",\n    \"ach_funding_source_id\": 87346,\n    \"paper_check_funding_source_id\": 87346,\n    \"wallet_funding_source_id\": 87346\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e494e7f7-7da2-4b33-9c60-d0cf62f931e3",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "brokers",
+                    ":broker_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "broker_id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{Product}}",
+                      "key": "Product"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{basePath}}",
+                      "key": "basePath"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "da90cf1e-9d41-4834-995e-194c64b2d34b",
+              "name": "Forbidden",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "brokers",
+                    ":broker_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "broker_id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{Product}}",
+                      "key": "Product"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{basePath}}",
+                      "key": "basePath"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "76e6c90e-8f44-4fc6-9d8a-ec934e6c7601",
+              "name": "Not Found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "brokers",
+                    ":broker_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "broker_id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{Product}}",
+                      "key": "Product"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{basePath}}",
+                      "key": "basePath"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "ClientApi",
+      "key": "Product"
+    },
+    {
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "v1",
+      "key": "basePath"
+    },
+    {
+      "type": "string",
+      "value": "https://client-api.staging.roadsync.com/{{basePath}}",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "x-api-key"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}"
+      },
+      {
+        "key": "in",
+        "value": "header"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "2958e694-28dc-4bdd-b2fa-5c3b130dea91",
+    "name": "Client API v1.8 authenticated brokers API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "This API allows the Roadsync clients to manage aspects of the RoadSync service via an API.\n\nContact Support:\n Email: christo.delange@roadsync.com",
+      "type": "text/plain"
+    }
+  }
+}

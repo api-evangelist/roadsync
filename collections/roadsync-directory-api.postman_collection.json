@@ -1,0 +1,191 @@
+{
+  "item": [
+    {
+      "id": "55040df0-efb7-4b2b-8d79-a4829e893b8e",
+      "name": "directory",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "67f26a65-4511-4c57-9560-812982ee410a",
+          "name": "Search Payee Candidates",
+          "request": {
+            "name": "Search Payee Candidates",
+            "description": {},
+            "url": {
+              "path": [
+                "payee-candidates"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "query",
+                  "value": "<string>",
+                  "description": "The query for searching payee candidates"
+                }
+              ],
+              "variable": [
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{Product}}",
+                  "key": "Product"
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{basePath}}",
+                  "key": "basePath"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET"
+          },
+          "response": [
+            {
+              "id": "9fe7ffd3-60c1-4603-9641-7e47e7e84c38",
+              "name": "Example response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "payee-candidates"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "query",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{Product}}",
+                      "key": "Product"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{basePath}}",
+                      "key": "basePath"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"id\": 87346,\n    \"payee_name\": \"Camila Trucking LLC\",\n    \"mc_number\": \"MC612791\",\n    \"dot_number\": \"2428196\",\n    \"email_address\": \"crogers@camilatrucking.com\",\n    \"phone_number\": \"3243444347\",\n    \"first_name\": \"Camila\",\n    \"last_name\": \"Rogers\",\n    \"address_line_one\": \"715 Peachtree St\",\n    \"address_line_two\": \"APT 23\",\n    \"address_city\": \"Atlanta\",\n    \"address_state\": \"GA\",\n    \"address_zip\": \"30306\",\n    \"ach_funding_source_id\": 87346,\n    \"paper_check_funding_source_id\": 87346,\n    \"available_payment_types\": [\n      \"PAPER_CHECK\",\n      \"ACH\",\n      \"RTP\"\n    ],\n    \"is_verified\": false\n  },\n  {\n    \"id\": 87346,\n    \"payee_name\": \"Camila Trucking LLC\",\n    \"mc_number\": \"MC612791\",\n    \"dot_number\": \"2428196\",\n    \"email_address\": \"crogers@camilatrucking.com\",\n    \"phone_number\": \"3243444347\",\n    \"first_name\": \"Camila\",\n    \"last_name\": \"Rogers\",\n    \"address_line_one\": \"715 Peachtree St\",\n    \"address_line_two\": \"APT 23\",\n    \"address_city\": \"Atlanta\",\n    \"address_state\": \"GA\",\n    \"address_zip\": \"30306\",\n    \"ach_funding_source_id\": 87346,\n    \"paper_check_funding_source_id\": 87346,\n    \"available_payment_types\": [\n      \"PAPER_CHECK\",\n      \"ACH\",\n      \"RTP\"\n    ],\n    \"is_verified\": false\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "ClientApi",
+      "key": "Product"
+    },
+    {
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "v1",
+      "key": "basePath"
+    },
+    {
+      "type": "string",
+      "value": "https://client-api.staging.roadsync.com/{{basePath}}",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "x-api-key"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}"
+      },
+      {
+        "key": "in",
+        "value": "header"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "62d2d031-8de7-446d-920c-37b3fcfd84fa",
+    "name": "Client API v1.8 authenticated directory API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "This API allows the Roadsync clients to manage aspects of the RoadSync service via an API.\n\nContact Support:\n Email: christo.delange@roadsync.com",
+      "type": "text/plain"
+    }
+  }
+}

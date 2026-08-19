@@ -1,0 +1,109 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Client API v1.8 authenticated location API",
+    "version": "1.8.45"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "x-api-key",
+      "value": "{{x-api-key}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "location",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Retrieve a list of company locations",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://client-api.staging.roadsync.com/{basePath}/location/list",
+            "params": [
+              {
+                "name": "companyId",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-api-key",
+              "value": "{{x-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Retrieve a list of company locations. If no CompanyId is provided the user's companyId is used (if set).\nIf the user's company Id is also not set and error will be returned.\n"
+        },
+        {
+          "info": {
+            "name": "location_list_options",
+            "type": "http"
+          },
+          "http": {
+            "method": "OPTIONS",
+            "url": "https://client-api.staging.roadsync.com/{basePath}/location/list"
+          }
+        },
+        {
+          "info": {
+            "name": "Get a Location list",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://client-api.staging.roadsync.com/{basePath}/location"
+          },
+          "docs": "Get a Location list.\n"
+        },
+        {
+          "info": {
+            "name": "Get a Location",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://client-api.staging.roadsync.com/{basePath}/location/:location_id",
+            "params": [
+              {
+                "name": "location_id",
+                "value": "",
+                "type": "path",
+                "description": "The id of the location."
+              }
+            ]
+          },
+          "docs": "Get a Location.\n"
+        },
+        {
+          "info": {
+            "name": "Get a Product list",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://client-api.staging.roadsync.com/{basePath}/location/:location_id/product",
+            "params": [
+              {
+                "name": "location_id",
+                "value": "",
+                "type": "path",
+                "description": "The id of the location."
+              }
+            ]
+          },
+          "docs": "Get a Product list.\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

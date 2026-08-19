@@ -1,0 +1,124 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Client API v1.8 authenticated funding sources API",
+    "version": "1.8.45"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "x-api-key",
+      "value": "{{x-api-key}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "funding sources",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get a Payee's Funding Sources",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://client-api.staging.roadsync.com/{basePath}/payees/:payee_id/funding-sources",
+            "headers": [
+              {
+                "name": "broker-id",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "payee_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Retrieve a Payee's Funding Source Information."
+        },
+        {
+          "info": {
+            "name": "Create a Funding Source for a Payee",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://client-api.staging.roadsync.com/{basePath}/payees/:payee_id/funding-sources",
+            "headers": [
+              {
+                "name": "broker-id",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "payee_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a new funding source for an existing Payee."
+        },
+        {
+          "info": {
+            "name": "Update a Funding Source for a Payee",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://client-api.staging.roadsync.com/{basePath}/payees/:payee_id/funding-sources",
+            "headers": [
+              {
+                "name": "broker-id",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "payee_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update funding source for an existing Payee."
+        },
+        {
+          "info": {
+            "name": "Get a Broker's Funding Sources",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://client-api.staging.roadsync.com/{basePath}/brokers/:broker_id/funding-sources",
+            "params": [
+              {
+                "name": "broker_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Retrieve a Broker's Funding Source Information."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

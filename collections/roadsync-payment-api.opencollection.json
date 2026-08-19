@@ -1,0 +1,83 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Client API v1.8 authenticated payment API",
+    "version": "1.8.45"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "x-api-key",
+      "value": "{{x-api-key}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "payment",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create a payment",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://client-api.staging.roadsync.com/{basePath}/",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a payment"
+        },
+        {
+          "info": {
+            "name": "Retrieve a payment by id",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://client-api.staging.roadsync.com/{basePath}/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The id of the payment to update."
+              }
+            ]
+          },
+          "docs": "Retrieve a payment by id"
+        },
+        {
+          "info": {
+            "name": "Update fields for a payment by id.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://client-api.staging.roadsync.com/{basePath}/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The id of the payment to update."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update fields for a payment by id."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

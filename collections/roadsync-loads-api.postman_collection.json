@@ -1,0 +1,627 @@
+{
+  "item": [
+    {
+      "id": "fc2dd52e-d830-44a7-af0e-947a60ede6b2",
+      "name": "loads",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "7834bcd0-ff55-4808-9fca-a9c038809f33",
+          "name": "Get a List of All Loads",
+          "request": {
+            "name": "Get a List of All Loads",
+            "description": {
+              "content": "Return a list of Loads associated with a Broker. Optionally filter by load_number or external_id.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "loads"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "load_number",
+                  "value": "<string>",
+                  "description": "Filter loads by load number."
+                },
+                {
+                  "disabled": false,
+                  "key": "external_id",
+                  "value": "<string>",
+                  "description": "Filter loads by external ID."
+                }
+              ],
+              "variable": [
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{Product}}",
+                  "key": "Product"
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{basePath}}",
+                  "key": "basePath"
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) The id of the broker",
+                "key": "broker-id",
+                "value": "<integer>"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET"
+          },
+          "response": [
+            {
+              "id": "40d72431-60d1-4684-a3bc-53f9342a0008",
+              "name": "Example response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "loads"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "load_number",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "external_id",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{Product}}",
+                      "key": "Product"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{basePath}}",
+                      "key": "basePath"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) The id of the broker",
+                    "key": "broker-id",
+                    "value": "66305"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"id\": 87346,\n    \"amount\": 123.45,\n    \"status\": \"string\",\n    \"created_datetime\": \"2023-10-26T00:00:00+00:00\",\n    \"updated_datetime\": \"2023-10-26T00:00:00+00:00\",\n    \"payee\": {\n      \"id\": 87346,\n      \"payee_name\": \"Camila Trucking LLC\",\n      \"mc_number\": \"MC612791\",\n      \"dot_number\": \"2428196\",\n      \"is_verified\": false,\n      \"is_factoring_company\": true,\n      \"available_payment_types\": [\n        \"PAPER_CHECK\",\n        \"ACH\",\n        \"RTP\"\n      ]\n    },\n    \"carrier_payee\": {\n      \"id\": 87346,\n      \"payee_name\": \"Camila Trucking LLC\",\n      \"is_verified\": false\n    },\n    \"payable\": {\n      \"id\": 87346,\n      \"amount\": 123.45,\n      \"status\": \"string\",\n      \"payment_method\": \"string\",\n      \"transaction\": {\n        \"id\": 87346,\n        \"status\": \"string\",\n        \"payment_method\": \"string\"\n      }\n    }\n  },\n  {\n    \"id\": 87346,\n    \"amount\": 123.45,\n    \"status\": \"string\",\n    \"created_datetime\": \"2023-10-26T00:00:00+00:00\",\n    \"updated_datetime\": \"2023-10-26T00:00:00+00:00\",\n    \"payee\": {\n      \"id\": 87346,\n      \"payee_name\": \"Camila Trucking LLC\",\n      \"mc_number\": \"MC612791\",\n      \"dot_number\": \"2428196\",\n      \"is_verified\": false,\n      \"is_factoring_company\": true,\n      \"available_payment_types\": [\n        \"PAPER_CHECK\",\n        \"ACH\",\n        \"RTP\"\n      ]\n    },\n    \"carrier_payee\": {\n      \"id\": 87346,\n      \"payee_name\": \"Camila Trucking LLC\",\n      \"is_verified\": false\n    },\n    \"payable\": {\n      \"id\": 87346,\n      \"amount\": 123.45,\n      \"status\": \"string\",\n      \"payment_method\": \"string\",\n      \"transaction\": {\n        \"id\": 87346,\n        \"status\": \"string\",\n        \"payment_method\": \"string\"\n      }\n    }\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "2aaf1f7f-7615-4911-8920-95d75c40f8ca",
+          "name": "Create a Load",
+          "request": {
+            "name": "Create a Load",
+            "description": {
+              "content": "Create a Load. If a load with the specified load_number already exists for the broker, the existing load's identifier will be returned with a 201 status instead of creating a duplicate load.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "loads"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{Product}}",
+                  "key": "Product"
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{basePath}}",
+                  "key": "basePath"
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) The id of the broker",
+                "key": "broker-id",
+                "value": "<integer>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"load_number\": \"<string>\",\n  \"amount\": \"<number>\",\n  \"external_id\": \"<string>\",\n  \"payee_id\": \"<integer>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "a4262649-3540-4fc4-9de0-69f0ec0db743",
+              "name": "Load created successfully or existing load returned. If a load with the same load_number and broker_id already exists, the existing load's identifier is returned instead of creating a duplicate.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "loads"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{Product}}",
+                      "key": "Product"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{basePath}}",
+                      "key": "basePath"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) The id of the broker",
+                    "key": "broker-id",
+                    "value": "66305"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": 87346\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "011cac9b-ece9-4bc1-b9de-9eadec858caf",
+              "name": "Bad Request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "loads"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{Product}}",
+                      "key": "Product"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{basePath}}",
+                      "key": "basePath"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) The id of the broker",
+                    "key": "broker-id",
+                    "value": "66305"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "a2fe8845-d334-4982-8dd8-02ea51b0c28c",
+              "name": "Conflict",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "loads"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{Product}}",
+                      "key": "Product"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{basePath}}",
+                      "key": "basePath"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) The id of the broker",
+                    "key": "broker-id",
+                    "value": "66305"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Conflict",
+              "code": 409,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "79f9925c-143a-4018-8973-f6a6e6e019b9",
+          "name": "Get a single Load",
+          "request": {
+            "name": "Get a single Load",
+            "description": {
+              "content": "Return a single Load associated with a Broker.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "loads",
+                ":load_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "load_id",
+                  "description": "(Required) "
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{Product}}",
+                  "key": "Product"
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{basePath}}",
+                  "key": "basePath"
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) The id of the broker",
+                "key": "broker-id",
+                "value": "<integer>"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET"
+          },
+          "response": [
+            {
+              "id": "50d5209b-164d-4d55-a971-5bf56d37d8fb",
+              "name": "Example response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "loads",
+                    ":load_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "load_id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{Product}}",
+                      "key": "Product"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{basePath}}",
+                      "key": "basePath"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) The id of the broker",
+                    "key": "broker-id",
+                    "value": "66305"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": 87346,\n  \"amount\": 123.45,\n  \"status\": \"string\",\n  \"created_datetime\": \"2023-10-26T00:00:00+00:00\",\n  \"updated_datetime\": \"2023-10-26T00:00:00+00:00\",\n  \"payee\": {\n    \"id\": 87346,\n    \"payee_name\": \"Camila Trucking LLC\",\n    \"mc_number\": \"MC612791\",\n    \"dot_number\": \"2428196\",\n    \"is_verified\": false,\n    \"is_factoring_company\": true,\n    \"available_payment_types\": [\n      \"PAPER_CHECK\",\n      \"ACH\",\n      \"RTP\"\n    ]\n  },\n  \"carrier_payee\": {\n    \"id\": 87346,\n    \"payee_name\": \"Camila Trucking LLC\",\n    \"is_verified\": false\n  },\n  \"payable\": {\n    \"id\": 87346,\n    \"amount\": 123.45,\n    \"status\": \"string\",\n    \"payment_method\": \"string\",\n    \"transaction\": {\n      \"id\": 87346,\n      \"status\": \"string\",\n      \"payment_method\": \"string\"\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "ClientApi",
+      "key": "Product"
+    },
+    {
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "v1",
+      "key": "basePath"
+    },
+    {
+      "type": "string",
+      "value": "https://client-api.staging.roadsync.com/{{basePath}}",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "x-api-key"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}"
+      },
+      {
+        "key": "in",
+        "value": "header"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "ddc46c44-111e-47b8-8f95-654f46a04c76",
+    "name": "Client API v1.8 authenticated loads API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "This API allows the Roadsync clients to manage aspects of the RoadSync service via an API.\n\nContact Support:\n Email: christo.delange@roadsync.com",
+      "type": "text/plain"
+    }
+  }
+}

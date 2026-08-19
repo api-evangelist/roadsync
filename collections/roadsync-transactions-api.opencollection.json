@@ -1,0 +1,96 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Client API v1.8 authenticated transactions API",
+    "version": "1.8.45"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "x-api-key",
+      "value": "{{x-api-key}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "transactions",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get a List of Transactions",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://client-api.staging.roadsync.com/{basePath}/transactions",
+            "headers": [
+              {
+                "name": "broker-id",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "reference_id",
+                "value": "",
+                "type": "query",
+                "description": "Filter transactions by reference ID."
+              }
+            ]
+          },
+          "docs": "Get a List of Transactions"
+        },
+        {
+          "info": {
+            "name": "Create a Single Transaction",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://client-api.staging.roadsync.com/{basePath}/transactions",
+            "headers": [
+              {
+                "name": "broker-id",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a Single Transaction"
+        },
+        {
+          "info": {
+            "name": "Get a Single Transaction",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://client-api.staging.roadsync.com/{basePath}/transactions/:id",
+            "headers": [
+              {
+                "name": "broker-id",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get a Single Transaction"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -193,3 +193,9 @@ tools:
 - name: workorder_post_id_approve
   description: Approve Workorders
   source_operation: openapi/roadsync-workorder-openapi.json#post-id-approve
+deployment:
+  mode: none
+  verified: derived
+  tools: 62
+  checked: '2026-08-12'
+  source: catalog MCP census

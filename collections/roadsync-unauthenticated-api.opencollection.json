@@ -1,0 +1,91 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Client API v1.8 authenticated unauthenticated API",
+    "version": "1.8.45"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "x-api-key",
+      "value": "{{x-api-key}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "unauthenticated",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Accepts user credentials for validation, create a session and returns a session token",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://client-api.staging.roadsync.com/{basePath}/login",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "x-api-key",
+              "value": "{{x-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Validate credentials and establish session"
+        },
+        {
+          "info": {
+            "name": "login_options",
+            "type": "http"
+          },
+          "http": {
+            "method": "OPTIONS",
+            "url": "https://client-api.staging.roadsync.com/{basePath}/login"
+          }
+        },
+        {
+          "info": {
+            "name": "Does roundtrip with the backend API",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://client-api.staging.roadsync.com/{basePath}/ping",
+            "params": [
+              {
+                "name": "pong",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-api-key",
+              "value": "{{x-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Test backend connectivity"
+        },
+        {
+          "info": {
+            "name": "ping_options",
+            "type": "http"
+          },
+          "http": {
+            "method": "OPTIONS",
+            "url": "https://client-api.staging.roadsync.com/{basePath}/ping"
+          }
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,53 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Client API v1.8 authenticated API",
+    "version": "1.8.45"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "x-api-key",
+      "value": "{{x-api-key}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "authenticated",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Log user out and invalidate session token",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://client-api.staging.roadsync.com/{basePath}/logout",
+            "auth": {
+              "type": "apikey",
+              "key": "x-api-key",
+              "value": "{{x-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "End session"
+        },
+        {
+          "info": {
+            "name": "logout_options",
+            "type": "http"
+          },
+          "http": {
+            "method": "OPTIONS",
+            "url": "https://client-api.staging.roadsync.com/{basePath}/logout"
+          }
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

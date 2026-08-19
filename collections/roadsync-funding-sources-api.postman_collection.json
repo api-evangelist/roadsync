@@ -1,0 +1,677 @@
+{
+  "item": [
+    {
+      "id": "65b5cd06-e7b5-43c7-8ea1-5cbd8a7880a1",
+      "name": "funding sources",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "b4506c49-ff0f-455b-b100-9f74814151ea",
+          "name": "Get a Payee's Funding Sources",
+          "request": {
+            "name": "Get a Payee's Funding Sources",
+            "description": {
+              "content": "Retrieve a Payee's Funding Source Information.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "payees",
+                ":payee_id",
+                "funding-sources"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "payee_id",
+                  "description": "(Required) "
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{Product}}",
+                  "key": "Product"
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{basePath}}",
+                  "key": "basePath"
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) The id of the broker",
+                "key": "broker-id",
+                "value": "<integer>"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET"
+          },
+          "response": [
+            {
+              "id": "cbb4504e-365d-47bf-aba7-fc4ad5b003b9",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "payees",
+                    ":payee_id",
+                    "funding-sources"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "payee_id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{Product}}",
+                      "key": "Product"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{basePath}}",
+                      "key": "basePath"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) The id of the broker",
+                    "key": "broker-id",
+                    "value": "66305"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"PAPER_CHECK\": {\n    \"id\": 87346,\n    \"name\": \"Atlanta Brokerage\",\n    \"address_line_one\": \"715 Peachtree St\",\n    \"address_line_two\": \"APT 23\",\n    \"address_city\": \"Atlanta\",\n    \"address_state\": \"GA\",\n    \"address_zip\": \"30306\"\n  },\n  \"ACH\": {\n    \"id\": 87346,\n    \"name\": \"Atlanta Brokerage\",\n    \"account_number\": \"1234567890\",\n    \"routing_number\": \"610000523\",\n    \"bank_account_type\": \"string\",\n    \"has_rtp\": true\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "8d3852d0-f965-4b9f-8a3c-b8154fb27309",
+          "name": "Create a Funding Source for a Payee",
+          "request": {
+            "name": "Create a Funding Source for a Payee",
+            "description": {
+              "content": "Create a new funding source for an existing Payee.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "payees",
+                ":payee_id",
+                "funding-sources"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "payee_id",
+                  "description": "(Required) "
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{Product}}",
+                  "key": "Product"
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{basePath}}",
+                  "key": "basePath"
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) The id of the broker",
+                "key": "broker-id",
+                "value": "<integer>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"type\": \"<string>\",\n  \"data\": {\n    \"name\": \"<string>\",\n    \"address_line_one\": \"<string>\",\n    \"address_line_two\": \"<string>\",\n    \"address_city\": \"<string>\",\n    \"address_state\": \"<string>\",\n    \"address_zip\": \"<string>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "52c1cf1b-f5b2-42c7-ba2c-eb0fa286e933",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "payees",
+                    ":payee_id",
+                    "funding-sources"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "payee_id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{Product}}",
+                      "key": "Product"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{basePath}}",
+                      "key": "basePath"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) The id of the broker",
+                    "key": "broker-id",
+                    "value": "66305"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"type\": \"<string>\",\n  \"data\": {\n    \"name\": \"Atlanta Brokerage\",\n    \"address_line_one\": \"715 Peachtree St\",\n    \"address_line_two\": \"APT 23\",\n    \"address_city\": \"Atlanta\",\n    \"address_state\": \"GA\",\n    \"address_zip\": \"30306\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": 87346\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "2bc0244a-f6a1-4007-8949-a6444af4a292",
+          "name": "Update a Funding Source for a Payee",
+          "request": {
+            "name": "Update a Funding Source for a Payee",
+            "description": {
+              "content": "Update funding source for an existing Payee.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "payees",
+                ":payee_id",
+                "funding-sources"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "payee_id",
+                  "description": "(Required) "
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{Product}}",
+                  "key": "Product"
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{basePath}}",
+                  "key": "basePath"
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) The id of the broker",
+                "key": "broker-id",
+                "value": "<integer>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PATCH",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"type\": \"<string>\",\n  \"data\": {\n    \"name\": \"<string>\",\n    \"address_line_one\": \"<string>\",\n    \"address_line_two\": \"<string>\",\n    \"address_city\": \"<string>\",\n    \"address_state\": \"<string>\",\n    \"address_zip\": \"<string>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "a52a4de4-4567-4a96-b555-9bd87bd9b8fc",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "payees",
+                    ":payee_id",
+                    "funding-sources"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "payee_id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{Product}}",
+                      "key": "Product"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{basePath}}",
+                      "key": "basePath"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) The id of the broker",
+                    "key": "broker-id",
+                    "value": "66305"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"type\": \"<string>\",\n  \"data\": {\n    \"name\": \"Atlanta Brokerage\",\n    \"address_line_one\": \"715 Peachtree St\",\n    \"address_line_two\": \"APT 23\",\n    \"address_city\": \"Atlanta\",\n    \"address_state\": \"GA\",\n    \"address_zip\": \"30306\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": 87346\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "a9040c42-dec5-4d46-8557-6e8ba3793d20",
+          "name": "Get a Broker's Funding Sources",
+          "request": {
+            "name": "Get a Broker's Funding Sources",
+            "description": {
+              "content": "Retrieve a Broker's Funding Source Information.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "brokers",
+                ":broker_id",
+                "funding-sources"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "broker_id",
+                  "description": "(Required) "
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{Product}}",
+                  "key": "Product"
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{basePath}}",
+                  "key": "basePath"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET"
+          },
+          "response": [
+            {
+              "id": "c171ab53-e0c1-4c33-8fc5-3dc4e54056c7",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "brokers",
+                    ":broker_id",
+                    "funding-sources"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "broker_id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{Product}}",
+                      "key": "Product"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{basePath}}",
+                      "key": "basePath"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"PAPER_CHECK\": {\n    \"id\": 87346,\n    \"name\": \"Atlanta Brokerage\",\n    \"address_line_one\": \"715 Peachtree St\",\n    \"address_line_two\": \"APT 23\",\n    \"address_city\": \"Atlanta\",\n    \"address_state\": \"GA\",\n    \"address_zip\": \"30306\"\n  },\n  \"ACH\": {\n    \"id\": 87346,\n    \"name\": \"Atlanta Brokerage\",\n    \"bank_account_type\": \"string\",\n    \"account_number\": \"1234567890\",\n    \"routing_number\": \"610000523\"\n  },\n  \"WALLET\": {\n    \"id\": 87346,\n    \"name\": \"Atlanta Brokerage\",\n    \"balance\": 15953.21\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "ClientApi",
+      "key": "Product"
+    },
+    {
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "v1",
+      "key": "basePath"
+    },
+    {
+      "type": "string",
+      "value": "https://client-api.staging.roadsync.com/{{basePath}}",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "x-api-key"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}"
+      },
+      {
+        "key": "in",
+        "value": "header"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "a06d4212-2c26-45d4-a9fe-e49fedeb4b6f",
+    "name": "Client API v1.8 authenticated funding sources API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "This API allows the Roadsync clients to manage aspects of the RoadSync service via an API.\n\nContact Support:\n Email: christo.delange@roadsync.com",
+      "type": "text/plain"
+    }
+  }
+}

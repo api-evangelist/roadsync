@@ -1,0 +1,1089 @@
+{
+  "item": [
+    {
+      "id": "37fedd9d-944d-46cb-b7a1-da53c66ec886",
+      "name": "payees",
+      "description": {
+        "content": "The payees end point",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "2254efea-335e-411e-b72d-f6ea29fe3ee9",
+          "name": "Get a List of All Payees",
+          "request": {
+            "name": "Get a List of All Payees",
+            "description": {
+              "content": "Return a list of all Payees associated with a Broker.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "payees"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "dot",
+                  "value": "<string>",
+                  "description": "Filter payees by DOT number"
+                }
+              ],
+              "variable": [
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{Product}}",
+                  "key": "Product"
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{basePath}}",
+                  "key": "basePath"
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) The id of the broker",
+                "key": "broker-id",
+                "value": "<integer>"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET"
+          },
+          "response": [
+            {
+              "id": "b09ef951-eaa2-49b1-a98f-2421538daf29",
+              "name": "Example response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "payees"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "dot",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{Product}}",
+                      "key": "Product"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{basePath}}",
+                      "key": "basePath"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) The id of the broker",
+                    "key": "broker-id",
+                    "value": "66305"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"id\": 87346,\n    \"payee_name\": \"Camila Trucking LLC\",\n    \"mc_number\": \"MC612791\",\n    \"dot_number\": \"2428196\",\n    \"email_address\": \"crogers@camilatrucking.com\",\n    \"phone_number\": \"3243444347\",\n    \"first_name\": \"Camila\",\n    \"last_name\": \"Rogers\",\n    \"address_line_one\": \"715 Peachtree St\",\n    \"address_line_two\": \"APT 23\",\n    \"address_city\": \"Atlanta\",\n    \"address_state\": \"GA\",\n    \"address_zip\": \"30306\",\n    \"is_factoring_company\": true,\n    \"ach_funding_source_id\": 87346,\n    \"paper_check_funding_source_id\": 87346,\n    \"available_payment_types\": [\n      \"PAPER_CHECK\",\n      \"ACH\",\n      \"RTP\"\n    ],\n    \"is_verified\": false,\n    \"payee_candidate_id\": 896876,\n    \"carrier_payee_ids\": [\n      10204,\n      10205\n    ],\n    \"factoring_company\": {\n      \"id\": 87346,\n      \"payee_name\": \"Camila Trucking LLC\"\n    }\n  },\n  {\n    \"id\": 87346,\n    \"payee_name\": \"Camila Trucking LLC\",\n    \"mc_number\": \"MC612791\",\n    \"dot_number\": \"2428196\",\n    \"email_address\": \"crogers@camilatrucking.com\",\n    \"phone_number\": \"3243444347\",\n    \"first_name\": \"Camila\",\n    \"last_name\": \"Rogers\",\n    \"address_line_one\": \"715 Peachtree St\",\n    \"address_line_two\": \"APT 23\",\n    \"address_city\": \"Atlanta\",\n    \"address_state\": \"GA\",\n    \"address_zip\": \"30306\",\n    \"is_factoring_company\": true,\n    \"ach_funding_source_id\": 87346,\n    \"paper_check_funding_source_id\": 87346,\n    \"available_payment_types\": [\n      \"PAPER_CHECK\",\n      \"ACH\",\n      \"RTP\"\n    ],\n    \"is_verified\": false,\n    \"payee_candidate_id\": 896876,\n    \"carrier_payee_ids\": [\n      10204,\n      10205\n    ],\n    \"factoring_company\": {\n      \"id\": 87346,\n      \"payee_name\": \"Camila Trucking LLC\"\n    }\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "d67d1bea-be43-4804-a8fc-a83de1b16fb0",
+          "name": "Create a Payee",
+          "request": {
+            "name": "Create a Payee",
+            "description": {
+              "content": "Create a Payee.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "payees"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{Product}}",
+                  "key": "Product"
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{basePath}}",
+                  "key": "basePath"
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) The id of the broker",
+                "key": "broker-id",
+                "value": "<integer>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"type\": \"<string>\",\n  \"data\": {\n    \"payee_name\": \"<string>\",\n    \"mc_number\": \"<string>\",\n    \"dot_number\": \"<string>\",\n    \"email_address\": \"<string>\",\n    \"phone_number\": \"<string>\",\n    \"first_name\": \"<string>\",\n    \"last_name\": \"<string>\",\n    \"address_line_one\": \"<string>\",\n    \"address_line_two\": \"<string>\",\n    \"address_city\": \"<string>\",\n    \"address_state\": \"<string>\",\n    \"address_zip\": \"<string>\",\n    \"is_factoring_company\": \"<boolean>\",\n    \"carrier_payee_ids\": [\n      \"<integer>\",\n      \"<integer>\"\n    ]\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "ec6f972d-b439-4434-a639-e7b13f5bf1bf",
+              "name": "Example response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "payees"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{Product}}",
+                      "key": "Product"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{basePath}}",
+                      "key": "basePath"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) The id of the broker",
+                    "key": "broker-id",
+                    "value": "66305"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"type\": \"<string>\",\n  \"data\": {\n    \"payee_name\": \"Camila Trucking LLC\",\n    \"mc_number\": \"MC612791\",\n    \"dot_number\": \"2428196\",\n    \"email_address\": \"crogers@camilatrucking.com\",\n    \"phone_number\": \"3243444347\",\n    \"first_name\": \"Camila\",\n    \"last_name\": \"Rogers\",\n    \"address_line_one\": \"715 Peachtree St\",\n    \"address_line_two\": \"APT 23\",\n    \"address_city\": \"Atlanta\",\n    \"address_state\": \"GA\",\n    \"address_zip\": \"30306\",\n    \"is_factoring_company\": true,\n    \"carrier_payee_ids\": [\n      10204,\n      10205\n    ]\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": 87346\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c7fe80e0-c8a6-41e5-b9fe-fbbff28077fb",
+              "name": "Bad Request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "payees"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{Product}}",
+                      "key": "Product"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{basePath}}",
+                      "key": "basePath"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) The id of the broker",
+                    "key": "broker-id",
+                    "value": "66305"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"type\": \"<string>\",\n  \"data\": {\n    \"payee_name\": \"Camila Trucking LLC\",\n    \"mc_number\": \"MC612791\",\n    \"dot_number\": \"2428196\",\n    \"email_address\": \"crogers@camilatrucking.com\",\n    \"phone_number\": \"3243444347\",\n    \"first_name\": \"Camila\",\n    \"last_name\": \"Rogers\",\n    \"address_line_one\": \"715 Peachtree St\",\n    \"address_line_two\": \"APT 23\",\n    \"address_city\": \"Atlanta\",\n    \"address_state\": \"GA\",\n    \"address_zip\": \"30306\",\n    \"is_factoring_company\": true,\n    \"carrier_payee_ids\": [\n      10204,\n      10205\n    ]\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "f0e061b7-3fa2-4af7-a7ae-2f7ffba55eca",
+              "name": "Conflict",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "payees"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{Product}}",
+                      "key": "Product"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{basePath}}",
+                      "key": "basePath"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) The id of the broker",
+                    "key": "broker-id",
+                    "value": "66305"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"type\": \"<string>\",\n  \"data\": {\n    \"payee_name\": \"Camila Trucking LLC\",\n    \"mc_number\": \"MC612791\",\n    \"dot_number\": \"2428196\",\n    \"email_address\": \"crogers@camilatrucking.com\",\n    \"phone_number\": \"3243444347\",\n    \"first_name\": \"Camila\",\n    \"last_name\": \"Rogers\",\n    \"address_line_one\": \"715 Peachtree St\",\n    \"address_line_two\": \"APT 23\",\n    \"address_city\": \"Atlanta\",\n    \"address_state\": \"GA\",\n    \"address_zip\": \"30306\",\n    \"is_factoring_company\": true,\n    \"carrier_payee_ids\": [\n      10204,\n      10205\n    ]\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Conflict",
+              "code": 409,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "4a8ab67d-0d2e-4b8b-91ab-dfd496a1fc5a",
+          "name": "Get a Single Payee",
+          "request": {
+            "name": "Get a Single Payee",
+            "description": {
+              "content": "Retrieve the information of one specific Payee.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "payees",
+                ":payee_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "payee_id",
+                  "description": "(Required) "
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{Product}}",
+                  "key": "Product"
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{basePath}}",
+                  "key": "basePath"
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) The id of the broker",
+                "key": "broker-id",
+                "value": "<integer>"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET"
+          },
+          "response": [
+            {
+              "id": "4dfec7b4-6696-435a-a00e-d923f3c50df8",
+              "name": "Example response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "payees",
+                    ":payee_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "payee_id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{Product}}",
+                      "key": "Product"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{basePath}}",
+                      "key": "basePath"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) The id of the broker",
+                    "key": "broker-id",
+                    "value": "66305"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": 87346,\n  \"payee_name\": \"Camila Trucking LLC\",\n  \"mc_number\": \"MC612791\",\n  \"dot_number\": \"2428196\",\n  \"email_address\": \"crogers@camilatrucking.com\",\n  \"phone_number\": \"3243444347\",\n  \"first_name\": \"Camila\",\n  \"last_name\": \"Rogers\",\n  \"address_line_one\": \"715 Peachtree St\",\n  \"address_line_two\": \"APT 23\",\n  \"address_city\": \"Atlanta\",\n  \"address_state\": \"GA\",\n  \"address_zip\": \"30306\",\n  \"is_factoring_company\": true,\n  \"ach_funding_source_id\": 87346,\n  \"paper_check_funding_source_id\": 87346,\n  \"available_payment_types\": [\n    \"PAPER_CHECK\",\n    \"ACH\",\n    \"RTP\"\n  ],\n  \"is_verified\": false,\n  \"payee_candidate_id\": 896876,\n  \"carrier_payee_ids\": [\n    10204,\n    10205\n  ],\n  \"factoring_company\": {\n    \"id\": 87346,\n    \"payee_name\": \"Camila Trucking LLC\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "57c8972f-d03c-4fb1-9139-e6041bc8fe4c",
+          "name": "Update a Single Payee",
+          "request": {
+            "name": "Update a Single Payee",
+            "description": {
+              "content": "Edit the information of the specified Payee. Only Payees that are not verified can be updated.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "payees",
+                ":payee_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "payee_id",
+                  "description": "(Required) "
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{Product}}",
+                  "key": "Product"
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{basePath}}",
+                  "key": "basePath"
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) The id of the broker",
+                "key": "broker-id",
+                "value": "<integer>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PATCH",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"payee_name\": \"<string>\",\n  \"mc_number\": \"<string>\",\n  \"dot_number\": \"<string>\",\n  \"email_address\": \"<string>\",\n  \"phone_number\": \"<string>\",\n  \"address_line_one\": \"<string>\",\n  \"address_line_two\": \"<string>\",\n  \"address_city\": \"<string>\",\n  \"address_state\": \"<string>\",\n  \"address_zip\": \"<string>\",\n  \"first_name\": \"<string>\",\n  \"last_name\": \"<string>\",\n  \"factoring_company_id\": \"<integer>\",\n  \"carrier_payee_ids\": [\n    \"<integer>\",\n    \"<integer>\"\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "6af76f8a-16d2-4717-b9a2-5a8f5818a2df",
+              "name": "Example response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "payees",
+                    ":payee_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "payee_id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{Product}}",
+                      "key": "Product"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{basePath}}",
+                      "key": "basePath"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) The id of the broker",
+                    "key": "broker-id",
+                    "value": "66305"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {}
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": 87346\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "069bd6a0-9e82-4969-b6fd-c0d0f50ff1c8",
+              "name": "Bad Request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "payees",
+                    ":payee_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "payee_id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{Product}}",
+                      "key": "Product"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{basePath}}",
+                      "key": "basePath"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) The id of the broker",
+                    "key": "broker-id",
+                    "value": "66305"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "ea354996-4914-4f4e-8b32-31494f2ff5bf",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "payees",
+                    ":payee_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "payee_id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{Product}}",
+                      "key": "Product"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{basePath}}",
+                      "key": "basePath"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) The id of the broker",
+                    "key": "broker-id",
+                    "value": "66305"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "5f009587-8abd-4f9b-9752-c899a162dcac",
+              "name": "Example response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "payees",
+                    ":payee_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "payee_id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{Product}}",
+                      "key": "Product"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{basePath}}",
+                      "key": "basePath"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) The id of the broker",
+                    "key": "broker-id",
+                    "value": "66305"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"Code\": \"ForbiddenError\",\n  \"Message\": \"Action forbidden\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "8c6b9c5d-2573-4732-8684-7817c31b5299",
+              "name": "Not Found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "payees",
+                    ":payee_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "payee_id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{Product}}",
+                      "key": "Product"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{basePath}}",
+                      "key": "basePath"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) The id of the broker",
+                    "key": "broker-id",
+                    "value": "66305"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "ClientApi",
+      "key": "Product"
+    },
+    {
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "v1",
+      "key": "basePath"
+    },
+    {
+      "type": "string",
+      "value": "https://client-api.staging.roadsync.com/{{basePath}}",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "x-api-key"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}"
+      },
+      {
+        "key": "in",
+        "value": "header"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "b58b01b7-bb7f-4359-b27d-53fedeba0fbe",
+    "name": "Client API v1.8 authenticated payees API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "This API allows the Roadsync clients to manage aspects of the RoadSync service via an API.\n\nContact Support:\n Email: christo.delange@roadsync.com",
+      "type": "text/plain"
+    }
+  }
+}
