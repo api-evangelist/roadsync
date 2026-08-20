@@ -39,6 +39,15 @@ x-enrichment:
 image: https://roadsync.com/wp-content/uploads/2022/05/cropped-RS-1000-192x192.png
 tags:
 - Company
+- Financial-Services
+- Payments
+- Logistics
+- Trucking
+- Invoicing
+- Transportation
+- Fintech
+tags_raw:
+- Company
 - Financial Services
 - Payments
 - Logistics
@@ -58,6 +67,8 @@ apis:
   humanURL: https://developer.roadsync.com/openapi/rspay/overview/
   baseURL: https://api.roadsync.app/rspay/v1
   tags:
+  - Authenticated
+  tags_raw:
   - authenticated
   properties:
   - type: OpenAPI
@@ -68,6 +79,8 @@ apis:
   humanURL: https://developer.roadsync.com/openapi/rspay/overview/
   baseURL: https://api.roadsync.app/rspay/v1
   tags:
+  - Brokers
+  tags_raw:
   - brokers
   properties:
   - type: OpenAPI
@@ -78,6 +91,8 @@ apis:
   humanURL: https://developer.roadsync.com/openapi/rspay/overview/
   baseURL: https://api.roadsync.app/rspay/v1
   tags:
+  - Department
+  tags_raw:
   - department
   properties:
   - type: OpenAPI
@@ -88,6 +103,8 @@ apis:
   humanURL: https://developer.roadsync.com/openapi/rspay/overview/
   baseURL: https://api.roadsync.app/rspay/v1
   tags:
+  - Directory
+  tags_raw:
   - directory
   properties:
   - type: OpenAPI
@@ -98,6 +115,8 @@ apis:
   humanURL: https://developer.roadsync.com/openapi/rspay/overview/
   baseURL: https://api.roadsync.app/rspay/v1
   tags:
+  - ETA
+  tags_raw:
   - eta
   properties:
   - type: OpenAPI
@@ -108,6 +127,8 @@ apis:
   humanURL: https://developer.roadsync.com/openapi/rspay/overview/
   baseURL: https://api.roadsync.app/rspay/v1
   tags:
+  - Funding Sources
+  tags_raw:
   - funding sources
   properties:
   - type: OpenAPI
@@ -118,6 +139,8 @@ apis:
   humanURL: https://developer.roadsync.com/openapi/rspay/overview/
   baseURL: https://api.roadsync.app/rspay/v1
   tags:
+  - Invoice
+  tags_raw:
   - invoice
   properties:
   - type: OpenAPI
@@ -128,6 +151,8 @@ apis:
   humanURL: https://developer.roadsync.com/openapi/rspay/overview/
   baseURL: https://api.roadsync.app/rspay/v1
   tags:
+  - Loads
+  tags_raw:
   - loads
   properties:
   - type: OpenAPI
@@ -138,6 +163,8 @@ apis:
   humanURL: https://developer.roadsync.com/openapi/rspay/overview/
   baseURL: https://api.roadsync.app/rspay/v1
   tags:
+  - Location
+  tags_raw:
   - location
   properties:
   - type: OpenAPI
@@ -148,6 +175,8 @@ apis:
   humanURL: https://developer.roadsync.com/openapi/rspay/overview/
   baseURL: https://api.roadsync.app/rspay/v1
   tags:
+  - Payables
+  tags_raw:
   - payables
   properties:
   - type: OpenAPI
@@ -158,6 +187,8 @@ apis:
   humanURL: https://developer.roadsync.com/openapi/rspay/overview/
   baseURL: https://api.roadsync.app/rspay/v1
   tags:
+  - Payees
+  tags_raw:
   - payees
   properties:
   - type: OpenAPI
@@ -168,6 +199,8 @@ apis:
   humanURL: https://developer.roadsync.com/openapi/rspay/overview/
   baseURL: https://api.roadsync.app/rspay/v1
   tags:
+  - Payment
+  tags_raw:
   - payment
   properties:
   - type: OpenAPI
@@ -178,6 +211,8 @@ apis:
   humanURL: https://developer.roadsync.com/openapi/rspay/overview/
   baseURL: https://api.roadsync.app/rspay/v1
   tags:
+  - Ping
+  tags_raw:
   - ping
   properties:
   - type: OpenAPI
@@ -188,6 +223,8 @@ apis:
   humanURL: https://developer.roadsync.com/openapi/rspay/overview/
   baseURL: https://api.roadsync.app/rspay/v1
   tags:
+  - Product
+  tags_raw:
   - product
   properties:
   - type: OpenAPI
@@ -198,6 +235,8 @@ apis:
   humanURL: https://developer.roadsync.com/openapi/rspay/overview/
   baseURL: https://api.roadsync.app/rspay/v1
   tags:
+  - Shift
+  tags_raw:
   - shift
   properties:
   - type: OpenAPI
@@ -208,6 +247,8 @@ apis:
   humanURL: https://developer.roadsync.com/openapi/rspay/overview/
   baseURL: https://api.roadsync.app/rspay/v1
   tags:
+  - Transaction
+  tags_raw:
   - transactions
   properties:
   - type: OpenAPI
@@ -228,6 +269,8 @@ apis:
   humanURL: https://developer.roadsync.com/openapi/rspay/overview/
   baseURL: https://api.roadsync.app/rspay/v1
   tags:
+  - Work Orders
+  tags_raw:
   - workorders
   properties:
   - type: OpenAPI
