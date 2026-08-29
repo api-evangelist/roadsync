@@ -1,0 +1,25 @@
+slug: roadsync
+provider: Roadsync
+generated_by: planning/capability-mapping/scripts/classify_capabilities.py
+model: claude-opus-5
+frame:
+- Transportation & Logistics
+min_confidence: 0.7
+capability_model:
+  source: https://github.com/vincentmakes/turbo-ea-capabilities
+  license: CC-BY-4.0
+  attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
+    CC BY 4.0
+  notice: NOTICE
+edge_count: 1
+edges:
+- tag: payables
+  spec_file: roadsync-payables-api-openapi.yml
+  capability_id: BC-200.20
+  capability_id_l1: BC-200
+  capability_name: Accounts Payable Management
+  confidence: 0.8
+  evidence: '"Create a Payable", schemas payable, invoiceNumber, poNumber, scheduledForDate, amount, payeeName,
+    fundingSourceId, status'
+  reason: Create/update/delete payables carrying invoice number, PO number, scheduled payment date, amount
+    and payee funding source — plainly accounts payable invoice-to-payment processing.

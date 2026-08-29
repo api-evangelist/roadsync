@@ -288,6 +288,9 @@ apis:
   - type: OpenAPI
     url: openapi/roadsync-workorders-api-openapi.yml
 common:
+- type: CapabilityMap
+  url: capabilities/roadsync-capability-edges.yml
+  name: Roadsync Business Capability Map
 - type: Overlay
   url: overlays/roadsync-client-api-overlay.yaml
 - type: DeveloperPortal
