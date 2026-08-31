@@ -79,7 +79,7 @@ apis:
   humanURL: https://developer.roadsync.com/openapi/rspay/overview/
   baseURL: https://api.roadsync.app/rspay/v1
   tags:
-  - Authenticated
+  - authenticated
   tags_raw:
   - authenticated
   properties:
@@ -91,7 +91,7 @@ apis:
   humanURL: https://developer.roadsync.com/openapi/rspay/overview/
   baseURL: https://api.roadsync.app/rspay/v1
   tags:
-  - Brokers
+  - brokers
   tags_raw:
   - brokers
   properties:
@@ -103,7 +103,7 @@ apis:
   humanURL: https://developer.roadsync.com/openapi/rspay/overview/
   baseURL: https://api.roadsync.app/rspay/v1
   tags:
-  - Department
+  - department
   tags_raw:
   - department
   properties:
@@ -127,7 +127,7 @@ apis:
   humanURL: https://developer.roadsync.com/openapi/rspay/overview/
   baseURL: https://api.roadsync.app/rspay/v1
   tags:
-  - ETA
+  - eta
   tags_raw:
   - eta
   properties:
@@ -151,7 +151,7 @@ apis:
   humanURL: https://developer.roadsync.com/openapi/rspay/overview/
   baseURL: https://api.roadsync.app/rspay/v1
   tags:
-  - Invoice
+  - invoice
   tags_raw:
   - invoice
   properties:
@@ -163,7 +163,7 @@ apis:
   humanURL: https://developer.roadsync.com/openapi/rspay/overview/
   baseURL: https://api.roadsync.app/rspay/v1
   tags:
-  - Loads
+  - loads
   tags_raw:
   - loads
   properties:
@@ -187,7 +187,7 @@ apis:
   humanURL: https://developer.roadsync.com/openapi/rspay/overview/
   baseURL: https://api.roadsync.app/rspay/v1
   tags:
-  - Payables
+  - payables
   tags_raw:
   - payables
   properties:
@@ -199,7 +199,7 @@ apis:
   humanURL: https://developer.roadsync.com/openapi/rspay/overview/
   baseURL: https://api.roadsync.app/rspay/v1
   tags:
-  - Payees
+  - payees
   tags_raw:
   - payees
   properties:
@@ -247,7 +247,7 @@ apis:
   humanURL: https://developer.roadsync.com/openapi/rspay/overview/
   baseURL: https://api.roadsync.app/rspay/v1
   tags:
-  - Shift
+  - shift
   tags_raw:
   - shift
   properties:
@@ -281,7 +281,7 @@ apis:
   humanURL: https://developer.roadsync.com/openapi/rspay/overview/
   baseURL: https://api.roadsync.app/rspay/v1
   tags:
-  - Work Orders
+  - workorders
   tags_raw:
   - workorders
   properties:
