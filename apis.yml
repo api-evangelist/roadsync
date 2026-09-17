@@ -277,18 +277,16 @@ apis:
   properties:
   - type: OpenAPI
     url: openapi/roadsync-unauthenticated-api-openapi.yml
-- aid: roadsync:roadsync-workorders-api
-  name: Roadsync workorders API
+- aid: roadsync:roadsync-work-orders-api
+  name: Roadsync Work Orders API
   description: The Workorders API
   humanURL: https://developer.roadsync.com/openapi/rspay/overview/
   baseURL: https://api.roadsync.app/rspay/v1
   tags:
   - Work Orders
-  tags_raw:
-  - workorders
   properties:
   - type: OpenAPI
-    url: openapi/roadsync-workorders-api-openapi.yml
+    url: openapi/roadsync-work-orders-api-openapi.yml
 common:
 - type: CapabilityMap
   url: capabilities/roadsync-capability-edges.yml
