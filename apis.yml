@@ -153,7 +153,7 @@ apis:
   humanURL: https://developer.roadsync.com/openapi/rspay/overview/
   baseURL: https://api.roadsync.app/rspay/v1
   tags:
-  - Invoice
+  - Invoices
   tags_raw:
   - invoice
   properties:
@@ -213,7 +213,7 @@ apis:
   humanURL: https://developer.roadsync.com/openapi/rspay/overview/
   baseURL: https://api.roadsync.app/rspay/v1
   tags:
-  - Payment
+  - Payments
   tags_raw:
   - payment
   properties:
