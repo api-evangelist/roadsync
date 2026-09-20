@@ -11,8 +11,19 @@ capability_model:
   attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
     CC BY 4.0
   notice: NOTICE
-edge_count: 1
+edge_count: 4
 edges:
+- tag: invoice
+  spec_file: roadsync-invoice-api-openapi.yml
+  capability_id: BC-200.30
+  capability_id_l1: BC-200
+  capability_name: Accounts Receivable Management
+  confidence: 0.8
+  evidence: '"Create an invoice", "Retrieve a list of invoices", "Retrieve an invoice report in the designated
+    format", "Retrieve invoices statistics"; schemas Invoice, InvoiceLineItem, InvoiceStatus, DepositStatus'
+  reason: Full invoice lifecycle (create, update, archive, search, report) for the client's customers
+    — customer invoicing and receivables, i.e. Accounts Receivable Management.
+  recovered_from: vertical-banking-capital-markets-edges.json
 - tag: payables
   spec_file: roadsync-payables-api-openapi.yml
   capability_id: BC-200.20
@@ -23,3 +34,26 @@ edges:
     fundingSourceId, status'
   reason: Create/update/delete payables carrying invoice number, PO number, scheduled payment date, amount
     and payee funding source — plainly accounts payable invoice-to-payment processing.
+- tag: transactions
+  spec_file: roadsync-transactions-api-openapi.yml
+  capability_id: BC-1340
+  capability_id_l1: BC-1340
+  capability_name: Payments & Card Management
+  confidence: 0.78
+  evidence: POST /transactions "Create a Single Transaction"; schemas payeeId, payableId, brokerId, scheduledForDate,
+    idempotencyKey
+  reason: Creating and reading disbursement transactions against payees/payables on an ACH/paper-check/RTP
+    disbursement platform is payments execution. Held at L1 because the surface spans initiation and processing
+    without naming either.
+  recovered_from: vertical-banking-capital-markets-edges.json
+- tag: payment
+  spec_file: roadsync-payment-api-openapi.yml
+  capability_id: BC-1340.10
+  capability_id_l1: BC-1340
+  capability_name: Payment Initiation Management
+  confidence: 0.72
+  evidence: POST / payment_post "Create a payment"; schemas PaymentRequest, PatchPaymentRequest
+  reason: Operations capture and amend payment instructions on a digital payments platform, i.e. payment
+    initiation/capture. Sub-capability choice (initiation vs processing) carries some ambiguity, hence
+    moderate confidence.
+  recovered_from: vertical-banking-capital-markets-edges.json
