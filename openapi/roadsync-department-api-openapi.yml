@@ -1,11 +1,11 @@
-openapi: 3.0.1
+openapi: 3.2.0
 info:
   contact:
     email: christo.delange@roadsync.com
   description: This API allows the Roadsync clients to manage aspects of the RoadSync service via an API.
   license:
     name: Copyright (c) 2020, RoadSync Inc.
-  title: Client API v1.8 authenticated department API
+  title: Client API v1.8 Department API
   version: 1.8.45
   x-api-id: 3ea39084-d8df-11ea-ad77-0017b600647f
   x-audience: external-partner
@@ -21,11 +21,10 @@ security:
 - session_token: []
 tags:
 - description: Department operations
-  name: department
+  name: Department
 paths:
   /department/list:
     get:
-      description: Retrieve a list of departments for a location
       operationId: department_list_get
       parameters:
       - explode: true
@@ -55,7 +54,7 @@ paths:
       - session_token: []
       summary: Retrieve a list of departments for a location
       tags:
-      - department
+      - Department
     options:
       operationId: department_list_options
       responses:
@@ -75,21 +74,11 @@ paths:
           $ref: '#/components/responses/UnexpectedError'
       security: []
       tags:
-      - department
+      - Department
+      summary: Department list options
+      x-summary-source: derived
 components:
   schemas:
-    DepartmentListResponse:
-      allOf:
-      - $ref: '#/components/schemas/CodeMessage'
-      - additionalProperties: false
-        properties:
-          department_list:
-            description: A list of Departments
-            items:
-              $ref: '#/components/schemas/Department'
-            maxItems: 64
-            type: array
-        type: object
     CodeMessage:
       additionalProperties: false
       description: A generic error object generally used for 500 responses
@@ -101,6 +90,26 @@ components:
       required:
       - code
       - message
+    Message:
+      maxLength: 2048
+      pattern: /^[a-zA-Z0-9 ]*$/
+      type: string
+    Department:
+      additionalProperties: false
+      properties:
+        id:
+          $ref: '#/components/schemas/HashedId'
+        locationId:
+          $ref: '#/components/schemas/HashedId'
+        name:
+          maxLength: 2048
+          pattern: /^.*$/
+          type: string
+      type: object
+    HashedId:
+      maxLength: 128
+      pattern: /^\w+$/
+      type: string
     Problem:
       additionalProperties: false
       properties:
@@ -131,11 +140,10 @@ components:
 
             '
           example: 503
-          exclusiveMaximum: true
           format: int32
-          maximum: 600
           minimum: 100
           type: integer
+          exclusiveMaximum: 600
         title:
           description: 'A short, summary of the problem type. Written in english and readable
 
@@ -162,6 +170,18 @@ components:
           pattern: /^.*$/
           type: string
       type: object
+    DepartmentListResponse:
+      allOf:
+      - $ref: '#/components/schemas/CodeMessage'
+      - additionalProperties: false
+        properties:
+          department_list:
+            description: A list of Departments
+            items:
+              $ref: '#/components/schemas/Department'
+            maxItems: 64
+            type: array
+        type: object
     CodeEnum:
       default: Success
       enum:
@@ -169,27 +189,19 @@ components:
       - Error
       - Exception
       type: string
-    HashedId:
-      maxLength: 128
-      pattern: /^\w+$/
-      type: string
-    Department:
-      additionalProperties: false
-      properties:
-        id:
-          $ref: '#/components/schemas/HashedId'
-        locationId:
-          $ref: '#/components/schemas/HashedId'
-        name:
-          maxLength: 2048
-          pattern: /^.*$/
-          type: string
-      type: object
-    Message:
-      maxLength: 2048
-      pattern: /^[a-zA-Z0-9 ]*$/
-      type: string
   responses:
+    NotFound404:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Problem'
+      description: 404 Not found
+    UnexpectedError:
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/Problem'
+      description: unexpected error response
     ForbiddenError:
       content:
         application/json:
@@ -204,30 +216,12 @@ components:
             pattern: /^.*$/
             type: string
           style: simple
-    ServiceError500:
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/Problem'
-      description: Service Error
-    UnexpectedError:
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/Problem'
-      description: unexpected error response
-    DepartmentListResponse:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/DepartmentListResponse'
-      description: A department list response
-    NotFound404:
+    TooManyRequests429:
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Problem'
-      description: 404 Not found
+      description: 429 too many requests response
     Options200:
       content:
         application/json:
@@ -283,12 +277,18 @@ components:
             pattern: ^[a-zA-Z0-9 ,]*$
             type: string
           style: simple
-    TooManyRequests429:
+    ServiceError500:
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/Problem'
+      description: Service Error
+    DepartmentListResponse:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/Problem'
-      description: 429 too many requests response
+            $ref: '#/components/schemas/DepartmentListResponse'
+      description: A department list response
     UnauthorizedError:
       content:
         application/json:

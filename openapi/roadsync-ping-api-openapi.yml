@@ -1,34 +1,30 @@
-openapi: 3.0.1
+openapi: 3.2.0
 info:
-  contact:
-    email: christo.delange@roadsync.com
-  description: This API allows the Roadsync clients to manage aspects of the RoadSync service via an API.
+  title: Payment API v0 Ping API
+  version: 0.5.13
   license:
-    name: Copyright (c) 2020, RoadSync Inc.
-  title: Client API v1.8 authenticated ping API
-  version: 1.8.45
-  x-api-id: 3ea39084-d8df-11ea-ad77-0017b600647f
-  x-audience: external-partner
+    name: Copyright (c) 2022, RoadSync Inc.
+  description: The Payment API gives you the ability to take payments.
 servers:
-- url: https://client-api.staging.roadsync.com/{basePath}
+- url: https://test.api.roadsync.app/v0/payment
+  description: Sandbox/Test Payment API
+- url: https://api.roadsync.app/v0/payment
+  description: Production Payment API
+- url: '{server}'
+  description: Development
   variables:
-    Product:
-      default: ClientApi
-    basePath:
-      default: v1
-security:
-- api_key: []
-- session_token: []
+    server:
+      default: https://dev.api.roadsync.app/v0/payment
 tags:
-- name: ping
+- name: Ping
 paths:
   /ping:
     get:
       tags:
-      - ping
+      - Ping
       operationId: ping_get
       description: Ping the payment-api service
-      summary: Ping the payment-api service. Will also validate the api key present on the request
+      summary: Ping the payment-api service.
       responses:
         '200':
           description: Service available
@@ -53,6 +49,15 @@ components:
       description: A list of errors that occurred during payment processing
       items:
         $ref: '#/components/schemas/Error'
+    Error:
+      type: object
+      properties:
+        code:
+          type: string
+          description: The error code
+        title:
+          type: string
+          description: Summary of error
     PaymentResponse:
       type: object
       additionalProperties: false
@@ -87,23 +92,8 @@ components:
                     description: True if field is required
         errors:
           $ref: '#/components/schemas/Errors'
-    Error:
-      type: object
-      properties:
-        code:
-          type: string
-          description: The error code
-        title:
-          type: string
-          description: Summary of error
   securitySchemes:
-    api_key:
-      in: header
-      name: x-api-key
+    ApiKey:
       type: apiKey
-      x-apikeyInfoFunc: client_api_server.controllers.authorization_controller.check_api_key
-    session_token:
-      bearerFormat: JWT
-      scheme: bearer
-      type: http
-      x-apikeyInfoFunc: client_api_server.controllers.authorization_controller.check_session_token
+      name: x-api-key
+      in: header

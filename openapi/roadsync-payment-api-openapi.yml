@@ -1,34 +1,29 @@
-openapi: 3.0.1
+openapi: 3.2.0
 info:
-  contact:
-    email: christo.delange@roadsync.com
-  description: This API allows the Roadsync clients to manage aspects of the RoadSync service via an API.
+  title: v0 Payment API
+  version: 0.5.13
   license:
-    name: Copyright (c) 2020, RoadSync Inc.
-  title: Client API v1.8 authenticated payment API
-  version: 1.8.45
-  x-api-id: 3ea39084-d8df-11ea-ad77-0017b600647f
-  x-audience: external-partner
+    name: Copyright (c) 2022, RoadSync Inc.
+  description: The Payment API gives you the ability to take payments.
 servers:
-- url: https://client-api.staging.roadsync.com/{basePath}
+- url: https://test.api.roadsync.app/v0/payment
+  description: Sandbox/Test Payment API
+- url: https://api.roadsync.app/v0/payment
+  description: Production Payment API
+- url: '{server}'
+  description: Development
   variables:
-    Product:
-      default: ClientApi
-    basePath:
-      default: v1
-security:
-- api_key: []
-- session_token: []
+    server:
+      default: https://dev.api.roadsync.app/v0/payment
 tags:
-- name: payment
+- name: Payment
   description: Payment API Operations
 paths:
   /:
     post:
       tags:
-      - payment
+      - Payment
       operationId: payment_post
-      description: Create a payment
       summary: Create a payment
       requestBody:
         required: true
@@ -160,9 +155,9 @@ paths:
       description: The id of the payment to update.
     patch:
       tags:
-      - payment
+      - Payment
       operationId: payment_patch
-      summary: Update fields for a payment by id.
+      summary: Update fields for a payment by id
       requestBody:
         required: true
         content:
@@ -208,9 +203,8 @@ paths:
       - ApiKey: []
     get:
       tags:
-      - payment
+      - Payment
       operationId: payment_get
-      description: Retrieve a payment by id
       summary: Retrieve a payment by id
       responses:
         '200':
@@ -232,94 +226,6 @@ paths:
       - ApiKey: []
 components:
   schemas:
-    PaymentResponse:
-      type: object
-      additionalProperties: false
-      properties:
-        data:
-          type: object
-          description: The Payment object returned by the create call
-          properties:
-            id:
-              type: string
-              description: The id of the payment
-            checkNumber:
-              type: string
-              description: The number of the check that was created, only returned for 'efscheck and tchek' paymentType
-            status:
-              type: string
-              description: The status of the payment
-            reason:
-              type: string
-              description: A description on why a payment is in `failed` status
-            fields:
-              type: array
-              description: Fields to be collected from the user for certain payment types.
-              items:
-                type: object
-                properties:
-                  name:
-                    type: string
-                    description: Name of the field to collect
-                  required:
-                    type: boolean
-                    description: True if field is required
-        errors:
-          $ref: '#/components/schemas/Errors'
-    PatchPaymentRequest:
-      type: object
-      additionalProperties: false
-      properties:
-        expressCode:
-          type: string
-          description: 'A numeric identifier that represents a prespecified amount the driver can use to pay for something.
-
-            '
-        firstName:
-          type: string
-          description: The payer's first name
-        lastName:
-          type: string
-          description: The payer's last name
-        email:
-          type: string
-          description: The payer's email address. Either email or phone is required.
-        phone:
-          type: string
-          description: The payer's phone number. Either phone or email is required.
-        customFields:
-          type: object
-          description: Values for fields configured for the current location. These can be configured to be required.
-        driverNumber:
-          type: string
-          description: Driver employee ID - may be required by some payment types
-        unitNumber:
-          type: string
-          description: Vehicle identifier - may be required by some payment types
-        tripNumber:
-          type: string
-          description: Job identifier - may be required by some payment types
-        hubReading:
-          type: number
-          description: Tractor milage - may be required by some payment types
-        trailerNumber:
-          type: string
-          description: Trailer identifier - may be required by some payment types
-        trailerHubReading:
-          type: number
-          description: Trailer milage - may be required by some payment types
-        trailerHours:
-          type: number
-          description: Trailer hours of service - may be required by some payment types
-        licenseNumber:
-          type: string
-          description: Driver's license number - may be required by some payment types
-        licenseState:
-          type: string
-          description: Driver's license state - may be required by some payment types
-        poNumber:
-          type: string
-          description: Load identifier - may be required by some payment types
     Errors:
       type: array
       description: A list of errors that occurred during payment processing
@@ -421,6 +327,60 @@ components:
       required:
       - paymentType
       - locationId
+    PatchPaymentRequest:
+      type: object
+      additionalProperties: false
+      properties:
+        expressCode:
+          type: string
+          description: 'A numeric identifier that represents a prespecified amount the driver can use to pay for something.
+
+            '
+        firstName:
+          type: string
+          description: The payer's first name
+        lastName:
+          type: string
+          description: The payer's last name
+        email:
+          type: string
+          description: The payer's email address. Either email or phone is required.
+        phone:
+          type: string
+          description: The payer's phone number. Either phone or email is required.
+        customFields:
+          type: object
+          description: Values for fields configured for the current location. These can be configured to be required.
+        driverNumber:
+          type: string
+          description: Driver employee ID - may be required by some payment types
+        unitNumber:
+          type: string
+          description: Vehicle identifier - may be required by some payment types
+        tripNumber:
+          type: string
+          description: Job identifier - may be required by some payment types
+        hubReading:
+          type: number
+          description: Tractor milage - may be required by some payment types
+        trailerNumber:
+          type: string
+          description: Trailer identifier - may be required by some payment types
+        trailerHubReading:
+          type: number
+          description: Trailer milage - may be required by some payment types
+        trailerHours:
+          type: number
+          description: Trailer hours of service - may be required by some payment types
+        licenseNumber:
+          type: string
+          description: Driver's license number - may be required by some payment types
+        licenseState:
+          type: string
+          description: Driver's license state - may be required by some payment types
+        poNumber:
+          type: string
+          description: Load identifier - may be required by some payment types
     Error:
       type: object
       properties:
@@ -430,14 +390,42 @@ components:
         title:
           type: string
           description: Summary of error
+    PaymentResponse:
+      type: object
+      additionalProperties: false
+      properties:
+        data:
+          type: object
+          description: The Payment object returned by the create call
+          properties:
+            id:
+              type: string
+              description: The id of the payment
+            checkNumber:
+              type: string
+              description: The number of the check that was created, only returned for 'efscheck and tchek' paymentType
+            status:
+              type: string
+              description: The status of the payment
+            reason:
+              type: string
+              description: A description on why a payment is in `failed` status
+            fields:
+              type: array
+              description: Fields to be collected from the user for certain payment types.
+              items:
+                type: object
+                properties:
+                  name:
+                    type: string
+                    description: Name of the field to collect
+                  required:
+                    type: boolean
+                    description: True if field is required
+        errors:
+          $ref: '#/components/schemas/Errors'
   securitySchemes:
-    api_key:
-      in: header
-      name: x-api-key
+    ApiKey:
       type: apiKey
-      x-apikeyInfoFunc: client_api_server.controllers.authorization_controller.check_api_key
-    session_token:
-      bearerFormat: JWT
-      scheme: bearer
-      type: http
-      x-apikeyInfoFunc: client_api_server.controllers.authorization_controller.check_session_token
+      name: x-api-key
+      in: header

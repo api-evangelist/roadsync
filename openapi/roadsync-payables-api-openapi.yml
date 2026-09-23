@@ -1,31 +1,29 @@
-openapi: 3.0.1
+openapi: 3.2.0
 info:
+  title: RoadSyncPay Public Payables API
+  version: '1.0'
+  description: RoadSync Pay API
   contact:
-    email: christo.delange@roadsync.com
-  description: This API allows the Roadsync clients to manage aspects of the RoadSync service via an API.
+    email: advance@roadsync.com
+    url: https://roadsync.com
+  termsOfService: https://roadsync.com/roadsync-pay-service-terms-of-use/
   license:
-    name: Copyright (c) 2020, RoadSync Inc.
-  title: Client API v1.8 authenticated payables API
-  version: 1.8.45
-  x-api-id: 3ea39084-d8df-11ea-ad77-0017b600647f
-  x-audience: external-partner
+    name: Proprietary
+    url: https://roadsync.com/
 servers:
-- url: https://client-api.staging.roadsync.com/{basePath}
-  variables:
-    Product:
-      default: ClientApi
-    basePath:
-      default: v1
-security:
-- api_key: []
-- session_token: []
+- url: https://api.roadsync.app/rspay/v1
+  description: prod
+- url: https://test.api.roadsync.app/rspay/v1
+  description: test
+- url: https://dev.api.roadsync.app/rspay/v1
+  description: dev
 tags:
-- name: payables
+- name: Payables
 paths:
   /payables:
     get:
       tags:
-      - payables
+      - Payables
       summary: Get a List of Payables
       description: Returns a list of all payees for the specified Broker.
       operationId: get-all-payables
@@ -40,7 +38,7 @@ paths:
         id: bh5r5turgnvi3
     post:
       tags:
-      - payables
+      - Payables
       summary: Create a Payable
       description: Create a Payable. A Payable is an amount owed to a creditor with a scheduled date for a payment to be initiated.
       operationId: post-payables
@@ -72,7 +70,7 @@ paths:
     get:
       summary: Get a Single Payable
       tags:
-      - payables
+      - Payables
       parameters:
       - $ref: '#/components/parameters/broker_header'
       responses:
@@ -158,7 +156,27 @@ paths:
       operationId: get-payables
       x-stoplight:
         id: xreernobtaxec
-      description: "Retrieve a single Payable by its ID. A Payable represents a scheduled payment to a Payee for a specific amount.\n\nA Payee is always one of two types, determined by the `is_factoring_company` flag:\n- **Carrier** (`is_factoring_company: false`): A transportation company that moves freight.\n  Carriers may have DOT and MC numbers for regulatory compliance.\n\n- **Factoring Company** (`is_factoring_company: true`): A financial entity that purchases\n  invoices from Carriers. When paying a Factoring Company, the `carrier_payee` field\n  identifies which Carrier the payment is on behalf of.\n\n\nThe `carrier_payee` field is `null` when paying a Carrier directly.\n\nThe `status` field will be one of: NEW, PENDING, PROCESSING, COMPLETE, CANCELLED, FAILED, SCHEDULED, DELETED, or UNKNOWN."
+      description: 'Retrieve a single Payable by its ID. A Payable represents a scheduled payment to a Payee for a specific amount.
+
+
+        A Payee is always one of two types, determined by the `is_factoring_company` flag:
+
+        - **Carrier** (`is_factoring_company: false`): A transportation company that moves freight.
+
+        Carriers may have DOT and MC numbers for regulatory compliance.
+
+
+        - **Factoring Company** (`is_factoring_company: true`): A financial entity that purchases
+
+        invoices from Carriers. When paying a Factoring Company, the `carrier_payee` field
+
+        identifies which Carrier the payment is on behalf of.
+
+
+        The `carrier_payee` field is `null` when paying a Carrier directly.
+
+
+        The `status` field will be one of: NEW, PENDING, PROCESSING, COMPLETE, CANCELLED, FAILED, SCHEDULED, DELETED, or UNKNOWN.'
       security:
       - x-api-key: []
     patch:
@@ -190,7 +208,7 @@ paths:
       requestBody:
         $ref: '#/components/requestBodies/updatePayable'
       tags:
-      - payables
+      - Payables
       security:
       - x-api-key: []
     delete:
@@ -211,32 +229,17 @@ paths:
         id: 6lucb56q56xis
       description: Delete a Payable if it’s not already processing or completed.
       tags:
-      - payables
+      - Payables
       security:
       - x-api-key: []
 components:
   schemas:
-    id:
-      type: integer
+    fundingSourceId:
+      title: funding_source_id
       x-stoplight:
-        id: f7ra661j53v04
-      example: 87346
-      title: id
-      description: The id number of the object being returned.
-    payeeId:
-      type: integer
-      x-stoplight:
-        id: unf2lv7eugr65
-      description: The unique identifier of the Payee who will receive the funds. It could be a Carrier or a Factoring Company.
-      example: 896876
-      title: payee_id
-    idempotencyKey:
-      type: integer
-      x-stoplight:
-        id: i58xi5srh5lb7
-      example: bac613de-5j27-1347-ka1n-q3p6173jacj4
-      title: idempotency_key
-      description: Provide a unique value to prevent duplicates during retries.
+        id: 62r95b324501y
+      $ref: '#/components/schemas/id'
+      description: Id representing the funding source (papercheck, ach or wallet).
     isFactoringCompany:
       title: is_factoring_company
       x-stoplight:
@@ -244,25 +247,68 @@ components:
       type: boolean
       description: Send "true" if this Payee is a Factoring Company, "false" otherwise.
       example: true
-    amountAsString:
-      title: amount
-      type: string
-      description: Money in USD to transfer or has been transferred.
-      example: '18.32'
-    amount:
-      title: amount
+    payableId:
+      type: integer
       x-stoplight:
-        id: tayy9oxji4gww
-      type: number
-      description: Money in USD to transfer or has been transferred.
-      example: 123.45
-    poNumber:
-      title: po_number
+        id: xsyrirwk8n0m7
+      example: 87346
+      title: payable_id
+      description: The Payable's ID
+    isVerified:
+      title: is_verified
+      type: boolean
+      example: false
       x-stoplight:
-        id: 5zz0jgn7jlcgf
+        id: yfowmo738h8iv
+      description: A verified Payee is visible to all brokers in the RoadSync Pay environment. Some partners are allowed to verify a Payee by setting the is_verified flag to true during creation or update.
+    updatedDatetime:
+      title: updated_datetime
+      x-stoplight:
+        id: 8gm15jfl51vcm
       type: string
-      description: A unique identifier that links the purchase order the payable.
-      example: AP12345
+      description: Indicates the last time the entity was updated in ISO 8601 format.
+      example: '2023-10-26T00:00:00+00:00'
+      format: date-time
+    payeeId:
+      type: integer
+      x-stoplight:
+        id: unf2lv7eugr65
+      description: The unique identifier of the Payee who will receive the funds. It could be a Carrier or a Factoring Company.
+      example: 896876
+      title: payee_id
+    payeeShort:
+      title: payee_short
+      x-stoplight:
+        id: lkabmmw82vbyo
+      type: object
+      description: Details of the Payee receiving the funds. It could be a Carrier or Factoring Company.
+      properties:
+        id:
+          $ref: '#/components/schemas/id'
+          x-stoplight:
+            id: iwebybg0xhizd
+        payee_name:
+          $ref: '#/components/schemas/payeeName'
+          x-stoplight:
+            id: cxr9ou6peuwve
+        is_verified:
+          $ref: '#/components/schemas/isVerified'
+          x-stoplight:
+            id: 3wmef993rqlri
+    idempotencyKey:
+      type: integer
+      x-stoplight:
+        id: i58xi5srh5lb7
+      example: bac613de-5j27-1347-ka1n-q3p6173jacj4
+      title: idempotency_key
+      description: Provide a unique value to prevent duplicates during retries.
+    brokerId:
+      title: broker_id
+      type: integer
+      example: 66305
+      x-stoplight:
+        id: 364l19xr2t37h
+      description: The identifier of a Broker to which the Payee will be assigned or has already been assigned.
     invoiceNumber:
       type: string
       x-stoplight:
@@ -270,6 +316,94 @@ components:
       example: 355da12b-774b-41fc-9124-92d5f5a795ed
       title: invoice_number
       description: The invoice number being paid by the payable/receivable. This is visible by the Payee in remittance emails as reference_id.
+    paymentMethod:
+      title: payment_method
+      description: The method used to settle a payable.
+      x-stoplight:
+        id: 0jtzkjzaao1jc
+      enum:
+      - ACH
+      - ACH_NEXT_DAY
+      - ACH_SAME_DAY
+      - PAPER_CHECK
+      - WALLET_ACH
+      - WALLET_ACH_NEXT_DAY
+      - WALLET_ACH_SAME_DAY
+      - WALLET_RTP
+      example: ACH_NEXT_DAY
+    amountAsString:
+      title: amount
+      type: string
+      description: Money in USD to transfer or has been transferred.
+      example: '18.32'
+    poNumber:
+      title: po_number
+      x-stoplight:
+        id: 5zz0jgn7jlcgf
+      type: string
+      description: A unique identifier that links the purchase order the payable.
+      example: AP12345
+    status:
+      title: status
+      x-stoplight:
+        id: e75bu0q7243zf
+      enum:
+      - NEW
+      - PENDING
+      - PROCESSING
+      - COMPLETE
+      - CANCELLED
+      - FAILED
+      - SCHEDULED
+      - DELETED
+      - UNKNOWN
+      description: The current status of the payable. UNKNOWN is returned when the status value is not recognized.
+      example: SCHEDULED
+    id:
+      type: integer
+      x-stoplight:
+        id: f7ra661j53v04
+      example: 87346
+      title: id
+      description: The id number of the object being returned.
+    eta:
+      type: string
+      x-stoplight:
+        id: jsosz1li3h5v2
+      description: The estimated time of arrival of the payment, based on the payment method selected and scheduled date in ISO 8601 format.
+      title: eta
+      example: '2023-10-27T13:00:00+00:00'
+    errorResponse:
+      type: object
+      properties:
+        errors:
+          type: array
+          items:
+            type: object
+            properties:
+              code:
+                type: string
+                description: A machine-readable error code.
+                example: not found
+              title:
+                type: string
+                description: A human-readable error message.
+                example: the requested resource was not found
+    comment:
+      title: comment
+      x-stoplight:
+        id: 05qkg81jr3dwl
+      type: string
+      description: A space enabled for Brokers to add comments to the Payable if necessary.
+      example: Load from Miami, Florida to Atlanta, Georgia.
+    createdDatetime:
+      title: created_datetime
+      x-stoplight:
+        id: v60tecbjlr4rs
+      type: string
+      format: date-time
+      description: Indicates the datetime when the object was created in ISO 8601 format.
+      example: '2023-10-26T00:00:00+00:00'
     payable:
       type: object
       x-stoplight:
@@ -281,7 +415,6 @@ components:
             id: 9130zkygn5nhn
         carrier_payee:
           description: Present only when the Payee is a Factoring Company. Identifies the Carrier the payment is on behalf of.
-          nullable: true
           $ref: '#/components/schemas/payeeShort'
         comment:
           $ref: '#/components/schemas/comment'
@@ -334,14 +467,20 @@ components:
           $ref: '#/components/schemas/status'
         updated_datetime:
           $ref: '#/components/schemas/updatedDatetime'
-    updatedDatetime:
-      title: updated_datetime
-      x-stoplight:
-        id: 8gm15jfl51vcm
+    payeeName:
       type: string
-      description: Indicates the last time the entity was updated in ISO 8601 format.
-      example: '2023-10-26T00:00:00+00:00'
-      format: date-time
+      x-stoplight:
+        id: t7yn3ksmmn262
+      description: The name of the Carrier or Factoring Company.
+      example: Camila Trucking LLC
+      title: payee_name
+    amount:
+      title: amount
+      x-stoplight:
+        id: tayy9oxji4gww
+      type: number
+      description: Money in USD to transfer or has been transferred.
+      example: 123.45
     scheduledForDate:
       title: scheduled_for_date
       x-stoplight:
@@ -350,166 +489,7 @@ components:
       description: A valid date in the future when the payment should be initiated or "now" indicating immediate payment.
       example: '2023-10-29T00:00:00+00:00'
       format: date
-    paymentMethod:
-      title: payment_method
-      description: The method used to settle a payable.
-      x-stoplight:
-        id: 0jtzkjzaao1jc
-      enum:
-      - ACH
-      - ACH_NEXT_DAY
-      - ACH_SAME_DAY
-      - PAPER_CHECK
-      - WALLET_ACH
-      - WALLET_ACH_NEXT_DAY
-      - WALLET_ACH_SAME_DAY
-      - WALLET_RTP
-      example: ACH_NEXT_DAY
-    createdDatetime:
-      title: created_datetime
-      x-stoplight:
-        id: v60tecbjlr4rs
-      type: string
-      format: date-time
-      description: Indicates the datetime when the object was created in ISO 8601 format.
-      example: '2023-10-26T00:00:00+00:00'
-    payableId:
-      type: integer
-      x-stoplight:
-        id: xsyrirwk8n0m7
-      example: 87346
-      title: payable_id
-      description: The Payable's ID
-    fundingSourceId:
-      title: funding_source_id
-      x-stoplight:
-        id: 62r95b324501y
-      $ref: '#/components/schemas/id'
-      description: Id representing the funding source (papercheck, ach or wallet).
-    payeeShort:
-      title: payee_short
-      x-stoplight:
-        id: lkabmmw82vbyo
-      type: object
-      description: Details of the Payee receiving the funds. It could be a Carrier or Factoring Company.
-      properties:
-        id:
-          $ref: '#/components/schemas/id'
-          x-stoplight:
-            id: iwebybg0xhizd
-        payee_name:
-          $ref: '#/components/schemas/payeeName'
-          x-stoplight:
-            id: cxr9ou6peuwve
-        is_verified:
-          $ref: '#/components/schemas/isVerified'
-          x-stoplight:
-            id: 3wmef993rqlri
-    brokerId:
-      title: broker_id
-      type: integer
-      example: 66305
-      x-stoplight:
-        id: 364l19xr2t37h
-      description: The identifier of a Broker to which the Payee will be assigned or has already been assigned.
-    payeeName:
-      type: string
-      x-stoplight:
-        id: t7yn3ksmmn262
-      description: The name of the Carrier or Factoring Company.
-      example: Camila Trucking LLC
-      title: payee_name
-    errorResponse:
-      type: object
-      properties:
-        errors:
-          type: array
-          items:
-            type: object
-            properties:
-              code:
-                type: string
-                description: A machine-readable error code.
-                example: not found
-              title:
-                type: string
-                description: A human-readable error message.
-                example: the requested resource was not found
-    status:
-      title: status
-      x-stoplight:
-        id: e75bu0q7243zf
-      enum:
-      - NEW
-      - PENDING
-      - PROCESSING
-      - COMPLETE
-      - CANCELLED
-      - FAILED
-      - SCHEDULED
-      - DELETED
-      - UNKNOWN
-      description: The current status of the payable. UNKNOWN is returned when the status value is not recognized.
-      example: SCHEDULED
-    comment:
-      title: comment
-      x-stoplight:
-        id: 05qkg81jr3dwl
-      type: string
-      description: A space enabled for Brokers to add comments to the Payable if necessary.
-      example: Load from Miami, Florida to Atlanta, Georgia.
-    eta:
-      type: string
-      x-stoplight:
-        id: jsosz1li3h5v2
-      description: The estimated time of arrival of the payment, based on the payment method selected and scheduled date in ISO 8601 format.
-      title: eta
-      example: '2023-10-27T13:00:00+00:00'
-    isVerified:
-      title: is_verified
-      type: boolean
-      example: false
-      x-stoplight:
-        id: yfowmo738h8iv
-      description: A verified Payee is visible to all brokers in the RoadSync Pay environment. Some partners are allowed to verify a Payee by setting the is_verified flag to true during creation or update.
   requestBodies:
-    updatePayable:
-      description: Fields that can be updated
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              amount:
-                $ref: '#/components/schemas/amountAsString'
-                nullable: true
-              invoice_number:
-                $ref: '#/components/schemas/invoiceNumber'
-                nullable: true
-              po_number:
-                $ref: '#/components/schemas/poNumber'
-                nullable: true
-              payee_id:
-                $ref: '#/components/schemas/payeeId'
-                nullable: true
-              carrier_payee_id:
-                $ref: '#/components/schemas/id'
-                nullable: true
-              scheduled_for_date:
-                $ref: '#/components/schemas/scheduledForDate'
-                nullable: true
-              payment_method:
-                title: payment_method
-                description: The method used to settle a payable.
-                x-stoplight:
-                  id: 0jtzkjzaao1jc
-                enum:
-                - ACH_NEXT_DAY
-                - WALLET_ACH_NEXT_DAY
-                - PAPER_CHECK
-                example: ACH_NEXT_DAY
-                nullable: true
-                type: string
     createPayable:
       content:
         application/json:
@@ -540,6 +520,45 @@ components:
                 $ref: '#/components/schemas/poNumber'
               idempotency_key:
                 $ref: '#/components/schemas/idempotencyKey'
+    updatePayable:
+      description: Fields that can be updated
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              amount:
+                $ref: '#/components/schemas/amountAsString'
+              invoice_number:
+                $ref: '#/components/schemas/invoiceNumber'
+              po_number:
+                $ref: '#/components/schemas/poNumber'
+              payee_id:
+                $ref: '#/components/schemas/payeeId'
+              carrier_payee_id:
+                $ref: '#/components/schemas/id'
+              scheduled_for_date:
+                $ref: '#/components/schemas/scheduledForDate'
+              payment_method:
+                title: payment_method
+                description: The method used to settle a payable.
+                x-stoplight:
+                  id: 0jtzkjzaao1jc
+                enum:
+                - ACH_NEXT_DAY
+                - WALLET_ACH_NEXT_DAY
+                - PAPER_CHECK
+                example: ACH_NEXT_DAY
+                type:
+                - string
+                - 'null'
+  responses:
+    getPayable:
+      description: Example response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/payable'
   parameters:
     broker_header:
       name: broker-id
@@ -548,21 +567,11 @@ components:
         $ref: '#/components/schemas/brokerId'
       description: The id of the broker
       required: true
-  responses:
-    getPayable:
-      description: Example response
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/payable'
   securitySchemes:
-    api_key:
-      in: header
+    x-api-key:
       name: x-api-key
       type: apiKey
-      x-apikeyInfoFunc: client_api_server.controllers.authorization_controller.check_api_key
-    session_token:
-      bearerFormat: JWT
-      scheme: bearer
-      type: http
-      x-apikeyInfoFunc: client_api_server.controllers.authorization_controller.check_session_token
+      in: header
+x-stoplight:
+  id: n4ffpzmgt2fsp
+x-amazon-apigateway-api-key-source: HEADER

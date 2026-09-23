@@ -1,32 +1,30 @@
-openapi: 3.0.1
+openapi: 3.2.0
 info:
+  title: RoadSyncPay Public Brokers API
+  version: '1.0'
+  description: RoadSync Pay API
   contact:
-    email: christo.delange@roadsync.com
-  description: This API allows the Roadsync clients to manage aspects of the RoadSync service via an API.
+    email: advance@roadsync.com
+    url: https://roadsync.com
+  termsOfService: https://roadsync.com/roadsync-pay-service-terms-of-use/
   license:
-    name: Copyright (c) 2020, RoadSync Inc.
-  title: Client API v1.8 authenticated brokers API
-  version: 1.8.45
-  x-api-id: 3ea39084-d8df-11ea-ad77-0017b600647f
-  x-audience: external-partner
+    name: Proprietary
+    url: https://roadsync.com/
 servers:
-- url: https://client-api.staging.roadsync.com/{basePath}
-  variables:
-    Product:
-      default: ClientApi
-    basePath:
-      default: v1
-security:
-- api_key: []
-- session_token: []
+- url: https://api.roadsync.app/rspay/v1
+  description: prod
+- url: https://test.api.roadsync.app/rspay/v1
+  description: test
+- url: https://dev.api.roadsync.app/rspay/v1
+  description: dev
 tags:
-- name: brokers
+- name: Brokers
 paths:
   /brokers:
     get:
       summary: Get All Brokers
       tags:
-      - brokers
+      - Brokers
       responses:
         '200':
           $ref: '#/components/responses/getBrokers'
@@ -58,40 +56,12 @@ paths:
       x-stoplight:
         id: l4z7ugj0eh570
       tags:
-      - brokers
+      - Brokers
       description: Get a single broker.
       security:
       - x-api-key: []
 components:
   schemas:
-    id:
-      type: integer
-      x-stoplight:
-        id: f7ra661j53v04
-      example: 87346
-      title: id
-      description: The id number of the object being returned.
-    brokerName:
-      title: broker_name
-      type: string
-      x-stoplight:
-        id: xpgfc7nsg07fw
-      description: The name of the broker.
-      example: Atlanta Brokerage
-    city:
-      title: city
-      x-stoplight:
-        id: 8ypbld5r20d6o
-      type: string
-      description: A valid city in the United States.
-      example: Atlanta
-    postalCode:
-      title: postal_code
-      x-stoplight:
-        id: v5t2utdpxdar3
-      type: string
-      description: A valid postal code in the United States.
-      example: '30306'
     phoneNumber:
       title: phone_number
       x-stoplight:
@@ -99,13 +69,6 @@ components:
       type: string
       description: A valid phone number belonging to a person or company.
       example: '3243444347'
-    emailAddressBroker:
-      type: string
-      x-stoplight:
-        id: 4b1lw9uxlo2od
-      description: A valid email belonging to the Broker, where remittance emails will be received.
-      title: email_address_broker
-      example: virginia@atlantabrokerage.com
     brokerIdResponse:
       title: broker_id_response
       type: integer
@@ -113,6 +76,29 @@ components:
         id: a6k2b2ugy6fg0
       example: 66305
       description: The identifier of a Broker to which the Payee has been assigned.
+    city:
+      title: city
+      x-stoplight:
+        id: 8ypbld5r20d6o
+      type: string
+      description: A valid city in the United States.
+      example: Atlanta
+    emailAddressBroker:
+      type: string
+      x-stoplight:
+        id: 4b1lw9uxlo2od
+      description: A valid email belonging to the Broker, where remittance emails will be received.
+      title: email_address_broker
+      example: virginia@atlantabrokerage.com
+    addressLineTwo:
+      title: address_line_two
+      x-stoplight:
+        id: jpnvzmg54ky3l
+      type:
+      - string
+      - 'null'
+      description: If necessary, add a second line of the address in the United States.
+      example: APT 23
     broker:
       title: broker
       x-stoplight:
@@ -173,6 +159,26 @@ components:
       type: string
       description: The valid address of a person or business in the United States.
       example: 715 Peachtree St
+    fundingSourceId:
+      title: funding_source_id
+      x-stoplight:
+        id: 62r95b324501y
+      $ref: '#/components/schemas/id'
+      description: Id representing the funding source (papercheck, ach or wallet).
+    id:
+      type: integer
+      x-stoplight:
+        id: f7ra661j53v04
+      example: 87346
+      title: id
+      description: The id number of the object being returned.
+    brokerName:
+      title: broker_name
+      type: string
+      x-stoplight:
+        id: xpgfc7nsg07fw
+      description: The name of the broker.
+      example: Atlanta Brokerage
     state:
       title: state
       x-stoplight:
@@ -180,30 +186,14 @@ components:
       type: string
       description: A valid 2 character state code in the United States.
       example: GA
-    addressLineTwo:
-      title: address_line_two
+    postalCode:
+      title: postal_code
       x-stoplight:
-        id: jpnvzmg54ky3l
+        id: v5t2utdpxdar3
       type: string
-      nullable: true
-      description: If necessary, add a second line of the address in the United States.
-      example: APT 23
-    fundingSourceId:
-      title: funding_source_id
-      x-stoplight:
-        id: 62r95b324501y
-      $ref: '#/components/schemas/id'
-      description: Id representing the funding source (papercheck, ach or wallet).
+      description: A valid postal code in the United States.
+      example: '30306'
   responses:
-    getBroker:
-      description: Response from /brokers GET
-      content:
-        application/json:
-          schema:
-            type: array
-            items:
-              allOf:
-              - $ref: '#/components/schemas/broker'
     getBrokers:
       description: Example response
       content:
@@ -214,14 +204,20 @@ components:
               id:
                 $ref: '#/components/schemas/brokerIdResponse'
               $ref: '#/components/schemas/broker'
+    getBroker:
+      description: Response from /brokers GET
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              allOf:
+              - $ref: '#/components/schemas/broker'
   securitySchemes:
-    api_key:
-      in: header
+    x-api-key:
       name: x-api-key
       type: apiKey
-      x-apikeyInfoFunc: client_api_server.controllers.authorization_controller.check_api_key
-    session_token:
-      bearerFormat: JWT
-      scheme: bearer
-      type: http
-      x-apikeyInfoFunc: client_api_server.controllers.authorization_controller.check_session_token
+      in: header
+x-stoplight:
+  id: n4ffpzmgt2fsp
+x-amazon-apigateway-api-key-source: HEADER
