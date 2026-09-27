@@ -79,9 +79,12 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    Message:
-      maxLength: 2048
-      pattern: /^[a-zA-Z0-9 ]*$/
+    CodeEnum:
+      default: Success
+      enum:
+      - Success
+      - Error
+      - Exception
       type: string
     ProductListResponse:
       allOf:
@@ -94,6 +97,17 @@ components:
             maxItems: 128
             type: array
         type: object
+    ProductType:
+      enum:
+      - service
+      - item
+      - custom
+      - other
+      - addmultiplelineitems
+      - category
+      - tax
+      - ''
+      type: string
     Problem:
       additionalProperties: false
       properties:
@@ -154,6 +168,71 @@ components:
           pattern: /^.*$/
           type: string
       type: object
+    Product:
+      additionalProperties: false
+      properties:
+        accountingProducts:
+          items:
+            $ref: '#/components/schemas/AccountingProduct'
+          maxItems: 128
+          type: array
+        cost:
+          format: float
+          maximum: 999999999.99
+          minimum: -999999999.99
+          type: number
+        generalLedger:
+          maxLength: 2048
+          pattern: /^.*$/
+          type: string
+        id:
+          $ref: '#/components/schemas/HashedId'
+        isTaxable:
+          type: boolean
+        locationId:
+          $ref: '#/components/schemas/HashedId'
+        name:
+          maxLength: 2048
+          pattern: /^.*$/
+          type: string
+        parentId:
+          $ref: '#/components/schemas/HashedId'
+        parentPath:
+          maxLength: 2048
+          pattern: /^.*$/
+          type: string
+        selectType:
+          $ref: '#/components/schemas/ProductSelectType'
+        type:
+          $ref: '#/components/schemas/ProductType'
+        weight:
+          format: int64
+          maximum: 999999999
+          minimum: 0
+          type: integer
+      type: object
+    CodeMessage:
+      additionalProperties: false
+      description: A generic error object generally used for 500 responses
+      properties:
+        code:
+          $ref: '#/components/schemas/CodeEnum'
+        message:
+          $ref: '#/components/schemas/Message'
+      required:
+      - code
+      - message
+    ProductSelectType:
+      enum:
+      - ''
+      - none
+      - preselected
+      - obligatory
+      type: string
+    Message:
+      maxLength: 2048
+      pattern: /^[a-zA-Z0-9 ]*$/
+      type: string
     FeatureType:
       enum:
       - unknown
@@ -206,31 +285,6 @@ components:
       - wexapi
       - roadsynccreditcardprocessing
       type: string
-    ProductType:
-      enum:
-      - service
-      - item
-      - custom
-      - other
-      - addmultiplelineitems
-      - category
-      - tax
-      - ''
-      type: string
-    CodeEnum:
-      default: Success
-      enum:
-      - Success
-      - Error
-      - Exception
-      type: string
-    ProductSelectType:
-      enum:
-      - ''
-      - none
-      - preselected
-      - obligatory
-      type: string
     AccountingProduct:
       additionalProperties: false
       properties:
@@ -241,65 +295,43 @@ components:
         featureType:
           $ref: '#/components/schemas/FeatureType'
       type: object
-    CodeMessage:
-      additionalProperties: false
-      description: A generic error object generally used for 500 responses
-      properties:
-        code:
-          $ref: '#/components/schemas/CodeEnum'
-        message:
-          $ref: '#/components/schemas/Message'
-      required:
-      - code
-      - message
     HashedId:
       maxLength: 128
       pattern: /^\w+$/
       type: string
-    Product:
-      additionalProperties: false
-      properties:
-        accountingProducts:
-          items:
-            $ref: '#/components/schemas/AccountingProduct'
-          maxItems: 128
-          type: array
-        cost:
-          format: float
-          maximum: 999999999.99
-          minimum: -999999999.99
-          type: number
-        generalLedger:
-          maxLength: 2048
-          pattern: /^.*$/
-          type: string
-        id:
-          $ref: '#/components/schemas/HashedId'
-        isTaxable:
-          type: boolean
-        locationId:
-          $ref: '#/components/schemas/HashedId'
-        name:
-          maxLength: 2048
-          pattern: /^.*$/
-          type: string
-        parentId:
-          $ref: '#/components/schemas/HashedId'
-        parentPath:
-          maxLength: 2048
-          pattern: /^.*$/
-          type: string
-        selectType:
-          $ref: '#/components/schemas/ProductSelectType'
-        type:
-          $ref: '#/components/schemas/ProductType'
-        weight:
-          format: int64
-          maximum: 999999999
-          minimum: 0
-          type: integer
-      type: object
   responses:
+    TooManyRequests429:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Problem'
+      description: 429 too many requests response
+    ServiceError500:
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/Problem'
+      description: Service Error
+    ForbiddenError:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CodeMessage'
+      description: Request is completely forbidden. API not provided or method and or endpoint not supported
+      headers:
+        WWW_Authenticate:
+          explode: false
+          schema:
+            maxLength: 2048
+            pattern: /^.*$/
+            type: string
+          style: simple
+    ProductListResponse:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProductListResponse'
+      description: A product list response
     UnexpectedError:
       content:
         application/problem+json:
@@ -320,12 +352,12 @@ components:
             pattern: /^.*$/
             type: string
           style: simple
-    TooManyRequests429:
+    NotFound404:
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Problem'
-      description: 429 too many requests response
+      description: 404 Not found
     Options200:
       content:
         application/json:
@@ -381,38 +413,6 @@ components:
             pattern: ^[a-zA-Z0-9 ,]*$
             type: string
           style: simple
-    NotFound404:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Problem'
-      description: 404 Not found
-    ForbiddenError:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/CodeMessage'
-      description: Request is completely forbidden. API not provided or method and or endpoint not supported
-      headers:
-        WWW_Authenticate:
-          explode: false
-          schema:
-            maxLength: 2048
-            pattern: /^.*$/
-            type: string
-          style: simple
-    ServiceError500:
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/Problem'
-      description: Service Error
-    ProductListResponse:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ProductListResponse'
-      description: A product list response
   securitySchemes:
     api_key:
       in: header

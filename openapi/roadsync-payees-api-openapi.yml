@@ -188,20 +188,26 @@ components:
         id: 62r95b324501y
       $ref: '#/components/schemas/id'
       description: Id representing the funding source (papercheck, ach or wallet).
-    isFactoringCompany:
-      title: is_factoring_company
+    carrierPayeeIds:
+      title: carrier_payee_ids
       x-stoplight:
-        id: mmie0j9euqu37
-      type: boolean
-      description: Send "true" if this Payee is a Factoring Company, "false" otherwise.
-      example: true
-    isVerified:
-      title: is_verified
-      type: boolean
-      example: false
+        id: pevp3t3zuaad8
+      type: array
+      description: If “is_factoring_company“ is true, add the “payee_id” for each associated carrier.
+      example:
+      - 10204
+      - 10205
+      items:
+        $ref: '#/components/schemas/id'
+        x-stoplight:
+          id: y9pyua91doq3i
+    id:
+      type: integer
       x-stoplight:
-        id: yfowmo738h8iv
-      description: A verified Payee is visible to all brokers in the RoadSync Pay environment. Some partners are allowed to verify a Payee by setting the is_verified flag to true during creation or update.
+        id: f7ra661j53v04
+      example: 87346
+      title: id
+      description: The id number of the object being returned.
     lastName:
       type: string
       x-stoplight:
@@ -216,28 +222,6 @@ components:
       type: string
       description: A valid 2 character state code in the United States.
       example: GA
-    city:
-      title: city
-      x-stoplight:
-        id: 8ypbld5r20d6o
-      type: string
-      description: A valid city in the United States.
-      example: Atlanta
-    paymentTarget:
-      title: payment_target
-      description: A valid Payee payment target.
-      x-stoplight:
-        id: pqgsyu00mynep
-      enum:
-      - ACH
-      - PAPER_CHECK
-      - RTP
-      example: ACH
-    payeeCandidateImportId:
-      type: integer
-      description: A valid ID of the payee candidate you are importing
-      example: 896876
-      title: payee_candidate_id
     firstName:
       type: string
       x-stoplight:
@@ -245,13 +229,95 @@ components:
       example: Camila
       title: first_name
       description: The first name of a contact or user.
-    emailAddress:
+    addressLineOne:
+      title: address_line_one
+      x-stoplight:
+        id: p3a1crckckndd
+      type: string
+      description: The valid address of a person or business in the United States.
+      example: 715 Peachtree St
+    payeeCandidateId:
+      type: integer
+      x-stoplight:
+        id: d7jri8k8o5qxe
+      description: This field is displayed if the Payee is available in RoadSync Pay’s Directory.
+      example: 896876
+      title: payee_candidate_id
+    addressLineTwo:
+      title: address_line_two
+      x-stoplight:
+        id: jpnvzmg54ky3l
+      type:
+      - string
+      - 'null'
+      description: If necessary, add a second line of the address in the United States.
+      example: APT 23
+    payeeCandidateImportId:
+      type: integer
+      description: A valid ID of the payee candidate you are importing
+      example: 896876
+      title: payee_candidate_id
+    phoneNumber:
+      title: phone_number
+      x-stoplight:
+        id: coa4x7lscfh80
+      type: string
+      description: A valid phone number belonging to a person or company.
+      example: '3243444347'
+    availablePaymentTypes:
+      title: available_payment_types
+      x-stoplight:
+        id: 9us2vhly5l9u3
+      type: array
+      description: A list of the availablepayment methods a Payee is able to receive. Possible values are PAPER_CHECK, ACH, RTP
+      example:
+      - PAPER_CHECK
+      - ACH
+      - RTP
+      items:
+        $ref: '#/components/schemas/paymentTarget'
+    payeeName:
       type: string
       x-stoplight:
-        id: yd026juzie7jh
-      description: A valid email belonging to the person or company.
-      title: email_address
-      example: crogers@camilatrucking.com
+        id: t7yn3ksmmn262
+      description: The name of the Carrier or Factoring Company.
+      example: Camila Trucking LLC
+      title: payee_name
+    dotNumber:
+      type: string
+      x-stoplight:
+        id: c2zo0dhnzfjnp
+      description: U.S. Department of Transportation Number is an up to ten-digit assigned by the FMCSA to moving companies operating in interstate commerce. If inserted, it will be validated.
+      example: '2428196'
+      title: dot_number
+    postalCode:
+      title: postal_code
+      x-stoplight:
+        id: v5t2utdpxdar3
+      type: string
+      description: A valid postal code in the United States.
+      example: '30306'
+    brokerId:
+      title: broker_id
+      type: integer
+      example: 66305
+      x-stoplight:
+        id: 364l19xr2t37h
+      description: The identifier of a Broker to which the Payee will be assigned or has already been assigned.
+    mcNumber:
+      type: string
+      x-stoplight:
+        id: 70s19yd5cd75e
+      description: Motor Carrier Number is a a nine-digit identifier assigned by the FMCSA to moving companies operating in interstate commerce. If inserted, it will be validated.
+      example: MC612791
+      title: mc_number
+    isVerified:
+      title: is_verified
+      type: boolean
+      example: false
+      x-stoplight:
+        id: yfowmo738h8iv
+      description: A verified Payee is visible to all brokers in the RoadSync Pay environment. Some partners are allowed to verify a Payee by setting the is_verified flag to true during creation or update.
     payee:
       type: object
       properties:
@@ -304,103 +370,45 @@ components:
               $ref: '#/components/schemas/payeeName'
       x-stoplight:
         id: vhtkgvp4mic8z
-    brokerId:
-      title: broker_id
-      type: integer
-      example: 66305
+    city:
+      title: city
       x-stoplight:
-        id: 364l19xr2t37h
-      description: The identifier of a Broker to which the Payee will be assigned or has already been assigned.
-    addressLineOne:
-      title: address_line_one
-      x-stoplight:
-        id: p3a1crckckndd
+        id: 8ypbld5r20d6o
       type: string
-      description: The valid address of a person or business in the United States.
-      example: 715 Peachtree St
-    mcNumber:
-      type: string
+      description: A valid city in the United States.
+      example: Atlanta
+    paymentTarget:
+      title: payment_target
+      description: A valid Payee payment target.
       x-stoplight:
-        id: 70s19yd5cd75e
-      description: Motor Carrier Number is a a nine-digit identifier assigned by the FMCSA to moving companies operating in interstate commerce. If inserted, it will be validated.
-      example: MC612791
-      title: mc_number
-    id:
-      type: integer
-      x-stoplight:
-        id: f7ra661j53v04
-      example: 87346
-      title: id
-      description: The id number of the object being returned.
-    postalCode:
-      title: postal_code
-      x-stoplight:
-        id: v5t2utdpxdar3
-      type: string
-      description: A valid postal code in the United States.
-      example: '30306'
-    payeeCandidateId:
-      type: integer
-      x-stoplight:
-        id: d7jri8k8o5qxe
-      description: This field is displayed if the Payee is available in RoadSync Pay’s Directory.
-      example: 896876
-      title: payee_candidate_id
-    phoneNumber:
-      title: phone_number
-      x-stoplight:
-        id: coa4x7lscfh80
-      type: string
-      description: A valid phone number belonging to a person or company.
-      example: '3243444347'
-    carrierPayeeIds:
-      title: carrier_payee_ids
-      x-stoplight:
-        id: pevp3t3zuaad8
-      type: array
-      description: If “is_factoring_company“ is true, add the “payee_id” for each associated carrier.
-      example:
-      - 10204
-      - 10205
-      items:
-        $ref: '#/components/schemas/id'
-        x-stoplight:
-          id: y9pyua91doq3i
-    payeeName:
-      type: string
-      x-stoplight:
-        id: t7yn3ksmmn262
-      description: The name of the Carrier or Factoring Company.
-      example: Camila Trucking LLC
-      title: payee_name
-    dotNumber:
-      type: string
-      x-stoplight:
-        id: c2zo0dhnzfjnp
-      description: U.S. Department of Transportation Number is an up to ten-digit assigned by the FMCSA to moving companies operating in interstate commerce. If inserted, it will be validated.
-      example: '2428196'
-      title: dot_number
-    availablePaymentTypes:
-      title: available_payment_types
-      x-stoplight:
-        id: 9us2vhly5l9u3
-      type: array
-      description: A list of the availablepayment methods a Payee is able to receive. Possible values are PAPER_CHECK, ACH, RTP
-      example:
-      - PAPER_CHECK
+        id: pqgsyu00mynep
+      enum:
       - ACH
+      - PAPER_CHECK
       - RTP
-      items:
-        $ref: '#/components/schemas/paymentTarget'
-    addressLineTwo:
-      title: address_line_two
+      example: ACH
+    isFactoringCompany:
+      title: is_factoring_company
       x-stoplight:
-        id: jpnvzmg54ky3l
-      type:
-      - string
-      - 'null'
-      description: If necessary, add a second line of the address in the United States.
-      example: APT 23
+        id: mmie0j9euqu37
+      type: boolean
+      description: Send "true" if this Payee is a Factoring Company, "false" otherwise.
+      example: true
+    emailAddress:
+      type: string
+      x-stoplight:
+        id: yd026juzie7jh
+      description: A valid email belonging to the person or company.
+      title: email_address
+      example: crogers@camilatrucking.com
+  parameters:
+    broker_header:
+      name: broker-id
+      in: header
+      schema:
+        $ref: '#/components/schemas/brokerId'
+      description: The id of the broker
+      required: true
   requestBodies:
     updatePayee:
       content:
@@ -440,21 +448,6 @@ components:
                 $ref: '#/components/schemas/carrierPayeeIds'
                 items: {}
   responses:
-    getPayees:
-      description: Example response
-      content:
-        application/json:
-          schema:
-            type: array
-            items:
-              allOf:
-              - $ref: '#/components/schemas/payee'
-    getPayee:
-      description: Example response
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/payee'
     errorForbidden:
       description: Example response
       content:
@@ -478,14 +471,21 @@ components:
                 Code: ForbiddenError
                 Message: Action forbidden
       headers: {}
-  parameters:
-    broker_header:
-      name: broker-id
-      in: header
-      schema:
-        $ref: '#/components/schemas/brokerId'
-      description: The id of the broker
-      required: true
+    getPayees:
+      description: Example response
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              allOf:
+              - $ref: '#/components/schemas/payee'
+    getPayee:
+      description: Example response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/payee'
   securitySchemes:
     x-api-key:
       name: x-api-key

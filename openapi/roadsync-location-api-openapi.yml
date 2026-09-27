@@ -211,65 +211,12 @@ paths:
           default: https://dev.api.roadsync.app/company/v1
 components:
   schemas:
-    Message:
-      maxLength: 2048
-      pattern: /^[a-zA-Z0-9 ]*$/
-      type: string
-    StateCode:
+    CodeEnum:
+      default: Success
       enum:
-      - AL
-      - AK
-      - AZ
-      - AR
-      - CA
-      - CO
-      - CT
-      - DE
-      - DC
-      - FL
-      - GA
-      - HI
-      - ID
-      - IL
-      - IN
-      - IA
-      - KS
-      - KY
-      - LA
-      - ME
-      - MD
-      - MA
-      - MI
-      - MN
-      - MS
-      - MO
-      - MT
-      - NE
-      - NV
-      - NH
-      - NJ
-      - NM
-      - NY
-      - NC
-      - ND
-      - OH
-      - OK
-      - OR
-      - PA
-      - RI
-      - SC
-      - SD
-      - TN
-      - TX
-      - UT
-      - VT
-      - VA
-      - WA
-      - WV
-      - WI
-      - WY
-      - MEX
-      - CAN
+      - Success
+      - Error
+      - Exception
       type: string
     Problem:
       additionalProperties: false
@@ -331,6 +278,10 @@ components:
           pattern: /^.*$/
           type: string
       type: object
+    HashedId:
+      maxLength: 128
+      pattern: /^\w+$/
+      type: string
     LocationListResponse:
       allOf:
       - $ref: '#/components/schemas/CodeMessage'
@@ -342,12 +293,10 @@ components:
             maxItems: 128
             type: array
         type: object
-    CodeEnum:
-      default: Success
-      enum:
-      - Success
-      - Error
-      - Exception
+    DateTime:
+      description: A timestamp of last modification of the entry.
+      example: '2020-07-21 17:32:28Z'
+      format: date-time
       type: string
     Shift:
       additionalProperties: false
@@ -361,16 +310,31 @@ components:
           pattern: /^.*$/
           type: string
       type: object
-    CustomFieldType:
-      enum:
-      - ''
-      - unknown
-      - input
-      - phone
-      - email
-      - select
-      - numeric
-      type: string
+    CustomField:
+      additionalProperties: false
+      properties:
+        deletedAt:
+          $ref: '#/components/schemas/DateTime'
+        id:
+          $ref: '#/components/schemas/HashedId'
+        isRequired:
+          type: boolean
+        isShownInList:
+          type: boolean
+        name:
+          maxLength: 256
+          pattern: /^.*$/
+          type: string
+        options:
+          additionalProperties: false
+          type: object
+        title:
+          maxLength: 2048
+          pattern: /^.*$/
+          type: string
+        type:
+          $ref: '#/components/schemas/CustomFieldType'
+      type: object
     Location:
       additionalProperties: false
       properties:
@@ -426,27 +390,15 @@ components:
           pattern: ^[0-9]{5}(|-[0-9]{4})$
           type: string
       type: object
-    Department:
-      additionalProperties: false
-      properties:
-        id:
-          $ref: '#/components/schemas/HashedId'
-        locationId:
-          $ref: '#/components/schemas/HashedId'
-        name:
-          maxLength: 2048
-          pattern: /^.*$/
-          type: string
-      type: object
-    TimeZone:
+    CustomFieldType:
       enum:
-      - US/Hawaii
-      - US/Alaska
-      - US/Pacific
-      - US/Mountain
-      - US/Central
-      - US/Eastern
       - ''
+      - unknown
+      - input
+      - phone
+      - email
+      - select
+      - numeric
       type: string
     CodeMessage:
       additionalProperties: false
@@ -459,40 +411,112 @@ components:
       required:
       - code
       - message
-    CustomField:
+    StateCode:
+      enum:
+      - AL
+      - AK
+      - AZ
+      - AR
+      - CA
+      - CO
+      - CT
+      - DE
+      - DC
+      - FL
+      - GA
+      - HI
+      - ID
+      - IL
+      - IN
+      - IA
+      - KS
+      - KY
+      - LA
+      - ME
+      - MD
+      - MA
+      - MI
+      - MN
+      - MS
+      - MO
+      - MT
+      - NE
+      - NV
+      - NH
+      - NJ
+      - NM
+      - NY
+      - NC
+      - ND
+      - OH
+      - OK
+      - OR
+      - PA
+      - RI
+      - SC
+      - SD
+      - TN
+      - TX
+      - UT
+      - VT
+      - VA
+      - WA
+      - WV
+      - WI
+      - WY
+      - MEX
+      - CAN
+      type: string
+    Message:
+      maxLength: 2048
+      pattern: /^[a-zA-Z0-9 ]*$/
+      type: string
+    TimeZone:
+      enum:
+      - US/Hawaii
+      - US/Alaska
+      - US/Pacific
+      - US/Mountain
+      - US/Central
+      - US/Eastern
+      - ''
+      type: string
+    Department:
       additionalProperties: false
       properties:
-        deletedAt:
-          $ref: '#/components/schemas/DateTime'
         id:
           $ref: '#/components/schemas/HashedId'
-        isRequired:
-          type: boolean
-        isShownInList:
-          type: boolean
+        locationId:
+          $ref: '#/components/schemas/HashedId'
         name:
-          maxLength: 256
-          pattern: /^.*$/
-          type: string
-        options:
-          additionalProperties: false
-          type: object
-        title:
           maxLength: 2048
           pattern: /^.*$/
           type: string
-        type:
-          $ref: '#/components/schemas/CustomFieldType'
       type: object
-    HashedId:
-      maxLength: 128
-      pattern: /^\w+$/
-      type: string
-    DateTime:
-      description: A timestamp of last modification of the entry.
-      example: '2020-07-21 17:32:28Z'
-      format: date-time
-      type: string
+    Product:
+      type: object
+      additionalProperties: false
+      properties:
+        id:
+          type: string
+          description: The product id
+        name:
+          type: string
+          description: The product name
+    Errors:
+      type: array
+      description: A list of errors that occurred during processing
+      items:
+        $ref: '#/components/schemas/Error'
+    Error:
+      type: object
+      properties:
+        code:
+          type: string
+    ProductList:
+      type: array
+      items:
+        $ref: '#/components/schemas/Product'
     CustomField_2:
       type: array
       properties:
@@ -532,35 +556,37 @@ components:
           description: List of arrays that describe each custom field
           items:
             $ref: '#/components/schemas/CustomField_2'
-    Errors:
-      type: array
-      description: A list of errors that occurred during processing
-      items:
-        $ref: '#/components/schemas/Error'
     LocationList:
       type: array
       items:
         $ref: '#/components/schemas/Location_2'
-    ProductList:
-      type: array
-      items:
-        $ref: '#/components/schemas/Product'
-    Product:
-      type: object
-      additionalProperties: false
-      properties:
-        id:
-          type: string
-          description: The product id
-        name:
-          type: string
-          description: The product name
-    Error:
-      type: object
-      properties:
-        code:
-          type: string
   responses:
+    TooManyRequests429:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Problem'
+      description: 429 too many requests response
+    ServiceError500:
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/Problem'
+      description: Service Error
+    ForbiddenError:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CodeMessage'
+      description: Request is completely forbidden. API not provided or method and or endpoint not supported
+      headers:
+        WWW_Authenticate:
+          explode: false
+          schema:
+            maxLength: 2048
+            pattern: /^.*$/
+            type: string
+          style: simple
     UnexpectedError:
       content:
         application/problem+json:
@@ -581,12 +607,12 @@ components:
             pattern: /^.*$/
             type: string
           style: simple
-    TooManyRequests429:
+    NotFound404:
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Problem'
-      description: 429 too many requests response
+      description: 404 Not found
     Options200:
       content:
         application/json:
@@ -642,43 +668,22 @@ components:
             pattern: ^[a-zA-Z0-9 ,]*$
             type: string
           style: simple
-    NotFound404:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Problem'
-      description: 404 Not found
-    ForbiddenError:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/CodeMessage'
-      description: Request is completely forbidden. API not provided or method and or endpoint not supported
-      headers:
-        WWW_Authenticate:
-          explode: false
-          schema:
-            maxLength: 2048
-            pattern: /^.*$/
-            type: string
-          style: simple
     LocationListResponse:
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/LocationListResponse'
       description: A location list response
-    ServiceError500:
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/Problem'
-      description: Service Error
   examples:
-    ErrorResponseExample:
+    ProductListResponseExample:
       value:
-        errors:
-        - code: processing_error
+        data:
+        - id: jX52DZVG8A0MB1b1bgrkoqwWlJpY6m
+          name: Product 1
+        - id: HgTjnbkjbuyo786590KJBKjtfdGgjy
+          name: Product 2
+        - id: awefawef3wfaw3fh445hhsdrrsUHuy
+          name: Product 3
     LocationListResponseExample:
       value:
         data:
@@ -708,15 +713,10 @@ components:
             options: {}
             isShownInList: false
             isEditable: true
-    ProductListResponseExample:
+    ErrorResponseExample:
       value:
-        data:
-        - id: jX52DZVG8A0MB1b1bgrkoqwWlJpY6m
-          name: Product 1
-        - id: HgTjnbkjbuyo786590KJBKjtfdGgjy
-          name: Product 2
-        - id: awefawef3wfaw3fh445hhsdrrsUHuy
-          name: Product 3
+        errors:
+        - code: processing_error
   securitySchemes:
     api_key:
       in: header

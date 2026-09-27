@@ -129,9 +129,36 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    Message:
-      maxLength: 2048
-      pattern: /^[a-zA-Z0-9 ]*$/
+    CodeEnum:
+      default: Success
+      enum:
+      - Success
+      - Error
+      - Exception
+      type: string
+    PingResponse:
+      additionalProperties: false
+      allOf:
+      - $ref: '#/components/schemas/CodeMessage'
+      - $ref: '#/components/schemas/Pong'
+      type: object
+    EmailAddress:
+      maxLength: 256
+      pattern: /^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,5})$/
+      type: string
+    Role:
+      enum:
+      - ''
+      - superadmin
+      - companyadmin
+      - accountant
+      - employee
+      - warehouseworker
+      - rsemployee
+      - shiftmanager
+      - clientsupport
+      - implementation
+      - wexsettlementservice
       type: string
     Pong:
       additionalProperties: false
@@ -213,10 +240,37 @@ components:
           pattern: /^.*$/
           type: string
       type: object
-    PhoneNumberInternational:
-      maxLength: 128
-      pattern: /^(?:(?:\(?(?:00|\+)([1-4]\d\d|[1-9]\d?)\)?)?[\-\.\ \\\/]?)?((?:\(?\d{1,}\)?[\-\.\ \\\/]?){0,})(?:[\-\.\ \\\/]?(?:#|ext\.?|extension|x)[\-\.\ \\\/]?(\d+))?$/
+    UsernamePassword:
+      additionalProperties: false
+      description: User credentials object
+      properties:
+        Password:
+          maxLength: 128
+          pattern: /^.*$/
+          type: string
+        Username:
+          maxLength: 64
+          pattern: /^.*$/
+          type: string
+      type: object
+    SessionToken:
+      description: Session token / identifier
+      format: password
+      maxLength: 2048
+      pattern: /^.*$/
       type: string
+    LoginResponse:
+      allOf:
+      - $ref: '#/components/schemas/CodeMessage'
+      - additionalProperties: false
+        properties:
+          SessionToken:
+            $ref: '#/components/schemas/SessionToken'
+          UserInfo:
+            $ref: '#/components/schemas/UserInfo'
+        type: object
+      description: Session token / identifier
+      type: object
     UserInfo:
       additionalProperties: false
       properties:
@@ -277,68 +331,15 @@ components:
           pattern: /^.*$/
           type: string
       type: object
-    Role:
-      enum:
-      - ''
-      - superadmin
-      - companyadmin
-      - accountant
-      - employee
-      - warehouseworker
-      - rsemployee
-      - shiftmanager
-      - clientsupport
-      - implementation
-      - wexsettlementservice
+    DateTime:
+      description: A timestamp of last modification of the entry.
+      example: '2020-07-21 17:32:28Z'
+      format: date-time
       type: string
-    CodeEnum:
-      default: Success
-      enum:
-      - Success
-      - Error
-      - Exception
+    PhoneNumberInternational:
+      maxLength: 128
+      pattern: /^(?:(?:\(?(?:00|\+)([1-4]\d\d|[1-9]\d?)\)?)?[\-\.\ \\\/]?)?((?:\(?\d{1,}\)?[\-\.\ \\\/]?){0,})(?:[\-\.\ \\\/]?(?:#|ext\.?|extension|x)[\-\.\ \\\/]?(\d+))?$/
       type: string
-    EmailAddress:
-      maxLength: 256
-      pattern: /^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,5})$/
-      type: string
-    UsernamePassword:
-      additionalProperties: false
-      description: User credentials object
-      properties:
-        Password:
-          maxLength: 128
-          pattern: /^.*$/
-          type: string
-        Username:
-          maxLength: 64
-          pattern: /^.*$/
-          type: string
-      type: object
-    SessionToken:
-      description: Session token / identifier
-      format: password
-      maxLength: 2048
-      pattern: /^.*$/
-      type: string
-    LoginResponse:
-      allOf:
-      - $ref: '#/components/schemas/CodeMessage'
-      - additionalProperties: false
-        properties:
-          SessionToken:
-            $ref: '#/components/schemas/SessionToken'
-          UserInfo:
-            $ref: '#/components/schemas/UserInfo'
-        type: object
-      description: Session token / identifier
-      type: object
-    PingResponse:
-      additionalProperties: false
-      allOf:
-      - $ref: '#/components/schemas/CodeMessage'
-      - $ref: '#/components/schemas/Pong'
-      type: object
     CodeMessage:
       additionalProperties: false
       description: A generic error object generally used for 500 responses
@@ -350,34 +351,53 @@ components:
       required:
       - code
       - message
-    DateTime:
-      description: A timestamp of last modification of the entry.
-      example: '2020-07-21 17:32:28Z'
-      format: date-time
+    Message:
+      maxLength: 2048
+      pattern: /^[a-zA-Z0-9 ]*$/
       type: string
     HashedId:
       maxLength: 128
       pattern: /^\w+$/
       type: string
   responses:
-    UnexpectedError:
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/Problem'
-      description: unexpected error response
-    PingResponse:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/PingResponse'
-      description: A backend test response
     LoginResponse:
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/LoginResponse'
       description: A login response
+    TooManyRequests429:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Problem'
+      description: 429 too many requests response
+    ServiceError500:
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/Problem'
+      description: Service Error
+    ForbiddenError:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CodeMessage'
+      description: Request is completely forbidden. API not provided or method and or endpoint not supported
+      headers:
+        WWW_Authenticate:
+          explode: false
+          schema:
+            maxLength: 2048
+            pattern: /^.*$/
+            type: string
+          style: simple
+    UnexpectedError:
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/Problem'
+      description: unexpected error response
     UnauthorizedError:
       content:
         application/json:
@@ -392,12 +412,12 @@ components:
             pattern: /^.*$/
             type: string
           style: simple
-    TooManyRequests429:
+    NotFound404:
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Problem'
-      description: 429 too many requests response
+      description: 404 Not found
     Options200:
       content:
         application/json:
@@ -453,32 +473,12 @@ components:
             pattern: ^[a-zA-Z0-9 ,]*$
             type: string
           style: simple
-    NotFound404:
+    PingResponse:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/Problem'
-      description: 404 Not found
-    ForbiddenError:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/CodeMessage'
-      description: Request is completely forbidden. API not provided or method and or endpoint not supported
-      headers:
-        WWW_Authenticate:
-          explode: false
-          schema:
-            maxLength: 2048
-            pattern: /^.*$/
-            type: string
-          style: simple
-    ServiceError500:
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/Problem'
-      description: Service Error
+            $ref: '#/components/schemas/PingResponse'
+      description: A backend test response
   requestBodies:
     LoginRequest:
       content:

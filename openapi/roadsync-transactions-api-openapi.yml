@@ -92,43 +92,51 @@ paths:
       security:
       - x-api-key: []
 components:
+  parameters:
+    broker_header:
+      name: broker-id
+      in: header
+      schema:
+        $ref: '#/components/schemas/brokerId'
+      description: The id of the broker
+      required: true
   schemas:
-    isFactoringCompany:
-      title: is_factoring_company
-      x-stoplight:
-        id: mmie0j9euqu37
-      type: boolean
-      description: Send "true" if this Payee is a Factoring Company, "false" otherwise.
-      example: true
-    payableId:
+    idempotencyKey:
       type: integer
       x-stoplight:
-        id: xsyrirwk8n0m7
+        id: i58xi5srh5lb7
+      example: bac613de-5j27-1347-ka1n-q3p6173jacj4
+      title: idempotency_key
+      description: Provide a unique value to prevent duplicates during retries.
+    id:
+      type: integer
+      x-stoplight:
+        id: f7ra661j53v04
       example: 87346
-      title: payable_id
-      description: The Payable's ID
-    isVerified:
-      title: is_verified
-      type: boolean
-      example: false
+      title: id
+      description: The id number of the object being returned.
+    brokerShort:
+      title: broker_short
       x-stoplight:
-        id: yfowmo738h8iv
-      description: A verified Payee is visible to all brokers in the RoadSync Pay environment. Some partners are allowed to verify a Payee by setting the is_verified flag to true during creation or update.
-    updatedDatetime:
-      title: updated_datetime
+        id: t1gb0y6sf4rns
+      type: object
+      description: The short description of the broker.
+      properties:
+        id:
+          $ref: '#/components/schemas/brokerId'
+          x-stoplight:
+            id: 6d7uubhxwqwlh
+        name:
+          $ref: '#/components/schemas/brokerName'
+          x-stoplight:
+            id: f9kyxgia11kwk
+    amount:
+      title: amount
       x-stoplight:
-        id: 8gm15jfl51vcm
-      type: string
-      description: Indicates the last time the entity was updated in ISO 8601 format.
-      example: '2023-10-26T00:00:00+00:00'
-      format: date-time
-    payeeId:
-      type: integer
-      x-stoplight:
-        id: unf2lv7eugr65
-      description: The unique identifier of the Payee who will receive the funds. It could be a Carrier or a Factoring Company.
-      example: 896876
-      title: payee_id
+        id: tayy9oxji4gww
+      type: number
+      description: Money in USD to transfer or has been transferred.
+      example: 123.45
     payeeShort:
       title: payee_short
       x-stoplight:
@@ -148,20 +156,14 @@ components:
           $ref: '#/components/schemas/isVerified'
           x-stoplight:
             id: 3wmef993rqlri
-    brokerName:
-      title: broker_name
+    createdDatetime:
+      title: created_datetime
+      x-stoplight:
+        id: v60tecbjlr4rs
       type: string
-      x-stoplight:
-        id: xpgfc7nsg07fw
-      description: The name of the broker.
-      example: Atlanta Brokerage
-    idempotencyKey:
-      type: integer
-      x-stoplight:
-        id: i58xi5srh5lb7
-      example: bac613de-5j27-1347-ka1n-q3p6173jacj4
-      title: idempotency_key
-      description: Provide a unique value to prevent duplicates during retries.
+      format: date-time
+      description: Indicates the datetime when the object was created in ISO 8601 format.
+      example: '2023-10-26T00:00:00+00:00'
     carrierPayeeId:
       title: carrier_payee_id
       type: string
@@ -171,20 +173,29 @@ components:
         $ref: '#/components/schemas/id'
         x-stoplight:
           id: y9pyua91doq3i
-    brokerId:
-      title: broker_id
-      type: integer
-      example: 66305
+    scheduledForDate:
+      title: scheduled_for_date
       x-stoplight:
-        id: 364l19xr2t37h
-      description: The identifier of a Broker to which the Payee will be assigned or has already been assigned.
-    invoiceNumber:
+        id: 14j86018rsbw6
       type: string
+      description: A valid date in the future when the payment should be initiated or "now" indicating immediate payment.
+      example: '2023-10-29T00:00:00+00:00'
+      format: date
+    paymentMethod:
+      title: payment_method
+      description: The method used to settle a payable.
       x-stoplight:
-        id: bjh3zwblac9m2
-      example: 355da12b-774b-41fc-9124-92d5f5a795ed
-      title: invoice_number
-      description: The invoice number being paid by the payable/receivable. This is visible by the Payee in remittance emails as reference_id.
+        id: 0jtzkjzaao1jc
+      enum:
+      - ACH
+      - ACH_NEXT_DAY
+      - ACH_SAME_DAY
+      - PAPER_CHECK
+      - WALLET_ACH
+      - WALLET_ACH_NEXT_DAY
+      - WALLET_ACH_SAME_DAY
+      - WALLET_RTP
+      example: ACH_NEXT_DAY
     transaction:
       type: object
       properties:
@@ -258,33 +269,13 @@ components:
               $ref: '#/components/schemas/isFactoringCompany'
       x-stoplight:
         id: 5uu7fb79w3n94
-    paymentMethod:
-      title: payment_method
-      description: The method used to settle a payable.
+    payableId:
+      type: integer
       x-stoplight:
-        id: 0jtzkjzaao1jc
-      enum:
-      - ACH
-      - ACH_NEXT_DAY
-      - ACH_SAME_DAY
-      - PAPER_CHECK
-      - WALLET_ACH
-      - WALLET_ACH_NEXT_DAY
-      - WALLET_ACH_SAME_DAY
-      - WALLET_RTP
-      example: ACH_NEXT_DAY
-    amountAsString:
-      title: amount
-      type: string
-      description: Money in USD to transfer or has been transferred.
-      example: '18.32'
-    poNumber:
-      title: po_number
-      x-stoplight:
-        id: 5zz0jgn7jlcgf
-      type: string
-      description: A unique identifier that links the purchase order the payable.
-      example: AP12345
+        id: xsyrirwk8n0m7
+      example: 87346
+      title: payable_id
+      description: The Payable's ID
     status:
       title: status
       x-stoplight:
@@ -301,28 +292,6 @@ components:
       - UNKNOWN
       description: The current status of the payable. UNKNOWN is returned when the status value is not recognized.
       example: SCHEDULED
-    id:
-      type: integer
-      x-stoplight:
-        id: f7ra661j53v04
-      example: 87346
-      title: id
-      description: The id number of the object being returned.
-    eta:
-      type: string
-      x-stoplight:
-        id: jsosz1li3h5v2
-      description: The estimated time of arrival of the payment, based on the payment method selected and scheduled date in ISO 8601 format.
-      title: eta
-      example: '2023-10-27T13:00:00+00:00'
-    createdDatetime:
-      title: created_datetime
-      x-stoplight:
-        id: v60tecbjlr4rs
-      type: string
-      format: date-time
-      description: Indicates the datetime when the object was created in ISO 8601 format.
-      example: '2023-10-26T00:00:00+00:00'
     payeeName:
       type: string
       x-stoplight:
@@ -330,13 +299,75 @@ components:
       description: The name of the Carrier or Factoring Company.
       example: Camila Trucking LLC
       title: payee_name
-    amount:
-      title: amount
+    brokerId:
+      title: broker_id
+      type: integer
+      example: 66305
       x-stoplight:
-        id: tayy9oxji4gww
-      type: number
+        id: 364l19xr2t37h
+      description: The identifier of a Broker to which the Payee will be assigned or has already been assigned.
+    brokerName:
+      title: broker_name
+      type: string
+      x-stoplight:
+        id: xpgfc7nsg07fw
+      description: The name of the broker.
+      example: Atlanta Brokerage
+    amountAsString:
+      title: amount
+      type: string
       description: Money in USD to transfer or has been transferred.
-      example: 123.45
+      example: '18.32'
+    eta:
+      type: string
+      x-stoplight:
+        id: jsosz1li3h5v2
+      description: The estimated time of arrival of the payment, based on the payment method selected and scheduled date in ISO 8601 format.
+      title: eta
+      example: '2023-10-27T13:00:00+00:00'
+    payeeId:
+      type: integer
+      x-stoplight:
+        id: unf2lv7eugr65
+      description: The unique identifier of the Payee who will receive the funds. It could be a Carrier or a Factoring Company.
+      example: 896876
+      title: payee_id
+    invoiceNumber:
+      type: string
+      x-stoplight:
+        id: bjh3zwblac9m2
+      example: 355da12b-774b-41fc-9124-92d5f5a795ed
+      title: invoice_number
+      description: The invoice number being paid by the payable/receivable. This is visible by the Payee in remittance emails as reference_id.
+    poNumber:
+      title: po_number
+      x-stoplight:
+        id: 5zz0jgn7jlcgf
+      type: string
+      description: A unique identifier that links the purchase order the payable.
+      example: AP12345
+    isVerified:
+      title: is_verified
+      type: boolean
+      example: false
+      x-stoplight:
+        id: yfowmo738h8iv
+      description: A verified Payee is visible to all brokers in the RoadSync Pay environment. Some partners are allowed to verify a Payee by setting the is_verified flag to true during creation or update.
+    updatedDatetime:
+      title: updated_datetime
+      x-stoplight:
+        id: 8gm15jfl51vcm
+      type: string
+      description: Indicates the last time the entity was updated in ISO 8601 format.
+      example: '2023-10-26T00:00:00+00:00'
+      format: date-time
+    isFactoringCompany:
+      title: is_factoring_company
+      x-stoplight:
+        id: mmie0j9euqu37
+      type: boolean
+      description: Send "true" if this Payee is a Factoring Company, "false" otherwise.
+      example: true
     referenceId:
       title: reference_id
       x-stoplight:
@@ -344,30 +375,15 @@ components:
       type: string
       description: An identifier used by the Broker to correlate the Transaction with another system or document.
       example: 123XYZ
-    scheduledForDate:
-      title: scheduled_for_date
-      x-stoplight:
-        id: 14j86018rsbw6
-      type: string
-      description: A valid date in the future when the payment should be initiated or "now" indicating immediate payment.
-      example: '2023-10-29T00:00:00+00:00'
-      format: date
-    brokerShort:
-      title: broker_short
-      x-stoplight:
-        id: t1gb0y6sf4rns
-      type: object
-      description: The short description of the broker.
-      properties:
-        id:
-          $ref: '#/components/schemas/brokerId'
-          x-stoplight:
-            id: 6d7uubhxwqwlh
-        name:
-          $ref: '#/components/schemas/brokerName'
-          x-stoplight:
-            id: f9kyxgia11kwk
   responses:
+    get_transactions:
+      description: Example response
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/transaction'
     get_transaction:
       description: Example response
       content:
@@ -446,14 +462,6 @@ components:
                     title: url
                     description: URL Image of Paper Check Preview
                     example: https://www.example-url-image.com/paper-check/1234567
-    get_transactions:
-      description: Example response
-      content:
-        application/json:
-          schema:
-            type: array
-            items:
-              $ref: '#/components/schemas/transaction'
   requestBodies:
     createTransaction:
       content:
@@ -481,14 +489,6 @@ components:
                 x-stoplight:
                   id: aayvco1cjg8h3
       description: ''
-  parameters:
-    broker_header:
-      name: broker-id
-      in: header
-      schema:
-        $ref: '#/components/schemas/brokerId'
-      description: The id of the broker
-      required: true
   securitySchemes:
     x-api-key:
       name: x-api-key

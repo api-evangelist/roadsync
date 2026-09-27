@@ -79,20 +79,12 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    CodeMessage:
-      additionalProperties: false
-      description: A generic error object generally used for 500 responses
-      properties:
-        code:
-          $ref: '#/components/schemas/CodeEnum'
-        message:
-          $ref: '#/components/schemas/Message'
-      required:
-      - code
-      - message
-    Message:
-      maxLength: 2048
-      pattern: /^[a-zA-Z0-9 ]*$/
+    CodeEnum:
+      default: Success
+      enum:
+      - Success
+      - Error
+      - Exception
       type: string
     Department:
       additionalProperties: false
@@ -106,10 +98,6 @@ components:
           pattern: /^.*$/
           type: string
       type: object
-    HashedId:
-      maxLength: 128
-      pattern: /^\w+$/
-      type: string
     Problem:
       additionalProperties: false
       properties:
@@ -170,6 +158,21 @@ components:
           pattern: /^.*$/
           type: string
       type: object
+    CodeMessage:
+      additionalProperties: false
+      description: A generic error object generally used for 500 responses
+      properties:
+        code:
+          $ref: '#/components/schemas/CodeEnum'
+        message:
+          $ref: '#/components/schemas/Message'
+      required:
+      - code
+      - message
+    Message:
+      maxLength: 2048
+      pattern: /^[a-zA-Z0-9 ]*$/
+      type: string
     DepartmentListResponse:
       allOf:
       - $ref: '#/components/schemas/CodeMessage'
@@ -182,46 +185,11 @@ components:
             maxItems: 64
             type: array
         type: object
-    CodeEnum:
-      default: Success
-      enum:
-      - Success
-      - Error
-      - Exception
+    HashedId:
+      maxLength: 128
+      pattern: /^\w+$/
       type: string
   responses:
-    NotFound404:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Problem'
-      description: 404 Not found
-    UnexpectedError:
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/Problem'
-      description: unexpected error response
-    ForbiddenError:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/CodeMessage'
-      description: Request is completely forbidden. API not provided or method and or endpoint not supported
-      headers:
-        WWW_Authenticate:
-          explode: false
-          schema:
-            maxLength: 2048
-            pattern: /^.*$/
-            type: string
-          style: simple
-    TooManyRequests429:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Problem'
-      description: 429 too many requests response
     Options200:
       content:
         application/json:
@@ -277,18 +245,32 @@ components:
             pattern: ^[a-zA-Z0-9 ,]*$
             type: string
           style: simple
-    ServiceError500:
+    ForbiddenError:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CodeMessage'
+      description: Request is completely forbidden. API not provided or method and or endpoint not supported
+      headers:
+        WWW_Authenticate:
+          explode: false
+          schema:
+            maxLength: 2048
+            pattern: /^.*$/
+            type: string
+          style: simple
+    TooManyRequests429:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Problem'
+      description: 429 too many requests response
+    UnexpectedError:
       content:
         application/problem+json:
           schema:
             $ref: '#/components/schemas/Problem'
-      description: Service Error
-    DepartmentListResponse:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/DepartmentListResponse'
-      description: A department list response
+      description: unexpected error response
     UnauthorizedError:
       content:
         application/json:
@@ -303,6 +285,24 @@ components:
             pattern: /^.*$/
             type: string
           style: simple
+    ServiceError500:
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/Problem'
+      description: Service Error
+    DepartmentListResponse:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/DepartmentListResponse'
+      description: A department list response
+    NotFound404:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Problem'
+      description: 404 Not found
   securitySchemes:
     api_key:
       in: header

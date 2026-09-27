@@ -226,11 +226,108 @@ paths:
       - ApiKey: []
 components:
   schemas:
+    PatchPaymentRequest:
+      type: object
+      additionalProperties: false
+      properties:
+        expressCode:
+          type: string
+          description: 'A numeric identifier that represents a prespecified amount the driver can use to pay for something.
+
+            '
+        firstName:
+          type: string
+          description: The payer's first name
+        lastName:
+          type: string
+          description: The payer's last name
+        email:
+          type: string
+          description: The payer's email address. Either email or phone is required.
+        phone:
+          type: string
+          description: The payer's phone number. Either phone or email is required.
+        customFields:
+          type: object
+          description: Values for fields configured for the current location. These can be configured to be required.
+        driverNumber:
+          type: string
+          description: Driver employee ID - may be required by some payment types
+        unitNumber:
+          type: string
+          description: Vehicle identifier - may be required by some payment types
+        tripNumber:
+          type: string
+          description: Job identifier - may be required by some payment types
+        hubReading:
+          type: number
+          description: Tractor milage - may be required by some payment types
+        trailerNumber:
+          type: string
+          description: Trailer identifier - may be required by some payment types
+        trailerHubReading:
+          type: number
+          description: Trailer milage - may be required by some payment types
+        trailerHours:
+          type: number
+          description: Trailer hours of service - may be required by some payment types
+        licenseNumber:
+          type: string
+          description: Driver's license number - may be required by some payment types
+        licenseState:
+          type: string
+          description: Driver's license state - may be required by some payment types
+        poNumber:
+          type: string
+          description: Load identifier - may be required by some payment types
+    PaymentResponse:
+      type: object
+      additionalProperties: false
+      properties:
+        data:
+          type: object
+          description: The Payment object returned by the create call
+          properties:
+            id:
+              type: string
+              description: The id of the payment
+            checkNumber:
+              type: string
+              description: The number of the check that was created, only returned for 'efscheck and tchek' paymentType
+            status:
+              type: string
+              description: The status of the payment
+            reason:
+              type: string
+              description: A description on why a payment is in `failed` status
+            fields:
+              type: array
+              description: Fields to be collected from the user for certain payment types.
+              items:
+                type: object
+                properties:
+                  name:
+                    type: string
+                    description: Name of the field to collect
+                  required:
+                    type: boolean
+                    description: True if field is required
+        errors:
+          $ref: '#/components/schemas/Errors'
     Errors:
       type: array
       description: A list of errors that occurred during payment processing
       items:
         $ref: '#/components/schemas/Error'
+    Error:
+      type: object
+      properties:
+        code:
+          type: string
+          description: The error code
+        title:
+          type: string
+          description: Summary of error
     PaymentRequest:
       type: object
       additionalProperties: false
@@ -327,103 +424,6 @@ components:
       required:
       - paymentType
       - locationId
-    PatchPaymentRequest:
-      type: object
-      additionalProperties: false
-      properties:
-        expressCode:
-          type: string
-          description: 'A numeric identifier that represents a prespecified amount the driver can use to pay for something.
-
-            '
-        firstName:
-          type: string
-          description: The payer's first name
-        lastName:
-          type: string
-          description: The payer's last name
-        email:
-          type: string
-          description: The payer's email address. Either email or phone is required.
-        phone:
-          type: string
-          description: The payer's phone number. Either phone or email is required.
-        customFields:
-          type: object
-          description: Values for fields configured for the current location. These can be configured to be required.
-        driverNumber:
-          type: string
-          description: Driver employee ID - may be required by some payment types
-        unitNumber:
-          type: string
-          description: Vehicle identifier - may be required by some payment types
-        tripNumber:
-          type: string
-          description: Job identifier - may be required by some payment types
-        hubReading:
-          type: number
-          description: Tractor milage - may be required by some payment types
-        trailerNumber:
-          type: string
-          description: Trailer identifier - may be required by some payment types
-        trailerHubReading:
-          type: number
-          description: Trailer milage - may be required by some payment types
-        trailerHours:
-          type: number
-          description: Trailer hours of service - may be required by some payment types
-        licenseNumber:
-          type: string
-          description: Driver's license number - may be required by some payment types
-        licenseState:
-          type: string
-          description: Driver's license state - may be required by some payment types
-        poNumber:
-          type: string
-          description: Load identifier - may be required by some payment types
-    Error:
-      type: object
-      properties:
-        code:
-          type: string
-          description: The error code
-        title:
-          type: string
-          description: Summary of error
-    PaymentResponse:
-      type: object
-      additionalProperties: false
-      properties:
-        data:
-          type: object
-          description: The Payment object returned by the create call
-          properties:
-            id:
-              type: string
-              description: The id of the payment
-            checkNumber:
-              type: string
-              description: The number of the check that was created, only returned for 'efscheck and tchek' paymentType
-            status:
-              type: string
-              description: The status of the payment
-            reason:
-              type: string
-              description: A description on why a payment is in `failed` status
-            fields:
-              type: array
-              description: Fields to be collected from the user for certain payment types.
-              items:
-                type: object
-                properties:
-                  name:
-                    type: string
-                    description: Name of the field to collect
-                  required:
-                    type: boolean
-                    description: True if field is required
-        errors:
-          $ref: '#/components/schemas/Errors'
   securitySchemes:
     ApiKey:
       type: apiKey

@@ -86,6 +86,12 @@ paths:
       - x-api-key: []
 components:
   schemas:
+    fundingSourceId:
+      title: funding_source_id
+      x-stoplight:
+        id: 62r95b324501y
+      $ref: '#/components/schemas/id'
+      description: Id representing the funding source (papercheck, ach or wallet).
     phoneNumber:
       title: phone_number
       x-stoplight:
@@ -93,78 +99,6 @@ components:
       type: string
       description: A valid phone number belonging to a person or company.
       example: '3243444347'
-    paymentTarget:
-      title: payment_target
-      description: A valid Payee payment target.
-      x-stoplight:
-        id: pqgsyu00mynep
-      enum:
-      - ACH
-      - PAPER_CHECK
-      - RTP
-      example: ACH
-    city:
-      title: city
-      x-stoplight:
-        id: 8ypbld5r20d6o
-      type: string
-      description: A valid city in the United States.
-      example: Atlanta
-    fundingSourceId:
-      title: funding_source_id
-      x-stoplight:
-        id: 62r95b324501y
-      $ref: '#/components/schemas/id'
-      description: Id representing the funding source (papercheck, ach or wallet).
-    addressLineOne:
-      title: address_line_one
-      x-stoplight:
-        id: p3a1crckckndd
-      type: string
-      description: The valid address of a person or business in the United States.
-      example: 715 Peachtree St
-    payeeName:
-      type: string
-      x-stoplight:
-        id: t7yn3ksmmn262
-      description: The name of the Carrier or Factoring Company.
-      example: Camila Trucking LLC
-      title: payee_name
-    firstName:
-      type: string
-      x-stoplight:
-        id: 7p7kmat8ktz1s
-      example: Camila
-      title: first_name
-      description: The first name of a contact or user.
-    emailAddress:
-      type: string
-      x-stoplight:
-        id: yd026juzie7jh
-      description: A valid email belonging to the person or company.
-      title: email_address
-      example: crogers@camilatrucking.com
-    isVerified:
-      title: is_verified
-      type: boolean
-      example: false
-      x-stoplight:
-        id: yfowmo738h8iv
-      description: A verified Payee is visible to all brokers in the RoadSync Pay environment. Some partners are allowed to verify a Payee by setting the is_verified flag to true during creation or update.
-    dotNumber:
-      type: string
-      x-stoplight:
-        id: c2zo0dhnzfjnp
-      description: U.S. Department of Transportation Number is an up to ten-digit assigned by the FMCSA to moving companies operating in interstate commerce. If inserted, it will be validated.
-      example: '2428196'
-      title: dot_number
-    postalCode:
-      title: postal_code
-      x-stoplight:
-        id: v5t2utdpxdar3
-      type: string
-      description: A valid postal code in the United States.
-      example: '30306'
     mcNumber:
       type: string
       x-stoplight:
@@ -172,13 +106,13 @@ components:
       description: Motor Carrier Number is a a nine-digit identifier assigned by the FMCSA to moving companies operating in interstate commerce. If inserted, it will be validated.
       example: MC612791
       title: mc_number
-    id:
-      type: integer
+    isVerified:
+      title: is_verified
+      type: boolean
+      example: false
       x-stoplight:
-        id: f7ra661j53v04
-      example: 87346
-      title: id
-      description: The id number of the object being returned.
+        id: yfowmo738h8iv
+      description: A verified Payee is visible to all brokers in the RoadSync Pay environment. Some partners are allowed to verify a Payee by setting the is_verified flag to true during creation or update.
     availablePaymentTypes:
       title: available_payment_types
       x-stoplight:
@@ -191,6 +125,74 @@ components:
       - RTP
       items:
         $ref: '#/components/schemas/paymentTarget'
+    city:
+      title: city
+      x-stoplight:
+        id: 8ypbld5r20d6o
+      type: string
+      description: A valid city in the United States.
+      example: Atlanta
+    payeeName:
+      type: string
+      x-stoplight:
+        id: t7yn3ksmmn262
+      description: The name of the Carrier or Factoring Company.
+      example: Camila Trucking LLC
+      title: payee_name
+    addressLineOne:
+      title: address_line_one
+      x-stoplight:
+        id: p3a1crckckndd
+      type: string
+      description: The valid address of a person or business in the United States.
+      example: 715 Peachtree St
+    dotNumber:
+      type: string
+      x-stoplight:
+        id: c2zo0dhnzfjnp
+      description: U.S. Department of Transportation Number is an up to ten-digit assigned by the FMCSA to moving companies operating in interstate commerce. If inserted, it will be validated.
+      example: '2428196'
+      title: dot_number
+    paymentTarget:
+      title: payment_target
+      description: A valid Payee payment target.
+      x-stoplight:
+        id: pqgsyu00mynep
+      enum:
+      - ACH
+      - PAPER_CHECK
+      - RTP
+      example: ACH
+    id:
+      type: integer
+      x-stoplight:
+        id: f7ra661j53v04
+      example: 87346
+      title: id
+      description: The id number of the object being returned.
+    postalCode:
+      title: postal_code
+      x-stoplight:
+        id: v5t2utdpxdar3
+      type: string
+      description: A valid postal code in the United States.
+      example: '30306'
+    addressLineTwo:
+      title: address_line_two
+      x-stoplight:
+        id: jpnvzmg54ky3l
+      type:
+      - string
+      - 'null'
+      description: If necessary, add a second line of the address in the United States.
+      example: APT 23
+    emailAddress:
+      type: string
+      x-stoplight:
+        id: yd026juzie7jh
+      description: A valid email belonging to the person or company.
+      title: email_address
+      example: crogers@camilatrucking.com
     lastName:
       type: string
       x-stoplight:
@@ -205,15 +207,13 @@ components:
       type: string
       description: A valid 2 character state code in the United States.
       example: GA
-    addressLineTwo:
-      title: address_line_two
+    firstName:
+      type: string
       x-stoplight:
-        id: jpnvzmg54ky3l
-      type:
-      - string
-      - 'null'
-      description: If necessary, add a second line of the address in the United States.
-      example: APT 23
+        id: 7p7kmat8ktz1s
+      example: Camila
+      title: first_name
+      description: The first name of a contact or user.
   securitySchemes:
     x-api-key:
       name: x-api-key
