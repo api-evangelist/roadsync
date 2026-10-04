@@ -53,11 +53,6 @@ components:
         title:
           type: string
           description: Summary of error
-    Errors:
-      type: array
-      description: A list of errors that occurred during payment processing
-      items:
-        $ref: '#/components/schemas/Error'
     PaymentResponse:
       type: object
       additionalProperties: false
@@ -92,6 +87,11 @@ components:
                     description: True if field is required
         errors:
           $ref: '#/components/schemas/Errors'
+    Errors:
+      type: array
+      description: A list of errors that occurred during payment processing
+      items:
+        $ref: '#/components/schemas/Error'
   securitySchemes:
     ApiKey:
       type: apiKey

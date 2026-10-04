@@ -61,27 +61,14 @@ paths:
       security:
       - x-api-key: []
 components:
-  responses:
-    getBroker:
-      description: Response from /brokers GET
-      content:
-        application/json:
-          schema:
-            type: array
-            items:
-              allOf:
-              - $ref: '#/components/schemas/broker'
-    getBrokers:
-      description: Example response
-      content:
-        application/json:
-          schema:
-            type: array
-            items:
-              id:
-                $ref: '#/components/schemas/brokerIdResponse'
-              $ref: '#/components/schemas/broker'
   schemas:
+    brokerIdResponse:
+      title: broker_id_response
+      type: integer
+      x-stoplight:
+        id: a6k2b2ugy6fg0
+      example: 66305
+      description: The identifier of a Broker to which the Payee has been assigned.
     addressLineOne:
       title: address_line_one
       x-stoplight:
@@ -89,27 +76,22 @@ components:
       type: string
       description: The valid address of a person or business in the United States.
       example: 715 Peachtree St
-    postalCode:
-      title: postal_code
-      x-stoplight:
-        id: v5t2utdpxdar3
+    brokerName:
+      title: broker_name
       type: string
-      description: A valid postal code in the United States.
-      example: '30306'
-    id:
-      type: integer
       x-stoplight:
-        id: f7ra661j53v04
-      example: 87346
-      title: id
-      description: The id number of the object being returned.
-    phoneNumber:
-      title: phone_number
+        id: xpgfc7nsg07fw
+      description: The name of the broker.
+      example: Atlanta Brokerage
+    addressLineTwo:
+      title: address_line_two
       x-stoplight:
-        id: coa4x7lscfh80
-      type: string
-      description: A valid phone number belonging to a person or company.
-      example: '3243444347'
+        id: jpnvzmg54ky3l
+      type:
+      - string
+      - 'null'
+      description: If necessary, add a second line of the address in the United States.
+      example: APT 23
     broker:
       title: broker
       x-stoplight:
@@ -163,49 +145,6 @@ components:
           $ref: '#/components/schemas/fundingSourceId'
           x-stoplight:
             id: gh7wkzac7k9s8
-    fundingSourceId:
-      title: funding_source_id
-      x-stoplight:
-        id: 62r95b324501y
-      $ref: '#/components/schemas/id'
-      description: Id representing the funding source (papercheck, ach or wallet).
-    brokerIdResponse:
-      title: broker_id_response
-      type: integer
-      x-stoplight:
-        id: a6k2b2ugy6fg0
-      example: 66305
-      description: The identifier of a Broker to which the Payee has been assigned.
-    city:
-      title: city
-      x-stoplight:
-        id: 8ypbld5r20d6o
-      type: string
-      description: A valid city in the United States.
-      example: Atlanta
-    addressLineTwo:
-      title: address_line_two
-      x-stoplight:
-        id: jpnvzmg54ky3l
-      type:
-      - string
-      - 'null'
-      description: If necessary, add a second line of the address in the United States.
-      example: APT 23
-    state:
-      title: state
-      x-stoplight:
-        id: xwqz3invlqyrz
-      type: string
-      description: A valid 2 character state code in the United States.
-      example: GA
-    brokerName:
-      title: broker_name
-      type: string
-      x-stoplight:
-        id: xpgfc7nsg07fw
-      description: The name of the broker.
-      example: Atlanta Brokerage
     emailAddressBroker:
       type: string
       x-stoplight:
@@ -213,6 +152,67 @@ components:
       description: A valid email belonging to the Broker, where remittance emails will be received.
       title: email_address_broker
       example: virginia@atlantabrokerage.com
+    id:
+      type: integer
+      x-stoplight:
+        id: f7ra661j53v04
+      example: 87346
+      title: id
+      description: The id number of the object being returned.
+    city:
+      title: city
+      x-stoplight:
+        id: 8ypbld5r20d6o
+      type: string
+      description: A valid city in the United States.
+      example: Atlanta
+    phoneNumber:
+      title: phone_number
+      x-stoplight:
+        id: coa4x7lscfh80
+      type: string
+      description: A valid phone number belonging to a person or company.
+      example: '3243444347'
+    fundingSourceId:
+      title: funding_source_id
+      x-stoplight:
+        id: 62r95b324501y
+      $ref: '#/components/schemas/id'
+      description: Id representing the funding source (papercheck, ach or wallet).
+    postalCode:
+      title: postal_code
+      x-stoplight:
+        id: v5t2utdpxdar3
+      type: string
+      description: A valid postal code in the United States.
+      example: '30306'
+    state:
+      title: state
+      x-stoplight:
+        id: xwqz3invlqyrz
+      type: string
+      description: A valid 2 character state code in the United States.
+      example: GA
+  responses:
+    getBroker:
+      description: Response from /brokers GET
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              allOf:
+              - $ref: '#/components/schemas/broker'
+    getBrokers:
+      description: Example response
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              id:
+                $ref: '#/components/schemas/brokerIdResponse'
+              $ref: '#/components/schemas/broker'
   securitySchemes:
     x-api-key:
       name: x-api-key

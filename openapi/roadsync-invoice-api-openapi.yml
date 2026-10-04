@@ -1473,6 +1473,257 @@ paths:
           default: https://dev.api.roadsync.app/v1/invoice
 components:
   schemas:
+    CompanyType:
+      enum:
+      - ''
+      - system
+      - shipper
+      - lumper
+      - towandrepair
+      - warehouse
+      - owneroperator
+      - payer
+      type: string
+    CodeEnum:
+      default: Success
+      enum:
+      - Success
+      - Error
+      - Exception
+      type: string
+    PhoneNumberInternational:
+      maxLength: 128
+      pattern: /^(?:(?:\(?(?:00|\+)([1-4]\d\d|[1-9]\d?)\)?)?[\-\.\ \\\/]?)?((?:\(?\d{1,}\)?[\-\.\ \\\/]?){0,})(?:[\-\.\ \\\/]?(?:#|ext\.?|extension|x)[\-\.\ \\\/]?(\d+))?$/
+      type: string
+    DepositStatus:
+      enum:
+      - ''
+      - unknown
+      - processing
+      - in_transit
+      - completed
+      - cancelled
+      - failed
+      type: string
+    FilterItem:
+      additionalProperties: false
+      properties:
+        field:
+          maxLength: 128
+          pattern: /^.*$/
+          type: string
+        type:
+          enum:
+          - integer
+          - decimal
+          - string
+          - boolean
+          - date
+          - datetime
+          - dictionary
+          - object
+          - json
+          - csv
+          - list
+          type: string
+        value:
+          $ref: '#/components/schemas/FilterItemValue'
+      type: object
+    InvoiceCreateRequest:
+      additionalProperties: false
+      properties:
+        companyId:
+          $ref: '#/components/schemas/HashedId'
+        invoiceCreateInput:
+          $ref: '#/components/schemas/InvoiceCreateInput'
+      type: object
+    InvoiceFileType:
+      enum:
+      - ''
+      - unknown
+      - signature
+      - pdf
+      - image
+      type: string
+    ShortCompanyCustomer:
+      additionalProperties: false
+      properties:
+        city:
+          maxLength: 2048
+          pattern: /^.*$/
+          type: string
+        companyId:
+          $ref: '#/components/schemas/HashedId'
+        contactEmail:
+          $ref: '#/components/schemas/EmailAddress'
+        contactPhone:
+          $ref: '#/components/schemas/PhoneNumberInternational'
+        customerCompanyId:
+          $ref: '#/components/schemas/HashedId'
+        id:
+          $ref: '#/components/schemas/HashedId'
+        name:
+          maxLength: 256
+          pattern: /^.*$/
+          type: string
+        nickname:
+          maxLength: 256
+          pattern: /^.*$/
+          type: string
+        publicId:
+          $ref: '#/components/schemas/Count'
+        state:
+          $ref: '#/components/schemas/StateCode'
+      type: object
+    InvoiceResponse:
+      additionalProperties: false
+      allOf:
+      - $ref: '#/components/schemas/CodeMessage'
+      - additionalProperties: false
+        properties:
+          invoice:
+            $ref: '#/components/schemas/Invoice'
+        type: object
+      type: object
+    Quantity:
+      format: float
+      maximum: 999999999.99
+      minimum: -999999999.99
+      type: number
+    Pagination:
+      additionalProperties: false
+      properties:
+        ItemsPerPage:
+          default: 20
+          format: int32
+          maximum: 999999
+          minimum: 1
+          type: integer
+        PageNumber:
+          default: 1
+          format: int32
+          maximum: 999999
+          minimum: 1
+          type: integer
+        SortColumn:
+          default: ''
+          maxLength: 64
+          pattern: /^.*$/
+          type: string
+        SortDirection:
+          $ref: '#/components/schemas/SortDirection'
+        TotalItems:
+          default: 20
+          format: int32
+          maximum: 999999
+          minimum: 1
+          type: integer
+        TotalPages:
+          default: 1
+          format: int32
+          maximum: 999999
+          minimum: 1
+          type: integer
+      type: object
+    InvoiceUpdateRequest:
+      additionalProperties: false
+      properties:
+        invoiceId:
+          $ref: '#/components/schemas/HashedId'
+        invoiceUpdateInput:
+          $ref: '#/components/schemas/InvoiceUpdateInput'
+      type: object
+    InvoiceCreateInput:
+      additionalProperties: false
+      properties:
+        comments:
+          maxLength: 4096
+          pattern: /^.*$/
+          type: string
+        convFeeDisable:
+          type: boolean
+        customFields:
+          $ref: '#/components/schemas/StringMap'
+        customerId:
+          $ref: '#/components/schemas/HashedId'
+        departmentId:
+          $ref: '#/components/schemas/HashedId'
+        description:
+          $ref: '#/components/schemas/Description'
+        lineItems:
+          items:
+            $ref: '#/components/schemas/InvoiceLineItemInput'
+          maxItems: 64
+          type: array
+        locationId:
+          $ref: '#/components/schemas/HashedId'
+        payerEmail:
+          $ref: '#/components/schemas/EmailAddress'
+        payerName:
+          maxLength: 256
+          pattern: /^.*$/
+          type: string
+        payerPhone:
+          $ref: '#/components/schemas/PhoneNumberInternational'
+        shiftId:
+          $ref: '#/components/schemas/HashedId'
+        temporaryCustomerName:
+          maxLength: 256
+          pattern: /^.*$/
+          type: string
+        workflowStatus:
+          $ref: '#/components/schemas/WorkflowStatus'
+      type: object
+    Count:
+      format: int64
+      maximum: 999999999
+      minimum: 0
+      type: integer
+    DateTime:
+      description: A timestamp of last modification of the entry.
+      example: '2020-07-21 17:32:28Z'
+      format: date-time
+      type: string
+    PublicId:
+      format: int64
+      maximum: 999999999
+      minimum: 0
+      type: integer
+    ShortLocation:
+      additionalProperties: false
+      properties:
+        city:
+          maxLength: 2048
+          pattern: /^.*$/
+          type: string
+        companyId:
+          $ref: '#/components/schemas/HashedId'
+        customFields:
+          items:
+            $ref: '#/components/schemas/CustomField'
+          maxItems: 64
+          type: array
+        id:
+          $ref: '#/components/schemas/HashedId'
+        name:
+          maxLength: 256
+          pattern: /^.*$/
+          type: string
+        state:
+          $ref: '#/components/schemas/StateCode'
+        timezone:
+          $ref: '#/components/schemas/TimeZone'
+      type: object
+    InvoiceReport:
+      additionalProperties: false
+      properties:
+        format:
+          $ref: '#/components/schemas/FormatEnum'
+        report:
+          maxLength: 2048
+          pattern: /^.*$/
+          type: string
+      type: object
     StateCode:
       enum:
       - AL
@@ -1529,157 +1780,25 @@ components:
       - MEX
       - CAN
       type: string
-    CustomField:
-      additionalProperties: false
-      properties:
-        deletedAt:
-          $ref: '#/components/schemas/DateTime'
-        id:
-          $ref: '#/components/schemas/HashedId'
-        isRequired:
-          type: boolean
-        isShownInList:
-          type: boolean
-        name:
-          maxLength: 256
-          pattern: /^.*$/
-          type: string
-        options:
-          additionalProperties: false
-          type: object
-        title:
-          maxLength: 2048
-          pattern: /^.*$/
-          type: string
-        type:
-          $ref: '#/components/schemas/CustomFieldType'
-      type: object
-    PaidStateEnum:
-      default: ''
+    InvoiceDeletionReason:
       enum:
       - ''
-      - Paid
-      - Unpaid
-      - NA
+      - unknown
+      - requestedbycustomer
+      - incorrectamount
+      - prepaidcontract
+      - duplicate
+      - fraudulent
+      - alternate
+      - driverleft
+      - unabletoservice
       type: string
-    CompanyType:
+    ProductSelectType:
       enum:
       - ''
-      - system
-      - shipper
-      - lumper
-      - towandrepair
-      - warehouse
-      - owneroperator
-      - payer
-      type: string
-    Problem:
-      additionalProperties: false
-      properties:
-        detail:
-          description: 'A human readable explanation specific to this occurrence of the
-
-            problem.
-
-            '
-          example: Connection to database timed out
-          maxLength: 2048
-          pattern: /^.*$/
-          type: string
-        instance:
-          description: 'An absolute URI that identifies the specific occurrence of the problem.
-
-            It may or may not yield further information if dereferenced.
-
-            '
-          format: uri
-          maxLength: 2048
-          pattern: /^.*$/
-          type: string
-        status:
-          description: 'The HTTP status code generated by the origin server for this occurrence
-
-            of the problem.
-
-            '
-          example: 503
-          format: int32
-          minimum: 100
-          type: integer
-          exclusiveMaximum: 600
-        title:
-          description: 'A short, summary of the problem type. Written in english and readable
-
-            for engineers (usually not suited for non technical stakeholders and
-
-            not localized); example: Service Unavailable
-
-            '
-          maxLength: 256
-          pattern: /^.*$/
-          type: string
-        type:
-          default: about:blank
-          description: 'An absolute URI that identifies the problem type.  When dereferenced,
-
-            it SHOULD provide human-readable documentation for the problem type
-
-            (e.g., using HTML).
-
-            '
-          example: https://problems.roadsync.com/problem/unspecified-error
-          format: uri
-          maxLength: 2048
-          pattern: /^.*$/
-          type: string
-      type: object
-    InvoiceSearchRequest:
-      additionalProperties: false
-      description: Documenting the shape here get's lost by SwaggerUI implementations like readme.io
-      properties:
-        asyncResult:
-          default: true
-          description: Turn on/off the asynchronous result set for this request if the `timeout` time is exceeded during the execution of this search.
-          type: boolean
-        filters:
-          items:
-            $ref: '#/components/schemas/FilterItem'
-          type: array
-        pagination:
-          $ref: '#/components/schemas/Pagination'
-        resultToken:
-          description: Optionally indicate on subsequent search request (typically with the same filters) where the search in the master list of invoices should be resumed.
-          maxLength: 256
-          pattern: /^.*$/
-          type: string
-        searchStart:
-          default: 0
-          description: Optionally indicate on subsequent search request (typically with the same filters) where the search in the master list of invoices should be resumed.
-          format: int64
-          minimum: 0
-          type: integer
-        timeout:
-          default: 19
-          description: Timeout in seconds for searching for invoices that meet the criteria. If the search exceeds this limit a Continuation response will be sent and optionally (if asyncResult == true and asynchronous results are availble) an asyncronous result set token.
-          format: float
-          maximum: 29
-          minimum: 1
-          type: number
-      type: object
-    InvoiceStatsResponse:
-      additionalProperties: false
-      allOf:
-      - $ref: '#/components/schemas/CodeMessage'
-      - additionalProperties: false
-        properties:
-          invoice_stats:
-            $ref: '#/components/schemas/InvoiceStats'
-        type: object
-      type: object
-    DateTime:
-      description: A timestamp of last modification of the entry.
-      example: '2020-07-21 17:32:28Z'
-      format: date-time
+      - none
+      - preselected
+      - obligatory
       type: string
     InvoiceUpdateInput:
       additionalProperties: false
@@ -1721,255 +1840,59 @@ components:
         workflowStatus:
           $ref: '#/components/schemas/WorkflowStatus'
       type: object
-    FilterItem:
-      additionalProperties: false
-      properties:
-        field:
-          maxLength: 128
-          pattern: /^.*$/
-          type: string
-        type:
-          enum:
-          - integer
-          - decimal
-          - string
-          - boolean
-          - date
-          - datetime
-          - dictionary
-          - object
-          - json
-          - csv
-          - list
-          type: string
-        value:
-          $ref: '#/components/schemas/FilterItemValue'
-      type: object
-    StringMap:
-      additionalProperties: false
-      type: object
-    Description:
-      maxLength: 1024
-      pattern: /^.*$/
-      type: string
-    Message:
-      maxLength: 2048
-      pattern: /^[a-zA-Z0-9 ]*$/
-      type: string
-    InvoiceStats:
-      additionalProperties: false
-      properties:
-        count:
-          $ref: '#/components/schemas/Count'
-        total:
-          $ref: '#/components/schemas/Amount'
-      type: object
-    CustomFieldType:
+    ProductType:
       enum:
-      - ''
-      - unknown
-      - input
-      - phone
-      - email
-      - select
-      - numeric
-      type: string
-    InvoiceResponse:
-      additionalProperties: false
-      allOf:
-      - $ref: '#/components/schemas/CodeMessage'
-      - additionalProperties: false
-        properties:
-          invoice:
-            $ref: '#/components/schemas/Invoice'
-        type: object
-      type: object
-    InvoiceReport:
-      additionalProperties: false
-      properties:
-        format:
-          $ref: '#/components/schemas/FormatEnum'
-        report:
-          maxLength: 2048
-          pattern: /^.*$/
-          type: string
-      type: object
-    Continuation:
-      additionalProperties: false
-      properties:
-        search_start:
-          $ref: '#/components/schemas/Count'
-      type: object
-    InvoiceUpdateRequest:
-      additionalProperties: false
-      properties:
-        invoiceId:
-          $ref: '#/components/schemas/HashedId'
-        invoiceUpdateInput:
-          $ref: '#/components/schemas/InvoiceUpdateInput'
-      type: object
-    InvoiceStatus:
-      enum:
-      - ''
-      - unknown
-      - new
-      - processing
-      - completed
-      - failed
-      - waitingapproval
-      - pendingreview
-      - sent
-      type: string
-    AccountingProduct:
-      additionalProperties: false
-      properties:
-        externalId:
-          maxLength: 2048
-          pattern: /^.*$/
-          type: string
-        featureType:
-          $ref: '#/components/schemas/FeatureType'
-      type: object
-    InvoiceFile:
-      additionalProperties: false
-      properties:
-        fileId:
-          $ref: '#/components/schemas/HashedId'
-        fileName:
-          maxLength: 2048
-          pattern: /^.*$/
-          type: string
-        invoiceFileId:
-          $ref: '#/components/schemas/HashedId'
-        invoiceId:
-          $ref: '#/components/schemas/HashedId'
-        type:
-          $ref: '#/components/schemas/InvoiceFileType'
-      type: object
-    FeatureType:
-      enum:
-      - unknown
-      - cash
-      - expeditedpayout
-      - cards
-      - rcptnotifs
-      - paycodes
-      - monthlyfee
-      - feeperproduct
-      - treatcashascard
-      - hideclerkname
-      - signaturecapture
-      - payoutamountsinemail
-      - zeroamountsinemail
-      - disableinvoices
-      - enableworkorders
-      - enableproductscomment
-      - disablefleetcheck
-      - publiccheckout
-      - invoiceattachment
-      - cardautopayout
-      - reportdollarsigndisabled
-      - allowdisableconvfee
-      - paysafepayment
-      - notifyinvoicestatuschange
-      - survey
-      - invoicecsvtimestampenabled
-      - directbill
-      - hostbill
-      - companydashboard
+      - service
+      - item
+      - custom
+      - other
       - addmultiplelineitems
-      - expeditedach
-      - namerequiredwithcard
-      - licenserequiredwithcard
-      - invoicesubmissionconfirmation
-      - accountingquickbooks
-      - accountingfreshbooks
-      - allowzerodollarinvoice
-      - instantpayout
-      - canpayinvoices
-      - twodaymanualpayout
-      - ach
-      - creditcardatpubliccheckoutonly
-      - conveniencefeeperlineitem
-      - invoicebatches
-      - skipcheckdetailsscreen
-      - sendtotaltopayerbutton
-      - generalledger
-      - wexapi
-      - roadsynccreditcardprocessing
+      - category
+      - tax
+      - ''
       type: string
-    InvoiceCreateInput:
+    Shift:
       additionalProperties: false
       properties:
-        comments:
-          maxLength: 4096
-          pattern: /^.*$/
-          type: string
-        convFeeDisable:
-          type: boolean
-        customFields:
-          $ref: '#/components/schemas/StringMap'
-        customerId:
+        id:
           $ref: '#/components/schemas/HashedId'
-        departmentId:
-          $ref: '#/components/schemas/HashedId'
-        description:
-          $ref: '#/components/schemas/Description'
-        lineItems:
-          items:
-            $ref: '#/components/schemas/InvoiceLineItemInput'
-          maxItems: 64
-          type: array
         locationId:
           $ref: '#/components/schemas/HashedId'
-        payerEmail:
-          $ref: '#/components/schemas/EmailAddress'
-        payerName:
+        name:
           maxLength: 256
           pattern: /^.*$/
           type: string
-        payerPhone:
-          $ref: '#/components/schemas/PhoneNumberInternational'
-        shiftId:
-          $ref: '#/components/schemas/HashedId'
-        temporaryCustomerName:
-          maxLength: 256
-          pattern: /^.*$/
-          type: string
-        workflowStatus:
-          $ref: '#/components/schemas/WorkflowStatus'
       type: object
-    InvoiceListResponse:
+    TimeZone:
+      enum:
+      - US/Hawaii
+      - US/Alaska
+      - US/Pacific
+      - US/Mountain
+      - US/Central
+      - US/Eastern
+      - ''
+      type: string
+    HashedId:
+      maxLength: 128
+      pattern: /^\w+$/
+      type: string
+    InvoiceType:
+      enum:
+      - ''
+      - cash
+      - check
+      - paycode
+      - card
+      - remotecheckout
+      - directbill
+      - hostbill
+      - ach
+      - batch
+      - fuelcard
+      type: string
+    StringMap:
       additionalProperties: false
-      allOf:
-      - $ref: '#/components/schemas/CodeMessage'
-      - additionalProperties: false
-        properties:
-          continuation:
-            $ref: '#/components/schemas/Continuation'
-          invoice_list:
-            description: A list of invoices - Each invocation returns a maximum of 20 items
-            items:
-              $ref: '#/components/schemas/Invoice'
-            maxItems: 20
-            type: array
-          paging:
-            $ref: '#/components/schemas/Paging'
-          parameters:
-            $ref: '#/components/schemas/StringMap'
-          result_token:
-            $ref: '#/components/schemas/HashedId'
-          stats:
-            $ref: '#/components/schemas/StringMap'
-        type: object
-      type: object
-    Receipt:
-      additionalProperties: false
-      properties:
-        url:
-          maxLength: 2048
-          pattern: /^.*$/
-          type: string
       type: object
     PaymentError:
       enum:
@@ -2109,39 +2032,63 @@ components:
       - ComdataTrailerNumberInvalid
       - ComdataLocationInvalid
       type: string
-    EmailAddress:
-      maxLength: 256
-      pattern: /^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,5})$/
+    WorkflowStatus:
+      enum:
+      - ''
+      - unknown
+      - default
+      - savelineitemsforlater
       type: string
-    InvoiceLineItem:
+    CustomFieldType:
+      enum:
+      - ''
+      - unknown
+      - input
+      - phone
+      - email
+      - select
+      - numeric
+      type: string
+    Receipt:
       additionalProperties: false
       properties:
-        cost:
-          $ref: '#/components/schemas/Amount'
-        description:
-          $ref: '#/components/schemas/Description'
-        isTaxable:
-          type: boolean
-        product:
-          $ref: '#/components/schemas/Product'
-        productId:
-          $ref: '#/components/schemas/HashedId'
-        qty:
-          $ref: '#/components/schemas/Quantity'
-        type:
-          $ref: '#/components/schemas/ProductType'
-      type: object
-    Department:
-      additionalProperties: false
-      properties:
-        id:
-          $ref: '#/components/schemas/HashedId'
-        locationId:
-          $ref: '#/components/schemas/HashedId'
-        name:
+        url:
           maxLength: 2048
           pattern: /^.*$/
           type: string
+      type: object
+    SortDirection:
+      default: ascending
+      description: Sort direction; asc accepted for ascending and desc accepted for descending
+      enum:
+      - asc
+      - ascending
+      - desc
+      - descending
+      type: string
+    InvoiceListResponse:
+      additionalProperties: false
+      allOf:
+      - $ref: '#/components/schemas/CodeMessage'
+      - additionalProperties: false
+        properties:
+          continuation:
+            $ref: '#/components/schemas/Continuation'
+          invoice_list:
+            description: A list of invoices - Each invocation returns a maximum of 20 items
+            items:
+              $ref: '#/components/schemas/Invoice'
+            maxItems: 20
+            type: array
+          paging:
+            $ref: '#/components/schemas/Paging'
+          parameters:
+            $ref: '#/components/schemas/StringMap'
+          result_token:
+            $ref: '#/components/schemas/HashedId'
+          stats:
+            $ref: '#/components/schemas/StringMap'
+        type: object
       type: object
     Invoice:
       additionalProperties: false
@@ -2250,11 +2197,357 @@ components:
         workflowStatus:
           $ref: '#/components/schemas/WorkflowStatus'
       type: object
-    Quantity:
+    FilterItemValue:
+      maxLength: 1024
+      pattern: /^.*$/
+      type: string
+    CodeMessage:
+      additionalProperties: false
+      description: A generic error object generally used for 500 responses
+      properties:
+        code:
+          $ref: '#/components/schemas/CodeEnum'
+        message:
+          $ref: '#/components/schemas/Message'
+      required:
+      - code
+      - message
+    Description:
+      maxLength: 1024
+      pattern: /^.*$/
+      type: string
+    Problem:
+      additionalProperties: false
+      properties:
+        detail:
+          description: 'A human readable explanation specific to this occurrence of the
+
+            problem.
+
+            '
+          example: Connection to database timed out
+          maxLength: 2048
+          pattern: /^.*$/
+          type: string
+        instance:
+          description: 'An absolute URI that identifies the specific occurrence of the problem.
+
+            It may or may not yield further information if dereferenced.
+
+            '
+          format: uri
+          maxLength: 2048
+          pattern: /^.*$/
+          type: string
+        status:
+          description: 'The HTTP status code generated by the origin server for this occurrence
+
+            of the problem.
+
+            '
+          example: 503
+          format: int32
+          minimum: 100
+          type: integer
+          exclusiveMaximum: 600
+        title:
+          description: 'A short, summary of the problem type. Written in english and readable
+
+            for engineers (usually not suited for non technical stakeholders and
+
+            not localized); example: Service Unavailable
+
+            '
+          maxLength: 256
+          pattern: /^.*$/
+          type: string
+        type:
+          default: about:blank
+          description: 'An absolute URI that identifies the problem type.  When dereferenced,
+
+            it SHOULD provide human-readable documentation for the problem type
+
+            (e.g., using HTML).
+
+            '
+          example: https://problems.roadsync.com/problem/unspecified-error
+          format: uri
+          maxLength: 2048
+          pattern: /^.*$/
+          type: string
+      type: object
+    InvoiceSearchRequest:
+      additionalProperties: false
+      description: Documenting the shape here get's lost by SwaggerUI implementations like readme.io
+      properties:
+        asyncResult:
+          default: true
+          description: Turn on/off the asynchronous result set for this request if the `timeout` time is exceeded during the execution of this search.
+          type: boolean
+        filters:
+          items:
+            $ref: '#/components/schemas/FilterItem'
+          type: array
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+        resultToken:
+          description: Optionally indicate on subsequent search request (typically with the same filters) where the search in the master list of invoices should be resumed.
+          maxLength: 256
+          pattern: /^.*$/
+          type: string
+        searchStart:
+          default: 0
+          description: Optionally indicate on subsequent search request (typically with the same filters) where the search in the master list of invoices should be resumed.
+          format: int64
+          minimum: 0
+          type: integer
+        timeout:
+          default: 19
+          description: Timeout in seconds for searching for invoices that meet the criteria. If the search exceeds this limit a Continuation response will be sent and optionally (if asyncResult == true and asynchronous results are availble) an asyncronous result set token.
+          format: float
+          maximum: 29
+          minimum: 1
+          type: number
+      type: object
+    InvoiceLineItem:
+      additionalProperties: false
+      properties:
+        cost:
+          $ref: '#/components/schemas/Amount'
+        description:
+          $ref: '#/components/schemas/Description'
+        isTaxable:
+          type: boolean
+        product:
+          $ref: '#/components/schemas/Product'
+        productId:
+          $ref: '#/components/schemas/HashedId'
+        qty:
+          $ref: '#/components/schemas/Quantity'
+        type:
+          $ref: '#/components/schemas/ProductType'
+      type: object
+    AccountingProduct:
+      additionalProperties: false
+      properties:
+        externalId:
+          maxLength: 2048
+          pattern: /^.*$/
+          type: string
+        featureType:
+          $ref: '#/components/schemas/FeatureType'
+      type: object
+    InvoiceSearchResponse:
+      additionalProperties: false
+      allOf:
+      - $ref: '#/components/schemas/CodeMessage'
+      - additionalProperties: false
+        properties:
+          continuation:
+            $ref: '#/components/schemas/Continuation'
+          invoice_list:
+            description: A list of invoices
+            items:
+              $ref: '#/components/schemas/Invoice'
+            maxItems: 100
+            type: array
+          pagination:
+            $ref: '#/components/schemas/Pagination'
+          parameters:
+            $ref: '#/components/schemas/StringMap'
+          result_token:
+            $ref: '#/components/schemas/HashedId'
+          stats:
+            $ref: '#/components/schemas/StringMap'
+        type: object
+      type: object
+    Continuation:
+      additionalProperties: false
+      properties:
+        search_start:
+          $ref: '#/components/schemas/Count'
+      type: object
+    Message:
+      maxLength: 2048
+      pattern: /^[a-zA-Z0-9 ]*$/
+      type: string
+    FormatEnum:
+      default: CSV
+      enum:
+      - ''
+      - CSV
+      type: string
+    InvoiceStatus:
+      enum:
+      - ''
+      - unknown
+      - new
+      - processing
+      - completed
+      - failed
+      - waitingapproval
+      - pendingreview
+      - sent
+      type: string
+    InvoiceFile:
+      additionalProperties: false
+      properties:
+        fileId:
+          $ref: '#/components/schemas/HashedId'
+        fileName:
+          maxLength: 2048
+          pattern: /^.*$/
+          type: string
+        invoiceFileId:
+          $ref: '#/components/schemas/HashedId'
+        invoiceId:
+          $ref: '#/components/schemas/HashedId'
+        type:
+          $ref: '#/components/schemas/InvoiceFileType'
+      type: object
+    Amount:
       format: float
       maximum: 999999999.99
       minimum: -999999999.99
       type: number
+    FeatureType:
+      enum:
+      - unknown
+      - cash
+      - expeditedpayout
+      - cards
+      - rcptnotifs
+      - paycodes
+      - monthlyfee
+      - feeperproduct
+      - treatcashascard
+      - hideclerkname
+      - signaturecapture
+      - payoutamountsinemail
+      - zeroamountsinemail
+      - disableinvoices
+      - enableworkorders
+      - enableproductscomment
+      - disablefleetcheck
+      - publiccheckout
+      - invoiceattachment
+      - cardautopayout
+      - reportdollarsigndisabled
+      - allowdisableconvfee
+      - paysafepayment
+      - notifyinvoicestatuschange
+      - survey
+      - invoicecsvtimestampenabled
+      - directbill
+      - hostbill
+      - companydashboard
+      - addmultiplelineitems
+      - expeditedach
+      - namerequiredwithcard
+      - licenserequiredwithcard
+      - invoicesubmissionconfirmation
+      - accountingquickbooks
+      - accountingfreshbooks
+      - allowzerodollarinvoice
+      - instantpayout
+      - canpayinvoices
+      - twodaymanualpayout
+      - ach
+      - creditcardatpubliccheckoutonly
+      - conveniencefeeperlineitem
+      - invoicebatches
+      - skipcheckdetailsscreen
+      - sendtotaltopayerbutton
+      - generalledger
+      - wexapi
+      - roadsynccreditcardprocessing
+      type: string
+    EmailAddress:
+      maxLength: 256
+      pattern: /^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,5})$/
+      type: string
+    InvoiceStatsResponse:
+      additionalProperties: false
+      allOf:
+      - $ref: '#/components/schemas/CodeMessage'
+      - additionalProperties: false
+        properties:
+          invoice_stats:
+            $ref: '#/components/schemas/InvoiceStats'
+        type: object
+      type: object
+    ShortUser:
+      additionalProperties: false
+      properties:
+        avatarUrl:
+          maxLength: 2048
+          pattern: /^.*$/
+          type: string
+        email:
+          $ref: '#/components/schemas/EmailAddress'
+        first:
+          maxLength: 256
+          pattern: /^.*$/
+          type: string
+        id:
+          $ref: '#/components/schemas/HashedId'
+        isVerified:
+          type: boolean
+        last:
+          maxLength: 2048
+          pattern: /^.*$/
+          type: string
+        phone:
+          $ref: '#/components/schemas/PhoneNumberInternational'
+      type: object
+    InvoiceStats:
+      additionalProperties: false
+      properties:
+        count:
+          $ref: '#/components/schemas/Count'
+        total:
+          $ref: '#/components/schemas/Amount'
+      type: object
+    InvoiceLineItemInput:
+      additionalProperties: false
+      properties:
+        description:
+          $ref: '#/components/schemas/Description'
+        isTaxable:
+          type: boolean
+        productId:
+          $ref: '#/components/schemas/HashedId'
+        qty:
+          $ref: '#/components/schemas/Quantity'
+      type: object
+    ShortCompany:
+      additionalProperties: false
+      properties:
+        id:
+          $ref: '#/components/schemas/HashedId'
+        logoUrl:
+          maxLength: 2048
+          pattern: /^.*$/
+          type: string
+        name:
+          maxLength: 2048
+          pattern: /^.*$/
+          type: string
+        phone:
+          $ref: '#/components/schemas/PhoneNumberInternational'
+        publicId:
+          $ref: '#/components/schemas/Count'
+        type:
+          $ref: '#/components/schemas/CompanyType'
+      type: object
+    PaidStateEnum:
+      default: ''
+      enum:
+      - ''
+      - Paid
+      - Unpaid
+      - NA
+      type: string
     Product:
       additionalProperties: false
       properties:
@@ -2298,138 +2591,52 @@ components:
           minimum: 0
           type: integer
       type: object
-    CodeMessage:
-      additionalProperties: false
-      description: A generic error object generally used for 500 responses
-      properties:
-        code:
-          $ref: '#/components/schemas/CodeEnum'
-        message:
-          $ref: '#/components/schemas/Message'
-      required:
-      - code
-      - message
-    InvoiceCreateRequest:
+    CustomField:
       additionalProperties: false
       properties:
-        companyId:
-          $ref: '#/components/schemas/HashedId'
-        invoiceCreateInput:
-          $ref: '#/components/schemas/InvoiceCreateInput'
-      type: object
-    ShortUser:
-      additionalProperties: false
-      properties:
-        avatarUrl:
-          maxLength: 2048
-          pattern: /^.*$/
-          type: string
-        email:
-          $ref: '#/components/schemas/EmailAddress'
-        first:
-          maxLength: 256
-          pattern: /^.*$/
-          type: string
+        deletedAt:
+          $ref: '#/components/schemas/DateTime'
         id:
           $ref: '#/components/schemas/HashedId'
-        isVerified:
+        isRequired:
           type: boolean
-        last:
-          maxLength: 2048
-          pattern: /^.*$/
-          type: string
-        phone:
-          $ref: '#/components/schemas/PhoneNumberInternational'
-      type: object
-    ShortLocation:
-      additionalProperties: false
-      properties:
-        city:
-          maxLength: 2048
-          pattern: /^.*$/
-          type: string
-        companyId:
-          $ref: '#/components/schemas/HashedId'
-        customFields:
-          items:
-            $ref: '#/components/schemas/CustomField'
-          maxItems: 64
-          type: array
-        id:
-          $ref: '#/components/schemas/HashedId'
+        isShownInList:
+          type: boolean
         name:
           maxLength: 256
           pattern: /^.*$/
           type: string
-        state:
-          $ref: '#/components/schemas/StateCode'
-        timezone:
-          $ref: '#/components/schemas/TimeZone'
-      type: object
-    Pagination:
-      additionalProperties: false
-      properties:
-        ItemsPerPage:
-          default: 20
-          format: int32
-          maximum: 999999
-          minimum: 1
-          type: integer
-        PageNumber:
-          default: 1
-          format: int32
-          maximum: 999999
-          minimum: 1
-          type: integer
-        SortColumn:
-          default: ''
-          maxLength: 64
+        options:
+          additionalProperties: false
+          type: object
+        title:
+          maxLength: 2048
           pattern: /^.*$/
           type: string
-        SortDirection:
-          $ref: '#/components/schemas/SortDirection'
-        TotalItems:
-          default: 20
-          format: int32
-          maximum: 999999
-          minimum: 1
-          type: integer
-        TotalPages:
-          default: 1
-          format: int32
-          maximum: 999999
-          minimum: 1
-          type: integer
+        type:
+          $ref: '#/components/schemas/CustomFieldType'
       type: object
-    SortDirection:
-      default: ascending
-      description: Sort direction; asc accepted for ascending and desc accepted for descending
-      enum:
-      - asc
-      - ascending
-      - desc
-      - descending
-      type: string
-    InvoiceFileType:
-      enum:
-      - ''
-      - unknown
-      - signature
-      - pdf
-      - image
-      type: string
-    Amount:
-      format: float
-      maximum: 999999999.99
-      minimum: -999999999.99
-      type: number
-    CodeEnum:
-      default: Success
-      enum:
-      - Success
-      - Error
-      - Exception
-      type: string
+    Department:
+      additionalProperties: false
+      properties:
+        id:
+          $ref: '#/components/schemas/HashedId'
+        locationId:
+          $ref: '#/components/schemas/HashedId'
+        name:
+          maxLength: 2048
+          pattern: /^.*$/
+          type: string
+      type: object
+    Paging:
+      additionalProperties: false
+      description: Paging information for achieving the resulting invoice_list
+      properties:
+        limit:
+          $ref: '#/components/schemas/Count'
+        offset:
+          $ref: '#/components/schemas/Count'
+      type: object
     InvoiceReportResponse:
       additionalProperties: false
       allOf:
@@ -2440,213 +2647,6 @@ components:
             $ref: '#/components/schemas/InvoiceReport'
         type: object
       type: object
-    WorkflowStatus:
-      enum:
-      - ''
-      - unknown
-      - default
-      - savelineitemsforlater
-      type: string
-    PhoneNumberInternational:
-      maxLength: 128
-      pattern: /^(?:(?:\(?(?:00|\+)([1-4]\d\d|[1-9]\d?)\)?)?[\-\.\ \\\/]?)?((?:\(?\d{1,}\)?[\-\.\ \\\/]?){0,})(?:[\-\.\ \\\/]?(?:#|ext\.?|extension|x)[\-\.\ \\\/]?(\d+))?$/
-      type: string
-    HashedId:
-      maxLength: 128
-      pattern: /^\w+$/
-      type: string
-    ProductType:
-      enum:
-      - service
-      - item
-      - custom
-      - other
-      - addmultiplelineitems
-      - category
-      - tax
-      - ''
-      type: string
-    InvoiceType:
-      enum:
-      - ''
-      - cash
-      - check
-      - paycode
-      - card
-      - remotecheckout
-      - directbill
-      - hostbill
-      - ach
-      - batch
-      - fuelcard
-      type: string
-    FormatEnum:
-      default: CSV
-      enum:
-      - ''
-      - CSV
-      type: string
-    InvoiceSearchResponse:
-      additionalProperties: false
-      allOf:
-      - $ref: '#/components/schemas/CodeMessage'
-      - additionalProperties: false
-        properties:
-          continuation:
-            $ref: '#/components/schemas/Continuation'
-          invoice_list:
-            description: A list of invoices
-            items:
-              $ref: '#/components/schemas/Invoice'
-            maxItems: 100
-            type: array
-          pagination:
-            $ref: '#/components/schemas/Pagination'
-          parameters:
-            $ref: '#/components/schemas/StringMap'
-          result_token:
-            $ref: '#/components/schemas/HashedId'
-          stats:
-            $ref: '#/components/schemas/StringMap'
-        type: object
-      type: object
-    ProductSelectType:
-      enum:
-      - ''
-      - none
-      - preselected
-      - obligatory
-      type: string
-    ShortCompanyCustomer:
-      additionalProperties: false
-      properties:
-        city:
-          maxLength: 2048
-          pattern: /^.*$/
-          type: string
-        companyId:
-          $ref: '#/components/schemas/HashedId'
-        contactEmail:
-          $ref: '#/components/schemas/EmailAddress'
-        contactPhone:
-          $ref: '#/components/schemas/PhoneNumberInternational'
-        customerCompanyId:
-          $ref: '#/components/schemas/HashedId'
-        id:
-          $ref: '#/components/schemas/HashedId'
-        name:
-          maxLength: 256
-          pattern: /^.*$/
-          type: string
-        nickname:
-          maxLength: 256
-          pattern: /^.*$/
-          type: string
-        publicId:
-          $ref: '#/components/schemas/Count'
-        state:
-          $ref: '#/components/schemas/StateCode'
-      type: object
-    FilterItemValue:
-      maxLength: 1024
-      pattern: /^.*$/
-      type: string
-    ShortCompany:
-      additionalProperties: false
-      properties:
-        id:
-          $ref: '#/components/schemas/HashedId'
-        logoUrl:
-          maxLength: 2048
-          pattern: /^.*$/
-          type: string
-        name:
-          maxLength: 2048
-          pattern: /^.*$/
-          type: string
-        phone:
-          $ref: '#/components/schemas/PhoneNumberInternational'
-        publicId:
-          $ref: '#/components/schemas/Count'
-        type:
-          $ref: '#/components/schemas/CompanyType'
-      type: object
-    InvoiceLineItemInput:
-      additionalProperties: false
-      properties:
-        description:
-          $ref: '#/components/schemas/Description'
-        isTaxable:
-          type: boolean
-        productId:
-          $ref: '#/components/schemas/HashedId'
-        qty:
-          $ref: '#/components/schemas/Quantity'
-      type: object
-    TimeZone:
-      enum:
-      - US/Hawaii
-      - US/Alaska
-      - US/Pacific
-      - US/Mountain
-      - US/Central
-      - US/Eastern
-      - ''
-      type: string
-    Paging:
-      additionalProperties: false
-      description: Paging information for achieving the resulting invoice_list
-      properties:
-        limit:
-          $ref: '#/components/schemas/Count'
-        offset:
-          $ref: '#/components/schemas/Count'
-      type: object
-    DepositStatus:
-      enum:
-      - ''
-      - unknown
-      - processing
-      - in_transit
-      - completed
-      - cancelled
-      - failed
-      type: string
-    InvoiceDeletionReason:
-      enum:
-      - ''
-      - unknown
-      - requestedbycustomer
-      - incorrectamount
-      - prepaidcontract
-      - duplicate
-      - fraudulent
-      - alternate
-      - driverleft
-      - unabletoservice
-      type: string
-    PublicId:
-      format: int64
-      maximum: 999999999
-      minimum: 0
-      type: integer
-    Shift:
-      additionalProperties: false
-      properties:
-        id:
-          $ref: '#/components/schemas/HashedId'
-        locationId:
-          $ref: '#/components/schemas/HashedId'
-        name:
-          maxLength: 256
-          pattern: /^.*$/
-          type: string
-      type: object
-    Count:
-      format: int64
-      maximum: 999999999
-      minimum: 0
-      type: integer
     Invoice_2:
       type: object
       additionalProperties: false
@@ -2741,18 +2741,6 @@ components:
           - ExpeditedInTransit
           - ExpeditedPaid
           - ExpeditedPaidAndDeposited
-    Errors:
-      type: array
-      description: A list of errors that occurred during payment processing
-      items:
-        $ref: '#/components/schemas/Error'
-    Error:
-      type: object
-      properties:
-        code:
-          type: string
-        title:
-          type: string
     LineItem:
       description: A single invoice line item.
       type: object
@@ -2770,13 +2758,25 @@ components:
         displayOrder:
           description: Optional. The display order of the line items in the invoice.
           type: integer
+    Errors:
+      type: array
+      description: A list of errors that occurred during payment processing
+      items:
+        $ref: '#/components/schemas/Error'
+    Error:
+      type: object
+      properties:
+        code:
+          type: string
+        title:
+          type: string
   responses:
-    InvoiceReportResponse:
+    UnexpectedError:
       content:
-        application/json:
+        application/problem+json:
           schema:
-            $ref: '#/components/schemas/InvoiceReportResponse'
-      description: An invoice report
+            $ref: '#/components/schemas/Problem'
+      description: unexpected error response
     Options200:
       content:
         application/json:
@@ -2832,72 +2832,12 @@ components:
             pattern: ^[a-zA-Z0-9 ,]*$
             type: string
           style: simple
-    InvoiceListResponse:
+    InvoiceReportResponse:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/InvoiceListResponse'
-      description: An invoice list response
-    InvoiceUpdateResponse:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/InvoiceResponse'
-      description: An invoice response
-    InvoiceDeleteResponse:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/InvoiceResponse'
-      description: An invoice response
-    NotFound404:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Problem'
-      description: 404 Not found
-    TooManyRequests429:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Problem'
-      description: 429 too many requests response
-    ServiceError500:
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/Problem'
-      description: Service Error
-    InvoiceGetResponse:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/InvoiceResponse'
-      description: An invoice response
-    InvoiceStatsResponse:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/InvoiceStatsResponse'
-      description: An invoices statistics response
-    InvoiceSearchResponse:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/InvoiceSearchResponse'
-      description: An invoice list response
-    UnexpectedError:
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/Problem'
-      description: unexpected error response
-    InvoiceCreateResponse:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/InvoiceResponse'
-      description: An invoice response
+            $ref: '#/components/schemas/InvoiceReportResponse'
+      description: An invoice report
     ForbiddenError:
       content:
         application/json:
@@ -2912,12 +2852,12 @@ components:
             pattern: /^.*$/
             type: string
           style: simple
-    InvoiceArchiveGetResponse:
+    NotFound404:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/InvoiceResponse'
-      description: An invoice archive response
+            $ref: '#/components/schemas/Problem'
+      description: 404 Not found
     UnauthorizedError:
       content:
         application/json:
@@ -2932,6 +2872,66 @@ components:
             pattern: /^.*$/
             type: string
           style: simple
+    ServiceError500:
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/Problem'
+      description: Service Error
+    InvoiceGetResponse:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/InvoiceResponse'
+      description: An invoice response
+    InvoiceListResponse:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/InvoiceListResponse'
+      description: An invoice list response
+    InvoiceStatsResponse:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/InvoiceStatsResponse'
+      description: An invoices statistics response
+    InvoiceUpdateResponse:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/InvoiceResponse'
+      description: An invoice response
+    InvoiceCreateResponse:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/InvoiceResponse'
+      description: An invoice response
+    InvoiceDeleteResponse:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/InvoiceResponse'
+      description: An invoice response
+    InvoiceArchiveGetResponse:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/InvoiceResponse'
+      description: An invoice archive response
+    TooManyRequests429:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Problem'
+      description: 429 too many requests response
+    InvoiceSearchResponse:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/InvoiceSearchResponse'
+      description: An invoice list response
     ErrorResponse:
       description: Error Response
       content:
@@ -2945,6 +2945,13 @@ components:
             error:
               $ref: '#/components/examples/errorResponseExample'
   requestBodies:
+    InvoiceCreateRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/InvoiceCreateRequest'
+      description: Create an invoice input
+      required: true
     InvoiceSearchRequest:
       content:
         application/json:
@@ -2958,13 +2965,6 @@ components:
           schema:
             $ref: '#/components/schemas/InvoiceUpdateRequest'
       description: Update an invoice input
-      required: true
-    InvoiceCreateRequest:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/InvoiceCreateRequest'
-      description: Create an invoice input
       required: true
   examples:
     invoiceListResponseExample:

@@ -211,6 +211,52 @@ paths:
           default: https://dev.api.roadsync.app/company/v1
 components:
   responses:
+    ServiceError500:
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/Problem'
+      description: Service Error
+    ForbiddenError:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CodeMessage'
+      description: Request is completely forbidden. API not provided or method and or endpoint not supported
+      headers:
+        WWW_Authenticate:
+          explode: false
+          schema:
+            maxLength: 2048
+            pattern: /^.*$/
+            type: string
+          style: simple
+    NotFound404:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Problem'
+      description: 404 Not found
+    TooManyRequests429:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Problem'
+      description: 429 too many requests response
+    UnauthorizedError:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CodeMessage'
+      description: API key is missing or invalid
+      headers:
+        WWW_Authenticate:
+          explode: false
+          schema:
+            maxLength: 2048
+            pattern: /^.*$/
+            type: string
+          style: simple
     Options200:
       content:
         application/json:
@@ -272,59 +318,20 @@ components:
           schema:
             $ref: '#/components/schemas/Problem'
       description: unexpected error response
-    ServiceError500:
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/Problem'
-      description: Service Error
     LocationListResponse:
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/LocationListResponse'
       description: A location list response
-    NotFound404:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Problem'
-      description: 404 Not found
-    ForbiddenError:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/CodeMessage'
-      description: Request is completely forbidden. API not provided or method and or endpoint not supported
-      headers:
-        WWW_Authenticate:
-          explode: false
-          schema:
-            maxLength: 2048
-            pattern: /^.*$/
-            type: string
-          style: simple
-    TooManyRequests429:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Problem'
-      description: 429 too many requests response
-    UnauthorizedError:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/CodeMessage'
-      description: API key is missing or invalid
-      headers:
-        WWW_Authenticate:
-          explode: false
-          schema:
-            maxLength: 2048
-            pattern: /^.*$/
-            type: string
-          style: simple
   schemas:
+    CodeEnum:
+      default: Success
+      enum:
+      - Success
+      - Error
+      - Exception
+      type: string
     StateCode:
       enum:
       - AL
@@ -381,97 +388,6 @@ components:
       - MEX
       - CAN
       type: string
-    LocationListResponse:
-      allOf:
-      - $ref: '#/components/schemas/CodeMessage'
-      - properties:
-          location_list:
-            description: A list of locations
-            items:
-              $ref: '#/components/schemas/Location'
-            maxItems: 128
-            type: array
-        type: object
-    CustomField:
-      additionalProperties: false
-      properties:
-        deletedAt:
-          $ref: '#/components/schemas/DateTime'
-        id:
-          $ref: '#/components/schemas/HashedId'
-        isRequired:
-          type: boolean
-        isShownInList:
-          type: boolean
-        name:
-          maxLength: 256
-          pattern: /^.*$/
-          type: string
-        options:
-          additionalProperties: false
-          type: object
-        title:
-          maxLength: 2048
-          pattern: /^.*$/
-          type: string
-        type:
-          $ref: '#/components/schemas/CustomFieldType'
-      type: object
-    Location:
-      additionalProperties: false
-      properties:
-        city:
-          maxLength: 256
-          pattern: /^.*$/
-          type: string
-        companyId:
-          $ref: '#/components/schemas/HashedId'
-        createdAt:
-          $ref: '#/components/schemas/DateTime'
-        customFields:
-          items:
-            $ref: '#/components/schemas/CustomField'
-          maxItems: 64
-          type: array
-        departments:
-          items:
-            $ref: '#/components/schemas/Department'
-          maxItems: 64
-          type: array
-        id:
-          $ref: '#/components/schemas/HashedId'
-        locationReference:
-          maxLength: 2048
-          pattern: /^.*$/
-          type: string
-        name:
-          maxLength: 256
-          pattern: /^.*$/
-          type: string
-        shifts:
-          items:
-            $ref: '#/components/schemas/Shift'
-          maxItems: 128
-          type: array
-        state:
-          $ref: '#/components/schemas/StateCode'
-        street:
-          maxLength: 2048
-          pattern: /^.*$/
-          type: string
-        street2:
-          maxLength: 2048
-          pattern: /^.*$/
-          type: string
-        timezone:
-          $ref: '#/components/schemas/TimeZone'
-        updatedAt:
-          $ref: '#/components/schemas/DateTime'
-        zip:
-          maxLength: 10
-          pattern: ^[0-9]{5}(|-[0-9]{4})$
-          type: string
-      type: object
     CodeMessage:
       additionalProperties: false
       description: A generic error object generally used for 500 responses
@@ -483,6 +399,29 @@ components:
       required:
       - code
       - message
+    LocationListResponse:
+      allOf:
+      - $ref: '#/components/schemas/CodeMessage'
+      - properties:
+          location_list:
+            description: A list of locations
+            items:
+              $ref: '#/components/schemas/Location'
+            maxItems: 128
+            type: array
+        type: object
+    Shift:
+      additionalProperties: false
+      properties:
+        id:
+          $ref: '#/components/schemas/HashedId'
+        locationId:
+          $ref: '#/components/schemas/HashedId'
+        name:
+          maxLength: 256
+          pattern: /^.*$/
+          type: string
+      type: object
     Problem:
       additionalProperties: false
       properties:
@@ -543,11 +482,6 @@ components:
           pattern: /^.*$/
           type: string
       type: object
-    DateTime:
-      description: A timestamp of last modification of the entry.
-      example: '2020-07-21 17:32:28Z'
-      format: date-time
-      type: string
     TimeZone:
       enum:
       - US/Hawaii
@@ -558,16 +492,9 @@ components:
       - US/Eastern
       - ''
       type: string
-    CodeEnum:
-      default: Success
-      enum:
-      - Success
-      - Error
-      - Exception
-      type: string
-    Message:
-      maxLength: 2048
-      pattern: /^[a-zA-Z0-9 ]*$/
+    HashedId:
+      maxLength: 128
+      pattern: /^\w+$/
       type: string
     CustomFieldType:
       enum:
@@ -579,18 +506,35 @@ components:
       - select
       - numeric
       type: string
-    Shift:
+    CustomField:
       additionalProperties: false
       properties:
+        deletedAt:
+          $ref: '#/components/schemas/DateTime'
         id:
           $ref: '#/components/schemas/HashedId'
-        locationId:
-          $ref: '#/components/schemas/HashedId'
+        isRequired:
+          type: boolean
+        isShownInList:
+          type: boolean
         name:
           maxLength: 256
           pattern: /^.*$/
           type: string
+        options:
+          additionalProperties: false
+          type: object
+        title:
+          maxLength: 2048
+          pattern: /^.*$/
+          type: string
+        type:
+          $ref: '#/components/schemas/CustomFieldType'
       type: object
+    Message:
+      maxLength: 2048
+      pattern: /^[a-zA-Z0-9 ]*$/
+      type: string
     Department:
       additionalProperties: false
       properties:
@@ -603,38 +547,66 @@ components:
           pattern: /^.*$/
           type: string
       type: object
-    HashedId:
-      maxLength: 128
-      pattern: /^\w+$/
-      type: string
-    LocationList:
-      type: array
-      items:
-        $ref: '#/components/schemas/Location_2'
-    Errors:
-      type: array
-      description: A list of errors that occurred during processing
-      items:
-        $ref: '#/components/schemas/Error'
-    ProductList:
-      type: array
-      items:
-        $ref: '#/components/schemas/Product'
-    Location_2:
-      type: object
+    Location:
       additionalProperties: false
       properties:
-        id:
+        city:
+          maxLength: 256
+          pattern: /^.*$/
           type: string
-          description: The location id
-        name:
-          type: string
-          description: The location name
+        companyId:
+          $ref: '#/components/schemas/HashedId'
+        createdAt:
+          $ref: '#/components/schemas/DateTime'
         customFields:
-          type: array
-          description: List of arrays that describe each custom field
           items:
-            $ref: '#/components/schemas/CustomField_2'
+            $ref: '#/components/schemas/CustomField'
+          maxItems: 64
+          type: array
+        departments:
+          items:
+            $ref: '#/components/schemas/Department'
+          maxItems: 64
+          type: array
+        id:
+          $ref: '#/components/schemas/HashedId'
+        locationReference:
+          maxLength: 2048
+          pattern: /^.*$/
+          type: string
+        name:
+          maxLength: 256
+          pattern: /^.*$/
+          type: string
+        shifts:
+          items:
+            $ref: '#/components/schemas/Shift'
+          maxItems: 128
+          type: array
+        state:
+          $ref: '#/components/schemas/StateCode'
+        street:
+          maxLength: 2048
+          pattern: /^.*$/
+          type: string
+        street2:
+          maxLength: 2048
+          pattern: /^.*$/
+          type: string
+        timezone:
+          $ref: '#/components/schemas/TimeZone'
+        updatedAt:
+          $ref: '#/components/schemas/DateTime'
+        zip:
+          maxLength: 10
+          pattern: ^[0-9]{5}(|-[0-9]{4})$
+          type: string
+      type: object
+    DateTime:
+      description: A timestamp of last modification of the entry.
+      example: '2020-07-21 17:32:28Z'
+      format: date-time
+      type: string
     CustomField_2:
       type: array
       properties:
@@ -659,6 +631,34 @@ components:
         isEditable:
           type: boolean
           description: can custom field be edited
+    LocationList:
+      type: array
+      items:
+        $ref: '#/components/schemas/Location_2'
+    Location_2:
+      type: object
+      additionalProperties: false
+      properties:
+        id:
+          type: string
+          description: The location id
+        name:
+          type: string
+          description: The location name
+        customFields:
+          type: array
+          description: List of arrays that describe each custom field
+          items:
+            $ref: '#/components/schemas/CustomField_2'
+    ProductList:
+      type: array
+      items:
+        $ref: '#/components/schemas/Product'
+    Errors:
+      type: array
+      description: A list of errors that occurred during processing
+      items:
+        $ref: '#/components/schemas/Error'
     Error:
       type: object
       properties:
@@ -675,6 +675,19 @@ components:
           type: string
           description: The product name
   examples:
+    ErrorResponseExample:
+      value:
+        errors:
+        - code: processing_error
+    ProductListResponseExample:
+      value:
+        data:
+        - id: jX52DZVG8A0MB1b1bgrkoqwWlJpY6m
+          name: Product 1
+        - id: HgTjnbkjbuyo786590KJBKjtfdGgjy
+          name: Product 2
+        - id: awefawef3wfaw3fh445hhsdrrsUHuy
+          name: Product 3
     LocationListResponseExample:
       value:
         data:
@@ -704,19 +717,6 @@ components:
             options: {}
             isShownInList: false
             isEditable: true
-    ErrorResponseExample:
-      value:
-        errors:
-        - code: processing_error
-    ProductListResponseExample:
-      value:
-        data:
-        - id: jX52DZVG8A0MB1b1bgrkoqwWlJpY6m
-          name: Product 1
-        - id: HgTjnbkjbuyo786590KJBKjtfdGgjy
-          name: Product 2
-        - id: awefawef3wfaw3fh445hhsdrrsUHuy
-          name: Product 3
   securitySchemes:
     api_key:
       in: header

@@ -295,32 +295,6 @@ paths:
       - x-api-key: []
 components:
   schemas:
-    bankName:
-      title: bank_name
-      type: string
-      x-stoplight:
-        id: rmlmmd3m5zlqg
-      description: A nickname for the bank account.
-      example: Atlanta Brokerage
-    addressLineOne:
-      title: address_line_one
-      x-stoplight:
-        id: p3a1crckckndd
-      type: string
-      description: The valid address of a person or business in the United States.
-      example: 715 Peachtree St
-    postalCode:
-      title: postal_code
-      x-stoplight:
-        id: v5t2utdpxdar3
-      type: string
-      description: A valid postal code in the United States.
-      example: '30306'
-    walletBalance:
-      title: walletBalance
-      type: number
-      description: The current balance of the wallet funding source.
-      example: 15953.21
     bankAccountType:
       title: bank_account_type
       x-stoplight:
@@ -329,6 +303,20 @@ components:
       - checking
       - savings
       - wallet
+    walletBalance:
+      title: walletBalance
+      type: number
+      description: The current balance of the wallet funding source.
+      example: 15953.21
+    addressLineTwo:
+      title: address_line_two
+      x-stoplight:
+        id: jpnvzmg54ky3l
+      type:
+      - string
+      - 'null'
+      description: If necessary, add a second line of the address in the United States.
+      example: APT 23
     bankFundingSource:
       title: bank_funding_source
       x-stoplight:
@@ -381,40 +369,18 @@ components:
                 $ref: '#/components/schemas/accountNumber'
               routing_number:
                 $ref: '#/components/schemas/routingNumber'
-    brokerId:
-      title: broker_id
-      type: integer
-      example: 66305
-      x-stoplight:
-        id: 364l19xr2t37h
-      description: The identifier of a Broker to which the Payee will be assigned or has already been assigned.
-    routingNumber:
-      title: routing_number
-      x-stoplight:
-        id: 63el3sto66kg8
+    bankName:
+      title: bank_name
       type: string
-      description: A valid routing number for a bank in the United States. Must be exactly 9 digits.
-      example: '610000523'
-    addressLineTwo:
-      title: address_line_two
       x-stoplight:
-        id: jpnvzmg54ky3l
-      type:
-      - string
-      - 'null'
-      description: If necessary, add a second line of the address in the United States.
-      example: APT 23
+        id: rmlmmd3m5zlqg
+      description: A nickname for the bank account.
+      example: Atlanta Brokerage
     hasRtp:
       title: hasRtp
       type: boolean
       description: Whether or not the payee's funding source is RTP eligible.
       example: true
-    fundingSourceId:
-      title: funding_source_id
-      x-stoplight:
-        id: 62r95b324501y
-      $ref: '#/components/schemas/id'
-      description: Id representing the funding source (papercheck, ach or wallet).
     city:
       title: city
       x-stoplight:
@@ -429,6 +395,26 @@ components:
       example: 87346
       title: id
       description: The id number of the object being returned.
+    fundingSourceId:
+      title: funding_source_id
+      x-stoplight:
+        id: 62r95b324501y
+      $ref: '#/components/schemas/id'
+      description: Id representing the funding source (papercheck, ach or wallet).
+    routingNumber:
+      title: routing_number
+      x-stoplight:
+        id: 63el3sto66kg8
+      type: string
+      description: A valid routing number for a bank in the United States. Must be exactly 9 digits.
+      example: '610000523'
+    postalCode:
+      title: postal_code
+      x-stoplight:
+        id: v5t2utdpxdar3
+      type: string
+      description: A valid postal code in the United States.
+      example: '30306'
     state:
       title: state
       x-stoplight:
@@ -436,6 +422,13 @@ components:
       type: string
       description: A valid 2 character state code in the United States.
       example: GA
+    brokerId:
+      title: broker_id
+      type: integer
+      example: 66305
+      x-stoplight:
+        id: 364l19xr2t37h
+      description: The identifier of a Broker to which the Payee will be assigned or has already been assigned.
     accountNumber:
       title: account_number
       x-stoplight:
@@ -443,6 +436,13 @@ components:
       type: string
       description: A valid bank account number for a bank in the United States. Typically 10-12 digits in length. When being read, this will be the last 4 digits of the account number.
       example: '1234567890'
+    addressLineOne:
+      title: address_line_one
+      x-stoplight:
+        id: p3a1crckckndd
+      type: string
+      description: The valid address of a person or business in the United States.
+      example: 715 Peachtree St
   parameters:
     broker_header:
       name: broker-id

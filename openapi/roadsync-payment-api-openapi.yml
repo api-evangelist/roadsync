@@ -322,54 +322,6 @@ components:
       required:
       - paymentType
       - locationId
-    Errors:
-      type: array
-      description: A list of errors that occurred during payment processing
-      items:
-        $ref: '#/components/schemas/Error'
-    PaymentResponse:
-      type: object
-      additionalProperties: false
-      properties:
-        data:
-          type: object
-          description: The Payment object returned by the create call
-          properties:
-            id:
-              type: string
-              description: The id of the payment
-            checkNumber:
-              type: string
-              description: The number of the check that was created, only returned for 'efscheck and tchek' paymentType
-            status:
-              type: string
-              description: The status of the payment
-            reason:
-              type: string
-              description: A description on why a payment is in `failed` status
-            fields:
-              type: array
-              description: Fields to be collected from the user for certain payment types.
-              items:
-                type: object
-                properties:
-                  name:
-                    type: string
-                    description: Name of the field to collect
-                  required:
-                    type: boolean
-                    description: True if field is required
-        errors:
-          $ref: '#/components/schemas/Errors'
-    Error:
-      type: object
-      properties:
-        code:
-          type: string
-          description: The error code
-        title:
-          type: string
-          description: Summary of error
     PatchPaymentRequest:
       type: object
       additionalProperties: false
@@ -424,6 +376,54 @@ components:
         poNumber:
           type: string
           description: Load identifier - may be required by some payment types
+    PaymentResponse:
+      type: object
+      additionalProperties: false
+      properties:
+        data:
+          type: object
+          description: The Payment object returned by the create call
+          properties:
+            id:
+              type: string
+              description: The id of the payment
+            checkNumber:
+              type: string
+              description: The number of the check that was created, only returned for 'efscheck and tchek' paymentType
+            status:
+              type: string
+              description: The status of the payment
+            reason:
+              type: string
+              description: A description on why a payment is in `failed` status
+            fields:
+              type: array
+              description: Fields to be collected from the user for certain payment types.
+              items:
+                type: object
+                properties:
+                  name:
+                    type: string
+                    description: Name of the field to collect
+                  required:
+                    type: boolean
+                    description: True if field is required
+        errors:
+          $ref: '#/components/schemas/Errors'
+    Errors:
+      type: array
+      description: A list of errors that occurred during payment processing
+      items:
+        $ref: '#/components/schemas/Error'
+    Error:
+      type: object
+      properties:
+        code:
+          type: string
+          description: The error code
+        title:
+          type: string
+          description: Summary of error
   securitySchemes:
     ApiKey:
       type: apiKey

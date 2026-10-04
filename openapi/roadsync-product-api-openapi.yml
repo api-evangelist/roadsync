@@ -79,6 +79,58 @@ paths:
       x-summary-source: derived
 components:
   responses:
+    ServiceError500:
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/Problem'
+      description: Service Error
+    ForbiddenError:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CodeMessage'
+      description: Request is completely forbidden. API not provided or method and or endpoint not supported
+      headers:
+        WWW_Authenticate:
+          explode: false
+          schema:
+            maxLength: 2048
+            pattern: /^.*$/
+            type: string
+          style: simple
+    NotFound404:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Problem'
+      description: 404 Not found
+    ProductListResponse:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProductListResponse'
+      description: A product list response
+    TooManyRequests429:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Problem'
+      description: 429 too many requests response
+    UnauthorizedError:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CodeMessage'
+      description: API key is missing or invalid
+      headers:
+        WWW_Authenticate:
+          explode: false
+          schema:
+            maxLength: 2048
+            pattern: /^.*$/
+            type: string
+          style: simple
     Options200:
       content:
         application/json:
@@ -140,123 +192,7 @@ components:
           schema:
             $ref: '#/components/schemas/Problem'
       description: unexpected error response
-    ServiceError500:
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/Problem'
-      description: Service Error
-    NotFound404:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Problem'
-      description: 404 Not found
-    ProductListResponse:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ProductListResponse'
-      description: A product list response
-    ForbiddenError:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/CodeMessage'
-      description: Request is completely forbidden. API not provided or method and or endpoint not supported
-      headers:
-        WWW_Authenticate:
-          explode: false
-          schema:
-            maxLength: 2048
-            pattern: /^.*$/
-            type: string
-          style: simple
-    TooManyRequests429:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Problem'
-      description: 429 too many requests response
-    UnauthorizedError:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/CodeMessage'
-      description: API key is missing or invalid
-      headers:
-        WWW_Authenticate:
-          explode: false
-          schema:
-            maxLength: 2048
-            pattern: /^.*$/
-            type: string
-          style: simple
   schemas:
-    ProductType:
-      enum:
-      - service
-      - item
-      - custom
-      - other
-      - addmultiplelineitems
-      - category
-      - tax
-      - ''
-      type: string
-    Product:
-      additionalProperties: false
-      properties:
-        accountingProducts:
-          items:
-            $ref: '#/components/schemas/AccountingProduct'
-          maxItems: 128
-          type: array
-        cost:
-          format: float
-          maximum: 999999999.99
-          minimum: -999999999.99
-          type: number
-        generalLedger:
-          maxLength: 2048
-          pattern: /^.*$/
-          type: string
-        id:
-          $ref: '#/components/schemas/HashedId'
-        isTaxable:
-          type: boolean
-        locationId:
-          $ref: '#/components/schemas/HashedId'
-        name:
-          maxLength: 2048
-          pattern: /^.*$/
-          type: string
-        parentId:
-          $ref: '#/components/schemas/HashedId'
-        parentPath:
-          maxLength: 2048
-          pattern: /^.*$/
-          type: string
-        selectType:
-          $ref: '#/components/schemas/ProductSelectType'
-        type:
-          $ref: '#/components/schemas/ProductType'
-        weight:
-          format: int64
-          maximum: 999999999
-          minimum: 0
-          type: integer
-      type: object
-    AccountingProduct:
-      additionalProperties: false
-      properties:
-        externalId:
-          maxLength: 2048
-          pattern: /^.*$/
-          type: string
-        featureType:
-          $ref: '#/components/schemas/FeatureType'
-      type: object
     FeatureType:
       enum:
       - unknown
@@ -309,6 +245,13 @@ components:
       - wexapi
       - roadsynccreditcardprocessing
       type: string
+    CodeEnum:
+      default: Success
+      enum:
+      - Success
+      - Error
+      - Exception
+      type: string
     CodeMessage:
       additionalProperties: false
       description: A generic error object generally used for 500 responses
@@ -320,6 +263,24 @@ components:
       required:
       - code
       - message
+    ProductSelectType:
+      enum:
+      - ''
+      - none
+      - preselected
+      - obligatory
+      type: string
+    ProductType:
+      enum:
+      - service
+      - item
+      - custom
+      - other
+      - addmultiplelineitems
+      - category
+      - tax
+      - ''
+      type: string
     Problem:
       additionalProperties: false
       properties:
@@ -380,23 +341,19 @@ components:
           pattern: /^.*$/
           type: string
       type: object
-    ProductSelectType:
-      enum:
-      - ''
-      - none
-      - preselected
-      - obligatory
-      type: string
-    CodeEnum:
-      default: Success
-      enum:
-      - Success
-      - Error
-      - Exception
-      type: string
-    Message:
-      maxLength: 2048
-      pattern: /^[a-zA-Z0-9 ]*$/
+    AccountingProduct:
+      additionalProperties: false
+      properties:
+        externalId:
+          maxLength: 2048
+          pattern: /^.*$/
+          type: string
+        featureType:
+          $ref: '#/components/schemas/FeatureType'
+      type: object
+    HashedId:
+      maxLength: 128
+      pattern: /^\w+$/
       type: string
     ProductListResponse:
       allOf:
@@ -409,9 +366,52 @@ components:
             maxItems: 128
             type: array
         type: object
-    HashedId:
-      maxLength: 128
-      pattern: /^\w+$/
+    Product:
+      additionalProperties: false
+      properties:
+        accountingProducts:
+          items:
+            $ref: '#/components/schemas/AccountingProduct'
+          maxItems: 128
+          type: array
+        cost:
+          format: float
+          maximum: 999999999.99
+          minimum: -999999999.99
+          type: number
+        generalLedger:
+          maxLength: 2048
+          pattern: /^.*$/
+          type: string
+        id:
+          $ref: '#/components/schemas/HashedId'
+        isTaxable:
+          type: boolean
+        locationId:
+          $ref: '#/components/schemas/HashedId'
+        name:
+          maxLength: 2048
+          pattern: /^.*$/
+          type: string
+        parentId:
+          $ref: '#/components/schemas/HashedId'
+        parentPath:
+          maxLength: 2048
+          pattern: /^.*$/
+          type: string
+        selectType:
+          $ref: '#/components/schemas/ProductSelectType'
+        type:
+          $ref: '#/components/schemas/ProductType'
+        weight:
+          format: int64
+          maximum: 999999999
+          minimum: 0
+          type: integer
+      type: object
+    Message:
+      maxLength: 2048
+      pattern: /^[a-zA-Z0-9 ]*$/
       type: string
   securitySchemes:
     api_key:

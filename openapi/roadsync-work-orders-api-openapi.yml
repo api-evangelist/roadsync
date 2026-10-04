@@ -179,11 +179,103 @@ paths:
       - ApiKeyAuth: []
 components:
   schemas:
+    phone:
+      title: phone
+      x-stoplight:
+        id: fnlotiw3umas3
+      type: string
+      example: 555-555-5555
+      pattern: ^\d{3}-\d{3}-\d{4}$
+    signedCarrierName:
+      type: string
+      title: signedCarrierName
+      description: Name of carrier who signed workorder
+      example: Jimbo
+    invoiceStatus:
+      type: string
+      title: invoiceStatus
+      description: Status of invoice attached to workorder
+      example: completed
+    updatedAt:
+      type: string
+      title: updatedAt
+      description: Updated at value for workorder
+      format: date-time
+      example: '2023-11-14T16:27:56.419546Z'
+    city:
+      type: string
+      title: city
+      description: A valid city in the United States.
+      example: Atlanta
+    signedDriverEmail:
+      type: string
+      title: signedDriverEmail
+      description: Email of driver who signed the workorder
+      example: jimbo@gmail.com
+    createdAt:
+      type: string
+      title: createdAt
+      description: Created at value for workorder
+      format: date-time
+      example: '2023-11-14T16:27:56.419546Z'
+    comdataApiLocationId:
+      type: string
+      title: comdataApiLocationId
+      description: Location's unique Roadsync API ID from comdata
+      example: RS301
+    signedContactEmail:
+      type: string
+      title: signedContactEmail
+      description: Email of the contact signing the workorder
+      example: jimbo@gmail.com
+    signedContactPhone:
+      type: string
+      title: signedContactPhone
+      description: Phone number of the contact signing the workorder
+      example: '4045194104'
+    status:
+      enum:
+      - unknown
+      - new
+      - sent
+      - completed
+      description: Enum containing the possible workorder status
+      example: sent
+    isLocked:
+      type: boolean
+      title: isLocked
+      description: Boolean representation of if the location is locked
     signedContactName:
       type: string
       title: signedContactName
       description: Name of the contact signing the workorder
       example: Jimbo
+    signedDriverName:
+      type: string
+      title: signedDriverName
+      description: Name of driver who signed the workorder
+      example: Jimbo
+    signedDriverPhone:
+      type: string
+      title: signedDriverPhone
+      description: Phone number of driver who signed the workorder
+      example: '4045194104'
+    publicId:
+      type: integer
+      title: publicId
+      description: The Roadsync Public ID of the workorder
+      example: 2381
+    timezone:
+      type: string
+      title: timezone
+      description: Timezone for the location
+      example: US/Eastern
+    lockedAt:
+      type: string
+      title: lockedAt
+      description: Time the location was locked
+      format: date-time
+      example: '2023-11-14T16:28:20.085115Z'
     workorder:
       type: object
       title: workorder
@@ -234,58 +326,63 @@ components:
         location:
           $ref: '#/components/schemas/location'
       description: ''
-    locationName:
+    userId:
       type: string
-      title: locationName
-      description: Name of the location
-      example: Robertstown
-    invoiceStatus:
+      title: userId
+      description: ID of the user creating workorders
+      example: AVeGYqb0d7MJpaDZxB69rlxDOZ8Nmo
+    id:
       type: string
-      title: invoiceStatus
-      description: Status of invoice attached to workorder
-      example: completed
-    status:
-      enum:
-      - unknown
-      - new
-      - sent
-      - completed
-      description: Enum containing the possible workorder status
-      example: sent
-    workOrderSettingsId:
-      type: string
-      title: workOrderSettingsId
-      description: Hashed ID for the workorder settings
-      example: O8MqwQ1X3L5RyaxVLBnNK2lGxerYAz
-    phone:
-      title: phone
-      x-stoplight:
-        id: fnlotiw3umas3
-      type: string
-      example: 555-555-5555
-      pattern: ^\d{3}-\d{3}-\d{4}$
-    lockedAt:
-      type: string
-      title: lockedAt
-      description: Time the location was locked
-      format: date-time
-      example: '2023-11-14T16:28:20.085115Z'
-    publicId:
-      type: integer
-      title: publicId
-      description: The Roadsync Public ID of the workorder
-      example: 2381
+      title: id
+      description: The id number of the object being returned.
+      example: 6XLeG3x91pQlBWjnXvARYO2onNVM0q
     email:
       title: email
       x-stoplight:
         id: vxsl7ligmau5r
       type: string
       example: user@example.com
-    userId:
+    companyId:
       type: string
-      title: userId
-      description: ID of the user creating workorders
-      example: AVeGYqb0d7MJpaDZxB69rlxDOZ8Nmo
+      title: companyId
+      description: Hashed company ID attached to each workorder
+      example: rZNz3VwGoJDMEaok3aQY7dqWRAL4y8
+    state:
+      type: string
+      title: state
+      description: A valid 2 character state code in the United States.
+      example: GA
+    invoiceId:
+      type: string
+      title: invoiceId
+      description: Hashed invoice ID for the workorder
+      example: rZNz3VwGoJDMEaok3aQY7dqWRAL4y8
+    signedCustomFields:
+      title: signedCustomFields
+      x-stoplight:
+        id: cvlo0mxljty0f
+      type: string
+      description: Signed custom fields for workorders
+    workOrderSettingsId:
+      type: string
+      title: workOrderSettingsId
+      description: Hashed ID for the workorder settings
+      example: O8MqwQ1X3L5RyaxVLBnNK2lGxerYAz
+    signedFileId:
+      title: signedFileId
+      x-stoplight:
+        id: zc55hhfccdzqq
+      type: string
+    reference:
+      type: string
+      title: reference
+      description: Workorder reference for record keeping purposes
+      example: Trucker LLC
+    locationName:
+      type: string
+      title: locationName
+      description: Name of the location
+      example: Robertstown
     location:
       type: object
       description: Location for the workorder
@@ -323,108 +420,11 @@ components:
           customFields: []
           isLocked: false
           comdataApiLocationId: RS301
-    id:
-      type: string
-      title: id
-      description: The id number of the object being returned.
-      example: 6XLeG3x91pQlBWjnXvARYO2onNVM0q
-    timezone:
-      type: string
-      title: timezone
-      description: Timezone for the location
-      example: US/Eastern
-    companyId:
-      type: string
-      title: companyId
-      description: Hashed company ID attached to each workorder
-      example: rZNz3VwGoJDMEaok3aQY7dqWRAL4y8
     locationId:
       type: string
       title: locationId
       description: Hashed ID value for the location
       example: 7VkjKzEOPNZnrveEXv8A4L9Y52b16G
-    createdAt:
-      type: string
-      title: createdAt
-      description: Created at value for workorder
-      format: date-time
-      example: '2023-11-14T16:27:56.419546Z'
-    reference:
-      type: string
-      title: reference
-      description: Workorder reference for record keeping purposes
-      example: Trucker LLC
-    updatedAt:
-      type: string
-      title: updatedAt
-      description: Updated at value for workorder
-      format: date-time
-      example: '2023-11-14T16:27:56.419546Z'
-    signedContactPhone:
-      type: string
-      title: signedContactPhone
-      description: Phone number of the contact signing the workorder
-      example: '4045194104'
-    signedFileId:
-      title: signedFileId
-      x-stoplight:
-        id: zc55hhfccdzqq
-      type: string
-    signedDriverEmail:
-      type: string
-      title: signedDriverEmail
-      description: Email of driver who signed the workorder
-      example: jimbo@gmail.com
-    city:
-      type: string
-      title: city
-      description: A valid city in the United States.
-      example: Atlanta
-    state:
-      type: string
-      title: state
-      description: A valid 2 character state code in the United States.
-      example: GA
-    signedDriverName:
-      type: string
-      title: signedDriverName
-      description: Name of driver who signed the workorder
-      example: Jimbo
-    comdataApiLocationId:
-      type: string
-      title: comdataApiLocationId
-      description: Location's unique Roadsync API ID from comdata
-      example: RS301
-    invoiceId:
-      type: string
-      title: invoiceId
-      description: Hashed invoice ID for the workorder
-      example: rZNz3VwGoJDMEaok3aQY7dqWRAL4y8
-    signedCarrierName:
-      type: string
-      title: signedCarrierName
-      description: Name of carrier who signed workorder
-      example: Jimbo
-    signedContactEmail:
-      type: string
-      title: signedContactEmail
-      description: Email of the contact signing the workorder
-      example: jimbo@gmail.com
-    isLocked:
-      type: boolean
-      title: isLocked
-      description: Boolean representation of if the location is locked
-    signedCustomFields:
-      title: signedCustomFields
-      x-stoplight:
-        id: cvlo0mxljty0f
-      type: string
-      description: Signed custom fields for workorders
-    signedDriverPhone:
-      type: string
-      title: signedDriverPhone
-      description: Phone number of driver who signed the workorder
-      example: '4045194104'
   requestBodies:
     workorderSend:
       content:
